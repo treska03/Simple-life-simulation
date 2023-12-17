@@ -1,6 +1,7 @@
 package agh.ics.oop.model.util;
 
-import agh.ics.oop.model.map.WorldMap;
+import agh.ics.oop.model.Vector2d;
+import agh.ics.oop.model.WorldMap;
 
 /**
  * The map visualizer converts the {@link WorldMap} map into a string
@@ -73,9 +74,11 @@ public class MapVisualizer {
     }
 
     private String drawObject(Vector2d currentPosition) {
-        Object object = this.map.objectAt(currentPosition);
-        if (object != null) {
-            return object.toString();
+        if (this.map.isOccupied(currentPosition)) {
+            Object object = this.map.objectAt(currentPosition);
+            if (object != null) {
+                return object.toString();
+            }
         }
         return EMPTY_CELL;
     }

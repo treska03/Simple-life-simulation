@@ -1,8 +1,6 @@
 package agh.ics.oop.model;
 
-import agh.ics.oop.model.enums.MapDirection;
-import agh.ics.oop.model.enums.MoveDirection;
-import agh.ics.oop.model.util.Vector2d;
+import agh.ics.oop.model.util.PositionAlreadyOccupiedException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +26,7 @@ public class Animal implements WorldElement {
         return position.equals(atPos);
     }
 
-    public void move(MoveDirection direction) {
+    public void move(MoveDirection direction, MoveValidator<Vector2d> validator) throws PositionAlreadyOccupiedException {
 
         List<Vector2d> moveVectors = new ArrayList<>(
                 List.of(MapDirection.NORTH.toUnitVector(), MapDirection.EAST.toUnitVector(), MapDirection.SOUTH.toUnitVector(), MapDirection.WEST.toUnitVector())
@@ -38,10 +36,18 @@ public class Animal implements WorldElement {
             case RIGHT -> orientation = orientation.next();
             case LEFT -> orientation = orientation.previous();
             case FORWARD -> {
-                this.position = position.add(moveVectors.get(orientation.ordinal()));
+                Vector2d newPosition = position.add(moveVectors.get(orientation.ordinal()));
+                if (!validator.canMoveTo(newPosition)) {
+                    throw new PositionAlreadyOccupiedException(newPosition);
+                }
+                this.position = newPosition;
             }
             case BACKWARD -> {
-                this.position = position.subtract(moveVectors.get(orientation.ordinal()));
+                Vector2d newPosition = position.subtract(moveVectors.get(orientation.ordinal()));
+                if (!validator.canMoveTo(newPosition)) {
+                    throw new PositionAlreadyOccupiedException(newPosition);
+                }
+                this.position = newPosition;
             }
         }
     }
