@@ -1,13 +1,9 @@
 package agh.ics.oop.model.util;
 
-import agh.ics.oop.model.Vector2d;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 import static org.junit.jupiter.api.Assertions.*;
 

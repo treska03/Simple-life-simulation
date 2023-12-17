@@ -2,13 +2,16 @@ package agh.ics.oop.presenter;
 
 import agh.ics.oop.model.*;
 import agh.ics.oop.*;
+import agh.ics.oop.model.map.NormalMap;
+import agh.ics.oop.model.map.WorldMap;
+import agh.ics.oop.model.util.Boundary;
+import agh.ics.oop.model.util.Vector2d;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.HPos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
@@ -25,7 +28,7 @@ public class SimulationPresenter implements MapChangeListener{
     private GridPane mapGrid;
     @FXML
     private Label infoLabel;
-    private final WorldMap<WorldElement, Vector2d> worldMap;
+    private final WorldMap worldMap;
     static final int CELL_WIDTH = 30;
     static final int CELL_HEIGHT = 30;
 
@@ -36,7 +39,7 @@ public class SimulationPresenter implements MapChangeListener{
     }
 
     public SimulationPresenter() {
-        this.worldMap = new GrassField(10);
+        this.worldMap = new NormalMap();
     }
 
     public void setObserver(ConsoleMapDisplay observer) {
@@ -44,7 +47,7 @@ public class SimulationPresenter implements MapChangeListener{
     }
 
     @Override
-    public void mapChanged(WorldMap<WorldElement, Vector2d> worldMap, String message) {
+    public void mapChanged(WorldMap worldMap, String message) {
         Platform.runLater(() -> {
             drawMap(worldMap);
             infoLabel.setText(message);
@@ -58,10 +61,10 @@ public class SimulationPresenter implements MapChangeListener{
         return item;
     }
 
-    public void drawMap(WorldMap<WorldElement, Vector2d> worldMap) {
+    public void drawMap(WorldMap worldMap) {
         clearGrid();
 
-        Boundary bounds = worldMap.getCurrentBounds();
+        Boundary bounds = worldMap.getBounds();
         Vector2d topRight = bounds.upperRight();
         Vector2d bottomLeft = bounds.lowerLeft();
         int gridWidth = topRight.getX() - bottomLeft.getX() + 2;
@@ -84,7 +87,7 @@ public class SimulationPresenter implements MapChangeListener{
         for(int i = bottomLeft.getY(); i<= topRight.getY(); i++){
             for(int j = bottomLeft.getX(); j <= topRight.getX(); j++){
                 Vector2d vec = new Vector2d(j,i);
-                if(worldMap.isOccupied(vec)){
+                if(worldMap.objectAt(vec) != null){
                     mapGrid.add(createGridItem(worldMap.objectAt(vec).toString()),j-bottomLeft.getX()+1,gridHeight-(i-bottomLeft.getY())-1);
                 }
             }
@@ -97,7 +100,7 @@ public class SimulationPresenter implements MapChangeListener{
         mapGrid.getRowConstraints().clear();
     }
 
-    private SimulationEngine getSimulationEngine(WorldMap<WorldElement, Vector2d> gameMap) {
+    private SimulationEngine getSimulationEngine(WorldMap gameMap) {
         gameMap.addObserver(this);
         this.setObserver(new ConsoleMapDisplay());
         String[] paramArray = textField.getText().split(" ");
