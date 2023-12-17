@@ -1,5 +1,7 @@
 package agh.ics.oop.model.util;
 
+import agh.ics.oop.model.Vector2d;
+
 import java.util.*;
 
 public class RandomPositionGenerator implements Iterable<Vector2d> {

@@ -1,6 +1,7 @@
-package agh.ics.oop.model.util;
+package agh.ics.oop.model;
 
 import java.util.List;
+import java.util.TooManyListenersException;
 
 public record Boundary(Vector2d lowerLeft, Vector2d upperRight) {
 

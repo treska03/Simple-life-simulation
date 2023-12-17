@@ -1,16 +1,14 @@
 package agh.ics.oop.model;
 
-import agh.ics.oop.model.map.WorldMap;
-
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class ConsoleMapDisplay implements MapChangeListener {
 
     List<String> changeLog = new ArrayList<>();
-
     @Override
-    public void mapChanged(WorldMap worldMap, String message) {
+    public void mapChanged(WorldMap<WorldElement, Vector2d> worldMap, String message) {
         synchronized (this) {
             changeLog.add(message);
             System.out.println();
