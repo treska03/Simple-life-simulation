@@ -1,6 +1,8 @@
 package agh.ics.oop.model;
 
+import agh.ics.oop.model.map.WorldMap;
+
 public interface MapChangeListener {
-    void mapChanged(WorldMap<WorldElement, Vector2d> worldMap, String message);
+    void mapChanged(WorldMap worldMap, String message);
 
 }
