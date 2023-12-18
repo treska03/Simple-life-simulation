@@ -1,7 +1,6 @@
 package agh.ics.oop.model.map;
 
 import agh.ics.oop.model.*;
-import agh.ics.oop.model.enums.MoveDirection;
 import agh.ics.oop.model.util.Boundary;
 import agh.ics.oop.model.util.MapVisualizer;
 import agh.ics.oop.model.util.RandomPositionGenerator;
@@ -60,13 +59,13 @@ abstract class AbstractWorldMap implements WorldMap {
     }
 
     @Override
-    public void move(Animal animal, MoveDirection direction){
+    public void move(Animal animal){
 
         if(animal != animalPositions.get(animal.getPosition())) {return;}
 
         Vector2d startPos = animal.getPosition();
 
-        animal.move(direction);
+        animal.move();
         atMapChanged(String.format("Zwierze ruszylo sie z pozycji %s na pozycje %s", startPos, animal.getPosition()));
         animalPositions.remove(startPos);
         animalPositions.put(animal.getPosition(), animal);

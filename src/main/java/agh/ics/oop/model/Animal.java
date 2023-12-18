@@ -1,7 +1,6 @@
 package agh.ics.oop.model;
 
 import agh.ics.oop.model.enums.MapDirection;
-import agh.ics.oop.model.enums.MoveDirection;
 import agh.ics.oop.model.util.Vector2d;
 
 import java.util.ArrayList;
@@ -28,22 +27,14 @@ public class Animal implements WorldElement {
         return position.equals(atPos);
     }
 
-    public void move(MoveDirection direction) {
+    public void move() {
+        // Not working atm
 
         List<Vector2d> moveVectors = new ArrayList<>(
                 List.of(MapDirection.NORTH.toUnitVector(), MapDirection.EAST.toUnitVector(), MapDirection.SOUTH.toUnitVector(), MapDirection.WEST.toUnitVector())
         );
 
-        switch(direction) {
-            case RIGHT -> orientation = orientation.next();
-            case LEFT -> orientation = orientation.previous();
-            case FORWARD -> {
-                this.position = position.add(moveVectors.get(orientation.ordinal()));
-            }
-            case BACKWARD -> {
-                this.position = position.subtract(moveVectors.get(orientation.ordinal()));
-            }
-        }
+        this.position = position.add(moveVectors.get(orientation.ordinal()));
     }
 
     public MapDirection getOrientation() {
