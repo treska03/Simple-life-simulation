@@ -36,7 +36,7 @@ public class SimulationPresenter implements MapChangeListener{
     }
 
     public SimulationPresenter() {
-        this.worldMap = new GrassField(10);
+        this.worldMap = new GrassField();
     }
 
     public void setObserver(ConsoleMapDisplay observer) {
@@ -102,9 +102,7 @@ public class SimulationPresenter implements MapChangeListener{
         this.setObserver(new ConsoleMapDisplay());
         String[] paramArray = textField.getText().split(" ");
         List<Vector2d> positions = List.of(new Vector2d(2,2), new Vector2d(3,4));
-        return new SimulationEngine(List.of(new Simulation(gameMap,
-                positions,
-                OptionParser.Parse(paramArray))));
+        return new SimulationEngine(List.of(new Simulation(gameMap, positions)));
     }
 
 }

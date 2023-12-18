@@ -5,19 +5,13 @@ import java.util.List;
 public class RectangularMap extends AbstractWorldMap {
 
     // Attribute of Map is vector and value of it is Animal object present on the square
-    // Import z abstract
-    final int width;
-    final int height;
-    final Vector2d lowerLeft;
-    final Vector2d upperRight;
+    // Import from abstract
 
-    public RectangularMap(int width, int height) {
+    final Vector2d lowerLeft = Constances.LOWER_LEFT;
+    final Vector2d upperRight = Constances.UPPER_RIGHT;
+
+    public RectangularMap() {
         super();
-        if(width <=0 || height <= 0) {throw new IllegalArgumentException();}
-        this.width = width;
-        this.height = height;
-        this.lowerLeft = new Vector2d(0, 0);
-        this.upperRight = new Vector2d(width, height);
     }
 
     @Override

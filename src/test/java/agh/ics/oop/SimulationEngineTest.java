@@ -18,22 +18,19 @@ class SimulationEngineTest {
         Vector2d start4 = new Vector2d(4,0);
         List<Vector2d> startList = List.of(start1, start2, start3, start4);
 
-        String[] moveList1 = {"f", "f", "r", "l", "b", "b", "b", "f", "f"};
-        String[] moveList2 = {"f"};
-        String[] moveList3 = {"f", "f", "b", "r", "r", "f", "b", "b", "l", "f", "f", "r", "r", "r", "b", "b", "b"};
-        String[] moveList4 = {};
-        String[] moveList5 = {"f", "r", "r", "b", "b", "b"};
         List<Vector2d> finishPosition1 = List.of(new Vector2d(0, 1), new Vector2d(2, 1), new Vector2d(1, 3), new Vector2d(3, 0));
         List<Vector2d> finishPosition2 = List.of(new Vector2d(0, 1), new Vector2d(2, 2), new Vector2d(2, 3), new Vector2d(4, 0));
         List<Vector2d> finishPosition3 = List.of(new Vector2d(0, 1), new Vector2d(2, 2), new Vector2d(2, 3), new Vector2d(3, 1));
         List<Vector2d> finishPosition4 = startList;
         List<Vector2d> finishPosition5 = List.of(new Vector2d(0, 0), new Vector2d(1, 2), new Vector2d(2, 3), new Vector2d(4, 0));
 
-        RectangularMap worldMap1 = new RectangularMap(4, 4);
-        RectangularMap worldMap2 = new RectangularMap(4, 4);
-        RectangularMap worldMap3 = new RectangularMap(4, 4);
-        RectangularMap worldMap4 = new RectangularMap(4, 4);
-        RectangularMap worldMap5 = new RectangularMap(4, 4);
+        Constances.setLowerLeft(0,0);
+        Constances.setUpperRight(3,3);
+        RectangularMap worldMap1 = new RectangularMap();
+        RectangularMap worldMap2 = new RectangularMap();
+        RectangularMap worldMap3 = new RectangularMap();
+        RectangularMap worldMap4 = new RectangularMap();
+        RectangularMap worldMap5 = new RectangularMap();
 
         ConsoleMapDisplay display = new ConsoleMapDisplay();
         worldMap1.addObserver(display);
@@ -42,11 +39,11 @@ class SimulationEngineTest {
         worldMap4.addObserver(display);
         worldMap5.addObserver(display);
 
-        Simulation simulation1 = new Simulation(worldMap1, startList, OptionParser.Parse(moveList1));
-        Simulation simulation2 = new Simulation(worldMap2, startList, OptionParser.Parse(moveList2));
-        Simulation simulation3 = new Simulation(worldMap3, startList, OptionParser.Parse(moveList3));
-        Simulation simulation4 = new Simulation(worldMap4, startList, OptionParser.Parse(moveList4));
-        Simulation simulation5 = new Simulation(worldMap5, startList, OptionParser.Parse(moveList5));
+        Simulation simulation1 = new Simulation(worldMap1, startList);
+        Simulation simulation2 = new Simulation(worldMap2, startList);
+        Simulation simulation3 = new Simulation(worldMap3, startList);
+        Simulation simulation4 = new Simulation(worldMap4, startList);
+        Simulation simulation5 = new Simulation(worldMap5, startList);
 
         List<MapDirection> endDirection1 = List.of(MapDirection.NORTH, MapDirection.NORTH, MapDirection.EAST, MapDirection.WEST);
         List<MapDirection> endDirection2 = List.of(MapDirection.NORTH, MapDirection.NORTH, MapDirection.NORTH, MapDirection.NORTH);

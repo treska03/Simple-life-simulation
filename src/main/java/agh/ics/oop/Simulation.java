@@ -9,12 +9,12 @@ import java.util.List;
 public class Simulation implements Runnable{
 
     private final WorldMap<WorldElement, Vector2d> gameMap;
-    private final List<MoveDirection> moveList;
+
     private final List<Animal> animalList = new ArrayList<>();
 
-    public Simulation(WorldMap<WorldElement, Vector2d> map, List<Vector2d> startPositions, List<MoveDirection> moveList) {
+    public Simulation(WorldMap<WorldElement, Vector2d> map, List<Vector2d> startPositions) {
         this.gameMap = map;
-        this.moveList = moveList;
+
         initAnimals(gameMap, startPositions);
     }
 
@@ -34,14 +34,14 @@ public class Simulation implements Runnable{
     public void run() {
         int i = 0;
 
-        for(MoveDirection movement : moveList) {
+        for(int move = 0; move < Constances.getNumberOfTicks(); move++) {
             try {
                 Thread.sleep(500);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
             Animal currentAnimal = animalList.get(i);
-            try {gameMap.move(currentAnimal, movement);}
+            try {gameMap.move(currentAnimal);}
             catch (PositionAlreadyOccupiedException ignore) {};
             i = (i+1) % (animalList.size());
         }

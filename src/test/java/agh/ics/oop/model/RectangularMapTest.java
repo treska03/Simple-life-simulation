@@ -10,15 +10,9 @@ public class RectangularMapTest {
 
     @BeforeEach
     public void setUp() {
-        map = new RectangularMap(4, 4);
-    }
-
-    @Test
-    public void shouldThrowIfDimensionsAreInvalid() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> new RectangularMap(0, 4));
-        Assertions.assertThrows(IllegalArgumentException.class, () -> new RectangularMap(4, 0));
-        Assertions.assertThrows(IllegalArgumentException.class, () -> new RectangularMap(-1, 4));
-        Assertions.assertThrows(IllegalArgumentException.class, () -> new RectangularMap(4, -1));
+        Constances.setLowerLeft(0,0);
+        Constances.setUpperRight(3,3);
+        map = new RectangularMap();
     }
 
     @Test
@@ -50,7 +44,7 @@ public class RectangularMapTest {
         Animal animal2 = new Animal(new Vector2d(2, 2));
         Assertions.assertDoesNotThrow(() -> map.place(animal1));
 
-        Assertions.assertDoesNotThrow(() -> map.move(animal1, MoveDirection.FORWARD));
+        Assertions.assertDoesNotThrow(() -> map.move(animal1));
         Assertions.assertNull(map.objectAt(new Vector2d(2, 2)));
 
         Assertions.assertDoesNotThrow(() -> map.place(animal2));
@@ -64,10 +58,10 @@ public class RectangularMapTest {
         Animal foreignAnimal = new Animal(new Vector2d(2, 0));
 
         Assertions.assertDoesNotThrow(() -> map.place(knownAnimal));
-        Assertions.assertDoesNotThrow(() -> map.move(knownAnimal, MoveDirection.FORWARD));
+        Assertions.assertDoesNotThrow(() -> map.move(knownAnimal));
         Assertions.assertTrue(knownAnimal.isAt(new Vector2d(1, 1)));
 
-        Assertions.assertDoesNotThrow(() -> map.move(foreignAnimal, MoveDirection.FORWARD));
+        Assertions.assertDoesNotThrow(() -> map.move(foreignAnimal));
         Assertions.assertFalse(foreignAnimal.isAt(new Vector2d(2, 1)));
     }
 }

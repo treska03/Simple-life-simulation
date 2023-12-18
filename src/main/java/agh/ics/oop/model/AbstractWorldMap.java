@@ -45,7 +45,7 @@ abstract class AbstractWorldMap implements WorldMap<WorldElement, Vector2d> {
     }
 
     @Override
-    public void move(WorldElement toMove, MoveDirection direction) throws PositionAlreadyOccupiedException {
+    public void move(WorldElement toMove) throws PositionAlreadyOccupiedException {
         if(!(toMove instanceof Animal animal)) {return;}
 
         if(animal != animalPositions.get(animal.getPosition())) {return;}
@@ -53,7 +53,7 @@ abstract class AbstractWorldMap implements WorldMap<WorldElement, Vector2d> {
         Vector2d startPos = animal.getPosition();
 
         try {
-            animal.move(direction, this);
+            animal.move(this);
             atMapChanged(String.format("Zwierze ruszylo sie z pozycji %s na pozycje %s", startPos, animal.getPosition()));
             animalPositions.remove(startPos);
             animalPositions.put(animal.getPosition(), animal);
