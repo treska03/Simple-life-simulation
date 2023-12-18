@@ -102,7 +102,12 @@ public class SimulationPresenter implements MapChangeListener{
         this.setObserver(new ConsoleMapDisplay());
         String[] paramArray = textField.getText().split(" ");
         List<Vector2d> positions = List.of(new Vector2d(2,2), new Vector2d(3,4));
+<<<<<<< HEAD
         return new SimulationEngine(List.of(new Simulation(gameMap, positions)));
+=======
+        return new SimulationEngine(List.of(new Simulation(gameMap,
+                positions)));
+>>>>>>> 4c61715e4b67e433ae2a1d23cc7533a417730cfc
     }
 
 }

@@ -1,32 +1,26 @@
 package agh.ics.oop;
 
 import agh.ics.oop.model.*;
-import agh.ics.oop.model.util.PositionAlreadyOccupiedException;
-
+import agh.ics.oop.model.map.WorldMap;
+import agh.ics.oop.model.util.Vector2d;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Simulation implements Runnable{
-
-    private final WorldMap<WorldElement, Vector2d> gameMap;
-
+    private final WorldMap gameMap;
     private final List<Animal> animalList = new ArrayList<>();
 
-    public Simulation(WorldMap<WorldElement, Vector2d> map, List<Vector2d> startPositions) {
+    public Simulation(WorldMap map, List<Vector2d> startPositions) {
         this.gameMap = map;
-
         initAnimals(gameMap, startPositions);
     }
 
 
-    private void initAnimals(WorldMap<WorldElement, Vector2d> map, List<Vector2d> startPositions) {
+    private void initAnimals(WorldMap map, List<Vector2d> startPositions) {
         for(Vector2d position : startPositions) {
             Animal newAnimal = new Animal(position);
-            try {
-                map.place(newAnimal);
-                animalList.add(newAnimal);
-            }
-            catch(PositionAlreadyOccupiedException ignored) {}
+            map.place(newAnimal);
+            animalList.add(newAnimal);
         }
     }
 
@@ -34,15 +28,14 @@ public class Simulation implements Runnable{
     public void run() {
         int i = 0;
 
-        for(int move = 0; move < Constances.getNumberOfTicks(); move++) {
+        for(int tick = 0; tick < Constances.getNumberOfTicks(); tick++) {
             try {
                 Thread.sleep(500);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
             Animal currentAnimal = animalList.get(i);
-            try {gameMap.move(currentAnimal);}
-            catch (PositionAlreadyOccupiedException ignore) {};
+            gameMap.move(currentAnimal);
             i = (i+1) % (animalList.size());
         }
     }

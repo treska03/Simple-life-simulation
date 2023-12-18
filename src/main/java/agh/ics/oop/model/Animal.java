@@ -1,6 +1,7 @@
 package agh.ics.oop.model;
 
-import agh.ics.oop.model.util.PositionAlreadyOccupiedException;
+import agh.ics.oop.model.enums.MapDirection;
+import agh.ics.oop.model.util.Vector2d;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,17 +29,14 @@ public class Animal implements WorldElement {
         return position.equals(atPos);
     }
 
-    public void move(MoveValidator<Vector2d> validator) throws PositionAlreadyOccupiedException {
+    public void move() {
+        // Not working atm
 
         List<Vector2d> moveVectors = new ArrayList<>(
                 List.of(MapDirection.NORTH.toUnitVector(), MapDirection.EAST.toUnitVector(), MapDirection.SOUTH.toUnitVector(), MapDirection.WEST.toUnitVector())
         );
 
-        Vector2d newPosition = position.add(moveVectors.get(orientation.ordinal()));
-        if (!validator.canMoveTo(newPosition)) {
-            throw new PositionAlreadyOccupiedException(newPosition);
-        }
-        this.position = newPosition;
+        this.position = position.add(moveVectors.get(orientation.ordinal()));
     }
 
     public MapDirection getOrientation() {
