@@ -7,7 +7,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-public class Genes extends FisherYatesShuffle{
+public class Genes{
     int NUMBER_OF_GENES = Constances.getNumberOfGens();
     int[] moveList = new int[NUMBER_OF_GENES];
     int startMoveNumber;
