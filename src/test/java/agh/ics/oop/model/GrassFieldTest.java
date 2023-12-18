@@ -20,10 +20,10 @@ public class GrassFieldTest {
     public void initGrass_test() {
         // cover whole map with grass
         Constances.setDailyNewGrassNumber(40);
+        int grassToAdd = 40;
         GrassField map2 = new GrassField();
-        map2.initGrass(); // only 20 empty fields left after that
-        map2.initGrass();  // it has to add 20 fields, not 40
-
+        map2.initGrass(grassToAdd); // only 20 empty fields left after that
+        map2.initGrass(grassToAdd);  // it has to add 20 fields, not 40
         // check if grass cover whole map
         for (int x = 0 ; x < 10; x++) {
             for (int y = 0; y <10; y++) {
@@ -39,9 +39,10 @@ public class GrassFieldTest {
     public void eaten_test() {
         // cover whole map with grass
         Constances.setDailyNewGrassNumber(40);
+        int grassToAdd = 40;
         GrassField map2 = new GrassField();
-        map2.initGrass(); // only 20 empty fields left after that
-        map2.initGrass();  // it has to add 20 fields, not 40
+        map2.initGrass(grassToAdd); // only 20 empty fields left after that
+        map2.initGrass(grassToAdd);  // it has to add 20 fields, not 40
 
         // assume that eaten position is (1,1)
         Vector2d eatenPosition = new Vector2d(1,1);

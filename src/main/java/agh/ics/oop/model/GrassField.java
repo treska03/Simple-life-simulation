@@ -22,9 +22,11 @@ public class GrassField extends AbstractWorldMap{
 
     public GrassField() {
         super();
-        this.barren = this.getAllPositions(); // positions with no grass
+        // given arguments to barren only temporarily
+        this.barren = this.getAllPositions(lowerLeftGrass, upperRightGrass); // positions with no grass
         //initGrass2(); // to delete?
-        initGrass();
+        int grassToAdd = dailyNewGrassNumber; // only temporarily
+        initGrass(grassToAdd);
     }
 
     private void initGrass2() { // to delete?
@@ -34,13 +36,14 @@ public class GrassField extends AbstractWorldMap{
         }
     }
 
-    public void initGrass() {
+    public void initGrass(int grassToAdd) {
         // add new Grass on randomly chosen unique positions to grassPositions
         // and remove those positions from barren;
         // positions are chosen using Fisher-Yates shuffle;
         // it is impossible to add more grass than the empty fields left
-        int numberOfAddedGrass = min(dailyNewGrassNumber, barren.size());
-        List<Vector2d> newPositions = FisherYatesShuffle.getVector2dValues(numberOfAddedGrass, barren);
+        int numberOfAddedGrass = min(grassToAdd, barren.size());
+        FisherYatesShuffle fisherYatesShuffle = new FisherYatesShuffle();
+        List<Vector2d> newPositions = fisherYatesShuffle.getValues(numberOfAddedGrass, barren);
         for (Vector2d grassPosition : newPositions) {
             grassPositions.put(grassPosition, new Grass(grassPosition));
         }
@@ -55,11 +58,11 @@ public class GrassField extends AbstractWorldMap{
         barren.add(position);
     }
 
-    private List<Vector2d> getAllPositions () {
+    private List<Vector2d> getAllPositions (Vector2d lowerLeft, Vector2d upperRight) {
         // make a list from all positions in the map
         List<Vector2d> allPositions = new ArrayList<>();
-        for (int x = lowerLeftGrass.getX(); x <= upperRightGrass.getX(); x++) {
-            for (int y = lowerLeftGrass.getY(); y <= upperRightGrass.getY(); y++) {
+        for (int x = lowerLeft.getX(); x <= upperRight.getX(); x++) {
+            for (int y = lowerLeft.getY(); y <= upperRight.getY(); y++) {
                 allPositions.add(new Vector2d(x, y));
             }
         }

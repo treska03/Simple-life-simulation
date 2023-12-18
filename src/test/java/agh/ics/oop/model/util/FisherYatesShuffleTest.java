@@ -16,7 +16,8 @@ public class FisherYatesShuffleTest {
         list.add(1);
         list.add(5);
         list.add(4);
-        List<Integer> returnedList = FisherYatesShuffle.getIntegerValues(5,list);
+        FisherYatesShuffle fisherYatesShuffle = new FisherYatesShuffle();
+        List<Integer> returnedList = fisherYatesShuffle.getValues(5,list);
 
         // check if any values repeat
         boolean correct = true;
@@ -39,7 +40,8 @@ public class FisherYatesShuffleTest {
         list.add(new Vector2d(1,1));
         list.add(new Vector2d(5,5));
         list.add(new Vector2d(4,4));
-        List<Vector2d> returnedList = FisherYatesShuffle.getVector2dValues(5,list);
+        FisherYatesShuffle fisherYatesShuffle = new FisherYatesShuffle();
+        List<Vector2d> returnedList = fisherYatesShuffle.getValues(5,list);
 
         // check if any values repeat
         boolean correct = true;

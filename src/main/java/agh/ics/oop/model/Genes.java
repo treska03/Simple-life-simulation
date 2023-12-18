@@ -7,7 +7,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-public class Genes {
+public class Genes extends FisherYatesShuffle{
     int NUMBER_OF_GENES = Constances.getNumberOfGens();
     int[] moveList = new int[NUMBER_OF_GENES];
     int startMoveNumber;
@@ -107,7 +107,8 @@ public class Genes {
         for (int i = 0; i < NUMBER_OF_GENES; i++){
             indexes.add(i);
         }
-        List<Integer> indexesToMutate = FisherYatesShuffle.getIntegerValues(numberOfMutatingGens, indexes);
+        FisherYatesShuffle fisherYatesShuffle = new FisherYatesShuffle();
+        List<Integer> indexesToMutate = fisherYatesShuffle.getValues(numberOfMutatingGens, indexes);
 
         // choosing random gens in mutations
         for (int idx : indexesToMutate) {
