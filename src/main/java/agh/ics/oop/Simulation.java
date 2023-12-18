@@ -1,7 +1,6 @@
 package agh.ics.oop;
 
 import agh.ics.oop.model.*;
-import agh.ics.oop.model.enums.MoveDirection;
 import agh.ics.oop.model.map.WorldMap;
 import agh.ics.oop.model.util.Vector2d;
 
@@ -11,12 +10,10 @@ import java.util.List;
 public class Simulation implements Runnable{
 
     private final WorldMap gameMap;
-    private final List<MoveDirection> moveList;
     private final List<Animal> animalList = new ArrayList<>();
 
-    public Simulation(WorldMap map, List<Vector2d> startPositions, List<MoveDirection> moveList) {
+    public Simulation(WorldMap map, List<Vector2d> startPositions) {
         this.gameMap = map;
-        this.moveList = moveList;
         initAnimals(gameMap, startPositions);
     }
 
@@ -33,14 +30,15 @@ public class Simulation implements Runnable{
     public void run() {
         int i = 0;
 
-        for(MoveDirection movement : moveList) {
+        for(int tick=0; tick<5; tick++) {
+            // replace tick<5 with logic
             try {
                 Thread.sleep(500);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
             Animal currentAnimal = animalList.get(i);
-            gameMap.move(currentAnimal, movement);
+            gameMap.move(currentAnimal);
             i = (i+1) % (animalList.size());
         }
     }

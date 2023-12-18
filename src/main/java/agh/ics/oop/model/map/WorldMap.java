@@ -2,7 +2,6 @@ package agh.ics.oop.model.map;
 
 
 import agh.ics.oop.model.*;
-import agh.ics.oop.model.enums.MoveDirection;
 import agh.ics.oop.model.util.Boundary;
 import agh.ics.oop.model.util.Vector2d;
 
@@ -29,9 +28,9 @@ public interface WorldMap{
     void place(WorldElement obj);
 
     /**
-     * Moves an Animal (if it is present on the map) according to specified direction.
+     * Moves an Animal (if it is present on the map).
      */
-    void move(Animal toMove , MoveDirection direction);
+    void move(Animal toMove);
 
     /**
      * Return a WorldElement type object at a given position.
