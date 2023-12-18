@@ -22,17 +22,4 @@ public class FisherYatesShuffle<T> {
         }
         return ReturnedValues;
     }
-
-    public static List<Vector2d> getVector2dValues(int numberOfReturnedValues, List<Vector2d> array){
-        Random random = new Random();
-        List<Vector2d> ReturnedValues = new ArrayList<>();
-        for (int i = array.size() - 1; i >= array.size() - numberOfReturnedValues; i--) {
-            int randomIndex = random.nextInt(i + 1);
-            Vector2d randomValue = array.get(randomIndex);
-            array.set(randomIndex, array.get(i));
-            array.set(i, randomValue);
-            ReturnedValues.add(randomValue);
-        }
-        return ReturnedValues;
-    }
 }
