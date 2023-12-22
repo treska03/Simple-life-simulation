@@ -8,14 +8,13 @@ import java.util.List;
 import java.util.Random;
 
 public class Genes{
-    int NUMBER_OF_GENES = Constances.getNumberOfGens();
-    int[] moveList = new int[NUMBER_OF_GENES];
-    int startMoveNumber;
-    int moveNumber = 0; //number of already made moves
-    boolean BACK_AND_FORTH = Constances.isBackAndForth();
-    int MIN_MUTATIONS = Constances.getMinMutations();
-    int MAX_MUTATIONS = Constances.getMaxMutations();
-
+    private final int NUMBER_OF_GENES = Constances.getNumberOfGens();
+    private final boolean BACK_AND_FORTH = Constances.isBackAndForth();
+    private final int MIN_MUTATIONS = Constances.getMinMutations();
+    private final int MAX_MUTATIONS = Constances.getMaxMutations();
+    private int[] moveList = new int[NUMBER_OF_GENES];
+    private int startMoveNumber;
+    private int moveNumber = 0; //number of already made moves
 
     public int getMove() {
         int currGeneIdx;
@@ -119,5 +118,17 @@ public class Genes{
     private void setStartMoveNumber() {
         Random random = new Random();
         this.startMoveNumber = random.nextInt(8);
+    }
+
+    public int[] getMoveList() {
+        return moveList;
+    }
+
+    public void setMoveList(int[] moveList) { // only for tests
+        this.moveList = moveList;
+    }
+
+    public void setStartMoveNumber(int startMoveNumber) { // only for tests
+        this.startMoveNumber = startMoveNumber;
     }
 }
