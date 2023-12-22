@@ -41,7 +41,7 @@ public class Genes{
         // checking, which animal is dominant and which animal is minor
         Animal dominant;
         Animal minor;
-        if (animal1.currentEnergy > animal2.currentEnergy){
+        if (animal1.getCurrentEnergy() > animal2.getCurrentEnergy()){
             dominant = animal1;
             minor = animal2;
         }
@@ -52,8 +52,8 @@ public class Genes{
 
         // divide the number of genes to inherit
         // division not equal to integer number of genes is for the benefit of dominant
-        double proportion = (double) NUMBER_OF_GENES / (animal1.currentEnergy + animal2.currentEnergy);
-        int numberOfGensFromMinor = (int)(minor.currentEnergy * proportion);
+        double proportion = (double) NUMBER_OF_GENES / (animal1.getCurrentEnergy() + animal2.getCurrentEnergy());
+        int numberOfGensFromMinor = (int)(minor.getCurrentEnergy() * proportion);
         int numberOfGensFromDominant = NUMBER_OF_GENES - numberOfGensFromMinor;
 
         // choosing side of genes for dominant
@@ -63,18 +63,18 @@ public class Genes{
         // copied genes from parents to child
         if (side == 0){
             for (int i = 0; i < numberOfGensFromDominant; i++){
-                moveList[i] = dominant.genes.moveList[i];
+                moveList[i] = dominant.getGenes().moveList[i];
             }
             for (int i = numberOfGensFromDominant; i < NUMBER_OF_GENES; i++){
-                moveList[i] = minor.genes.moveList[i];
+                moveList[i] = minor.getGenes().moveList[i];
             }
         }
         else {
             for (int i = 0; i < numberOfGensFromMinor; i++){
-                moveList[i] = minor.genes.moveList[i];
+                moveList[i] = minor.getGenes().moveList[i];
             }
             for (int i = numberOfGensFromMinor; i < NUMBER_OF_GENES; i++){
-                moveList[i] = dominant.genes.moveList[i];
+                moveList[i] = dominant.getGenes().moveList[i];
             }
         }
 

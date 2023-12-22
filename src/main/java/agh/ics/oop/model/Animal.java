@@ -9,8 +9,8 @@ import java.util.List;
 public class Animal implements WorldElement {
     private MapDirection orientation;
     private Vector2d position;
-    public int currentEnergy;
-    public Genes genes;
+    private int currentEnergy;
+    private Genes genes;
 
     public Animal() {
         this(new Vector2d(2, 2));
@@ -47,4 +47,19 @@ public class Animal implements WorldElement {
         return position;
     }
 
+    public int getCurrentEnergy() {
+        return currentEnergy;
+    }
+
+    public Genes getGenes() {
+        return genes;
+    }
+
+    public void setCurrentEnergy(int currentEnergy) { // only for tests
+        this.currentEnergy = currentEnergy;
+    }
+
+    public void setGenes(Genes genes) { // only for tests
+        this.genes = genes;
+    }
 }

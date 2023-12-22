@@ -33,8 +33,8 @@ public class GenesTest {
         genes1.moveList = moveList1;
         genes1.NUMBER_OF_GENES = moveList1.length;
         Animal parent1 = new Animal();
-        parent1.genes = genes1;
-        parent1.currentEnergy = 100;
+        parent1.setGenes(genes1);
+        parent1.setCurrentEnergy(100);
 
         // creating parent2
         Genes genes2 = new Genes();
@@ -42,8 +42,8 @@ public class GenesTest {
         genes2.moveList = moveList2;
         genes2.NUMBER_OF_GENES = moveList2.length;
         Animal parent2 = new Animal();
-        parent2.genes = genes2;
-        parent2.currentEnergy = 200;
+        parent2.setGenes(genes2);
+        parent2.setCurrentEnergy(200);
 
         Constances.setNumberOfGens(moveList2.length);
         // if there is no mutations in the list of genes of child can be made only in 2 ways
@@ -57,11 +57,11 @@ public class GenesTest {
         genes3.MAX_MUTATIONS = 0;
         genes3.NUMBER_OF_GENES = moveList2.length;
         Animal child1 = new Animal();
-        child1.genes = genes3;
-        child1.genes.fromParents(parent1, parent2);
+        child1.setGenes(genes3);
+        child1.getGenes().fromParents(parent1, parent2);
 
         // checking if the list of genes of child is either equal (by values) to result1 or result2
-        int[] receivedList = child1.genes.moveList;
+        int[] receivedList = child1.getGenes().moveList;
         boolean check1 = Arrays.equals(receivedList, result1);
         boolean check2 = Arrays.equals(receivedList, result2);
         Assertions.assertTrue(check1 || check2);
@@ -72,8 +72,8 @@ public class GenesTest {
         genes4.MAX_MUTATIONS = 3;
         genes4.NUMBER_OF_GENES = moveList2.length;
         Animal child2 = new Animal();
-        child2.genes = genes4;
-        child2.genes.fromParents(parent1, parent2);
+        child2.setGenes(genes4);
+        child2.getGenes().fromParents(parent1, parent2);
 
         // checking if the numbers of inherited genes from parents is correct
         int numberOfInherited2 = getNumberOfInherited(child2, result1, result2);
@@ -85,8 +85,8 @@ public class GenesTest {
         genes5.MAX_MUTATIONS = 1;
         genes5.NUMBER_OF_GENES = moveList2.length;
         Animal child3 = new Animal();
-        child3.genes = genes5;
-        child3.genes.fromParents(parent1, parent2);
+        child3.setGenes(genes5);
+        child3.getGenes().fromParents(parent1, parent2);
 
         // checking if the numbers of inherited genes from parents is correct
         int numberOfInherited3 = getNumberOfInherited(child3, result1, result2);
@@ -99,7 +99,7 @@ public class GenesTest {
         // the result for 2 mutations can be made only in 2 ways
         // result1 and result2 in this example;
         int numberOfInherited = 0;
-        int[] receivedList2 = child2.genes.moveList;
+        int[] receivedList2 = child2.getGenes().moveList;
         for (int geneIdx = 0; geneIdx < receivedList2.length; geneIdx++) {
             if (receivedList2[geneIdx] == result1[geneIdx] || receivedList2[geneIdx] == result2[geneIdx]) {
                 numberOfInherited +=1;
