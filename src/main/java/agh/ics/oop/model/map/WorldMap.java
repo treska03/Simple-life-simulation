@@ -3,7 +3,7 @@ package agh.ics.oop.model.map;
 
 import agh.ics.oop.model.*;
 import agh.ics.oop.model.util.Boundary;
-import agh.ics.oop.model.util.Vector2d;
+import agh.ics.oop.model.Vector2d;
 
 /**
  * The interface responsible for interacting with the map of the world.
