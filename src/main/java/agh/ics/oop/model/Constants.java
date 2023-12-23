@@ -1,6 +1,6 @@
 package agh.ics.oop.model;
 
-public class Constances {
+public class Constants {
     private static int NUMBER_OF_TICKS; // time of simulation
     private static boolean BACK_AND_FORTH;
     private static int NUMBER_OF_GENS;

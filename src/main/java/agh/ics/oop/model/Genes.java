@@ -4,12 +4,13 @@ import agh.ics.oop.model.util.FisherYatesShuffle;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class Genes{
-    private final int NUMBER_OF_GENES = Constances.getNumberOfGens();
-    private final boolean BACK_AND_FORTH = Constances.isBackAndForth();
-    private final int MIN_MUTATIONS = Constances.getMinMutations();
-    private final int MAX_MUTATIONS = Constances.getMaxMutations();
+    private final int NUMBER_OF_GENES = Constants.getNumberOfGens();
+    private final boolean BACK_AND_FORTH = Constants.isBackAndForth();
+    private final int MIN_MUTATIONS = Constants.getMinMutations();
+    private final int MAX_MUTATIONS = Constants.getMaxMutations();
     private int[] moveList = new int[NUMBER_OF_GENES];
     private int startMoveNumber;
     private int moveNumber = 0; //number of already made moves

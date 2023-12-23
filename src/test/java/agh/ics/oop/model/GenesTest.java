@@ -7,10 +7,10 @@ import java.util.*;
 public class GenesTest {
     @Test
     public void GetMove_test() {
-        Constances.setNumberOfGens(8);
+        Constants.setNumberOfGens(8);
         int[] moveList = {0,1,7,6,2,3,5,4};
 
-        Constances.setBackAndForth(false);
+        Constants.setBackAndForth(false);
         Genes genes1 = new Genes();
         genes1.setStartMoveNumber(6);
         genes1.setMoveList(moveList);
@@ -19,7 +19,7 @@ public class GenesTest {
         Assertions.assertEquals(genes1.getMove(), 4);
         Assertions.assertEquals(genes1.getMove(), 0);
 
-        Constances.setBackAndForth(true);
+        Constants.setBackAndForth(true);
         Genes genes2 = new Genes();
         genes2.setStartMoveNumber(6);
         genes2.setMoveList(moveList);
@@ -30,7 +30,7 @@ public class GenesTest {
 
     @Test
     public void fromParents() {
-        Constances.setNumberOfGens(8);
+        Constants.setNumberOfGens(8);
 
         // creating parent1
         Genes genes1 = new Genes();
@@ -48,15 +48,15 @@ public class GenesTest {
         parent2.setGenes(genes2);
         parent2.setCurrentEnergy(200);
 
-        Constances.setNumberOfGens(moveList2.length);
+        Constants.setNumberOfGens(moveList2.length);
         // if there is no mutations in the list of genes of child can be made only in 2 ways
         // result1 and result2 in this example
         int[] result1 = {0,1,6,7,4,5,6,7};
         int[] result2 = {4,5,6,7,4,5,2,3};
 
         // creating child1
-        Constances.setMinMutations(0);
-        Constances.setMaxMutations(0);
+        Constants.setMinMutations(0);
+        Constants.setMaxMutations(0);
         Genes genes3 = new Genes();
         Animal child1 = new Animal();
         child1.setGenes(genes3);
@@ -69,8 +69,8 @@ public class GenesTest {
         Assertions.assertTrue(check1 || check2);
 
         // creating child2
-        Constances.setMinMutations(2);
-        Constances.setMaxMutations(3);
+        Constants.setMinMutations(2);
+        Constants.setMaxMutations(3);
         Genes genes4 = new Genes();
         Animal child2 = new Animal();
         child2.setGenes(genes4);
@@ -81,8 +81,8 @@ public class GenesTest {
         Assertions.assertTrue(numberOfInherited2 >= 5);
 
         // creating child3
-        Constances.setMinMutations(1);
-        Constances.setMaxMutations(1);
+        Constants.setMinMutations(1);
+        Constants.setMaxMutations(1);
         Genes genes5 = new Genes();
         Animal child3 = new Animal();
         child3.setGenes(genes5);

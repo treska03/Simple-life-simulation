@@ -28,7 +28,7 @@ public class Simulation implements Runnable{
     public void run() {
         int i = 0;
 
-        for(int tick = 0; tick < Constances.getNumberOfTicks(); tick++) {
+        for(int tick = 0; tick < Constants.getNumberOfTicks(); tick++) {
             try {
                 Thread.sleep(500);
             } catch (InterruptedException e) {
