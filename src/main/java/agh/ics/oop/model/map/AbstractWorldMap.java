@@ -10,7 +10,6 @@ import agh.ics.oop.model.Vector2d;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static java.lang.Math.min;
 
 abstract class AbstractWorldMap implements WorldMap {
 
@@ -22,6 +21,8 @@ abstract class AbstractWorldMap implements WorldMap {
     protected List<MapChangeListener> observers = new ArrayList<>();
     protected Map<Vector2d, Animal> animalPositions = new HashMap<>();
     private final Map<Vector2d, Grass> grassPositions = new HashMap<>();
+    private List<Vector2d> noGrassFieldsForJungle = new ArrayList<>();
+    private List<Vector2d> noGrassFieldsForSteps = new ArrayList<>();
 
 
     public Boundary getBounds() {
@@ -31,50 +32,46 @@ abstract class AbstractWorldMap implements WorldMap {
     public AbstractWorldMap() {
         this.id = uniqueId.getAndIncrement();
         this.bounds = new Boundary(new Vector2d(0, 0), new Vector2d(10, 10));
-        initGrass();
+        /*
+         W 2 poniższyc linijakch kodu musiałem ustawić jakieś wartości, by błedu nie wywalało,
+         to są te wszytskie, gdzie jest 0 wpisane;
+         To jakie one faktycznie mają być, zostawiam już Tobie;
+         Dałem listę to argumentów przy initGrass,
+         bo w przeciwnym razie, by sie strasznie kod dublował;
+         Ten cały blok komentarzy do usunięcia
+        */
+        initGrass(0, noGrassFieldsForJungle);
+        initGrass(0, noGrassFieldsForSteps);
     }
 
     public int getId() {
         return id;
     }
 
-    // proponuje usunąć initGrass i zastąpić ją initGrass2
-    // Przyjmijmy:
-    // t - ilość dni w grze
-    // r - liczb nowo generowanych roślin w jednym tiku gry
-    // n - łączna liczba pól w grze
-    // stosując initGrass mamy złożoność O(n*t)
-    // stosując initGrass2 oraz generateAllPositions mamy złożoność O(n + r*t)
-    // initGrass2 byłby stosowany każdego dnia, a
-    // generateAllPositions tylko 1 raz - przy tworzeniu mapy
-    // ten i powyższe komentarze do usunięcia
-    private void initGrass() {
-        RandomPositionGenerator randomPositionGenerator = new RandomPositionGenerator(
-                bounds.lowerLeft(), bounds.upperRight(), 25
-        );
-        for (Vector2d grassPosition : randomPositionGenerator) {
-            place(new Grass(grassPosition));
-        }
-    }
-
-    private void initGrass2(int grassToAdd, List<Vector2d> barren) {
-        // add new Grass on randomly chosen unique positions to grassPositions
-        // and remove those positions from barren;
-        // barren is the list that stores fields that have no grass;
-        // positions are chosen using Fisher-Yates shuffle;
+    private void initGrass(int grassToAdd, List<Vector2d> noGrassFields) {
+        /*
+         add new Grass on randomly chosen unique positions to grassPositions
+         and remove those positions from noGrassFields;
+         positions are chosen using Fisher-Yates shuffle;
+        */
         FisherYatesShuffle fisherYatesShuffle = new FisherYatesShuffle();
-        List<Vector2d> newPositions = fisherYatesShuffle.getValues(grassToAdd, barren);
+        List<Vector2d> newPositions = fisherYatesShuffle.getValues(grassToAdd, noGrassFields);
         for (Vector2d grassPosition : newPositions) {
             grassPositions.put(grassPosition, new Grass(grassPosition));
         }
         for (int i = 0; i < grassToAdd; i++) {
-            // Fisher-Yates shuffle place chosen positions at the end of the list
-            barren.remove(barren.remove(barren.size() - 1));
+            /*
+             Fisher-Yates shuffle place chosen positions at the end of the list;
+             And because we pass the list noGrassFields by reference,
+             Fisher-Yates shuffle changed that list everywhere;
+             That's why we know that the chosen elements
+             are at the end of the list noGrassFields;
+             It's used because it reduces the time complexity
+            */
+            noGrassFields.remove(noGrassFields.remove(noGrassFields.size() - 1));
         }
     }
 
-    // metoda skopiowana z RandomPositionGenerator tylko, że bez permutowania
-    // ten i powyższy komentarz do usunięcia
     private List<Vector2d> generateAllPositions(int startX, int startY, int finishX, int finishY) {
         // store all positions in the list;
         // it will only be used when initializing the map
