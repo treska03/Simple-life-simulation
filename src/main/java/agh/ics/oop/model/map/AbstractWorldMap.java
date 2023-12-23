@@ -4,7 +4,6 @@ import agh.ics.oop.model.*;
 import agh.ics.oop.model.util.Boundary;
 import agh.ics.oop.model.util.FisherYatesShuffle;
 import agh.ics.oop.model.util.MapVisualizer;
-import agh.ics.oop.model.util.RandomPositionGenerator;
 import agh.ics.oop.model.Vector2d;
 
 import java.util.*;
@@ -70,18 +69,6 @@ abstract class AbstractWorldMap implements WorldMap {
             */
             noGrassFields.remove(noGrassFields.remove(noGrassFields.size() - 1));
         }
-    }
-
-    private List<Vector2d> generateAllPositions(int startX, int startY, int finishX, int finishY) {
-        // store all positions in the list;
-        // it will only be used when initializing the map
-        List<Vector2d> allPositions = new ArrayList<>();
-        for(int x=startX; x<=finishX; x++) {
-            for(int y=startY; y<=finishY; y++) {
-                allPositions.add(new Vector2d(x, y));
-            }
-        }
-        return allPositions;
     }
 
     @Override

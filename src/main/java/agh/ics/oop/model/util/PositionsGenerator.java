@@ -4,7 +4,7 @@ import agh.ics.oop.model.Vector2d;
 
 import java.util.*;
 
-public class RandomPositionGenerator implements Iterable<Vector2d> {
+public class PositionsGenerator implements Iterable<Vector2d> {
 
     private final int startX;
     private final int startY;
@@ -12,12 +12,17 @@ public class RandomPositionGenerator implements Iterable<Vector2d> {
     private final int finishY;
     private List<Vector2d> nPositions;
 
-    public RandomPositionGenerator(Vector2d lowerLeft, Vector2d upperRight, int numToGenerate) {
+    public PositionsGenerator(Vector2d lowerLeft, Vector2d upperRight) {
         this.startX = lowerLeft.getX();
         this.startY = lowerLeft.getY();
         this.finishX = upperRight.getX();
         this.finishY = upperRight.getY();
-        this.nPositions = generateAllPositions().subList(0, numToGenerate);
+        this.nPositions = generateAllPositions();
+    }
+
+    public void ChooseRandomPositions(int numToGenerate){
+        Collections.shuffle(nPositions);
+        nPositions = generateAllPositions().subList(0, numToGenerate);
     }
 
     private List<Vector2d> generateAllPositions() {
@@ -27,7 +32,6 @@ public class RandomPositionGenerator implements Iterable<Vector2d> {
                 allPositions.add(new Vector2d(x, y));
             }
         }
-        Collections.shuffle(allPositions);
         return allPositions;
     }
 

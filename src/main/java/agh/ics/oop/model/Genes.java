@@ -4,7 +4,6 @@ import agh.ics.oop.model.util.FisherYatesShuffle;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class Genes{
     private final int NUMBER_OF_GENES = Constances.getNumberOfGens();
