@@ -116,4 +116,12 @@ abstract class AbstractWorldMap implements WorldMap {
             observer.mapChanged(this, str);
         }
     }
+
+    public List<Vector2d> getNoGrassFieldsForJungle() {
+        return noGrassFieldsForJungle;
+    }
+
+    public List<Vector2d> getNoGrassFieldsForSteps() {
+        return noGrassFieldsForSteps;
+    }
 }
