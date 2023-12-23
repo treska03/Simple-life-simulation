@@ -24,7 +24,7 @@ public class Simulation implements Runnable{
 
     private void initAnimals(WorldMap map, List<Vector2d> startPositions) {
         for(Vector2d position : startPositions) {
-            Animal newAnimal = new Animal(position);
+            Animal newAnimal = new Animal(position, simulationId);
             map.place(newAnimal);
             animalList.add(newAnimal);
         }

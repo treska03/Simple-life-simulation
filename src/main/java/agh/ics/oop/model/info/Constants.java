@@ -1,6 +1,7 @@
 package agh.ics.oop.model.info;
 
 import agh.ics.oop.model.Vector2d;
+import agh.ics.oop.model.util.Boundary;
 
 import java.util.HashMap;
 
@@ -10,23 +11,39 @@ public class Constants {
     private final int NUMBER_OF_GENES;
     private final int MIN_MUTATIONS;
     private final int MAX_MUTATIONS;
-    private final Vector2d LOWER_LEFT;
-    private final Vector2d UPPER_RIGHT;
     private final int DAILY_NEW_GRASS_NUMBER;
+    private final int ENERGY_FROM_PLANT;
+    private final Boundary MAP_BOUNDARY;
+    private final Boundary JUNGLE_BOUNDARY;
 
 
-    public Constants(int NUMBER_OF_TICKS, boolean BACK_AND_FORTH, int NUMBER_OF_GENS, int MIN_MUTATIONS, int MAX_MUTATIONS, Vector2d LOWER_LEFT, Vector2d UPPER_RIGHT, int DAILY_NEW_GRASS_NUMBER) {
+    public Constants(int NUMBER_OF_TICKS, boolean BACK_AND_FORTH, int NUMBER_OF_GENS, int MIN_MUTATIONS,
+                     int MAX_MUTATIONS, int DAILY_NEW_GRASS_NUMBER, int ENERGY_FROM_PLANT, Boundary MAP_BOUNDARY) {
         this.NUMBER_OF_TICKS = NUMBER_OF_TICKS;
         this.BACK_AND_FORTH = BACK_AND_FORTH;
         this.NUMBER_OF_GENES = NUMBER_OF_GENS;
         this.MIN_MUTATIONS = MIN_MUTATIONS;
         this.MAX_MUTATIONS = MAX_MUTATIONS;
-        this.LOWER_LEFT = LOWER_LEFT;
-        this.UPPER_RIGHT = UPPER_RIGHT;
         this.DAILY_NEW_GRASS_NUMBER = DAILY_NEW_GRASS_NUMBER;
+        this.ENERGY_FROM_PLANT = ENERGY_FROM_PLANT;
+        this.MAP_BOUNDARY = MAP_BOUNDARY;
+        this.JUNGLE_BOUNDARY = createJungleBoundary(MAP_BOUNDARY);
     }
 
+    private static Boundary createJungleBoundary(Boundary mapBoundary) {
+        int halfHeight =(int) ((mapBoundary.upperRight().getY() - mapBoundary.lowerLeft().getY())/2);
+        int wholeWidth = mapBoundary.upperRight().getX() - mapBoundary.lowerLeft().getX();
 
+
+        // Middle has X value of lowerLeft, so we can use wholeWidth and not get rounding errors
+        Vector2d doubleMiddle = mapBoundary.lowerLeft().add(mapBoundary.upperRight());
+        Vector2d middle = new Vector2d(mapBoundary.lowerLeft().getX(), (int) doubleMiddle.getY() /2);
+
+        Vector2d lowerLeft = middle.subtract(new Vector2d(0, halfHeight));
+        Vector2d upperRight = middle.add(new Vector2d(wholeWidth, halfHeight));
+
+        return new Boundary(lowerLeft, upperRight);
+    }
 
     public int getNumberOfTicks() {
         return NUMBER_OF_TICKS;
@@ -47,17 +64,19 @@ public class Constants {
     public int getMaxMutations() {
         return MAX_MUTATIONS;
     }
-
-    public Vector2d getLowerLeft() {
-        return LOWER_LEFT;
-    }
-
-    public Vector2d getUpperRight() {
-        return UPPER_RIGHT;
-    }
-
     public int getDailyNewGrassNumber() {
         return DAILY_NEW_GRASS_NUMBER;
     }
 
+    public int getEnergyFromPlant() {
+        return ENERGY_FROM_PLANT;
+    }
+
+    public Boundary getMapBoundary() {
+        return MAP_BOUNDARY;
+    }
+
+    public Boundary getJungleBoundary() {
+        return JUNGLE_BOUNDARY;
+    }
 }
