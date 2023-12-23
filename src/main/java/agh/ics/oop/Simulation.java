@@ -2,13 +2,11 @@ package agh.ics.oop;
 
 import agh.ics.oop.model.*;
 import agh.ics.oop.model.map.WorldMap;
-import agh.ics.oop.model.util.Vector2d;
-
+import agh.ics.oop.model.Vector2d;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Simulation implements Runnable{
-
     private final WorldMap gameMap;
     private final List<Animal> animalList = new ArrayList<>();
 
@@ -30,8 +28,7 @@ public class Simulation implements Runnable{
     public void run() {
         int i = 0;
 
-        for(int tick=0; tick<5; tick++) {
-            // replace tick<5 with logic
+        for(int tick = 0; tick < Constants.getNumberOfTicks(); tick++) {
             try {
                 Thread.sleep(500);
             } catch (InterruptedException e) {

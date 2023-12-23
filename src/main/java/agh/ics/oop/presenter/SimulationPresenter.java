@@ -5,7 +5,7 @@ import agh.ics.oop.*;
 import agh.ics.oop.model.map.NormalMap;
 import agh.ics.oop.model.map.WorldMap;
 import agh.ics.oop.model.util.Boundary;
-import agh.ics.oop.model.util.Vector2d;
+import agh.ics.oop.model.Vector2d;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.HPos;
