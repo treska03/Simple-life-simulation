@@ -1,5 +1,7 @@
 package agh.ics.oop.model;
 
+import agh.ics.oop.model.info.Constants;
+import agh.ics.oop.model.info.ConstantsList;
 import agh.ics.oop.model.util.FisherYatesShuffle;
 
 import java.util.ArrayList;
@@ -7,15 +9,27 @@ import java.util.List;
 import java.util.Random;
 
 public class Genes{
-    private final int NUMBER_OF_GENES = Constants.getNumberOfGens();
-    private final boolean BACK_AND_FORTH = Constants.isBackAndForth();
-    private final int MIN_MUTATIONS = Constants.getMinMutations();
-    private final int MAX_MUTATIONS = Constants.getMaxMutations();
-    private int[] moveList = new int[NUMBER_OF_GENES];
+    private final int simulationId;
+    private final Constants constants;
+    private final int NUMBER_OF_GENES;
+    private final boolean BACK_AND_FORTH;
+    private final int MIN_MUTATIONS;
+    private final int MAX_MUTATIONS;
+    private int[] moveList;
     private int startMoveNumber;
     private int moveNumber = 0; //number of already made moves
 
-    public int getMove() {
+    public Genes(int simulationId) {
+        this.simulationId = simulationId;
+        this.constants = ConstantsList.getConstants(simulationId);
+        this.NUMBER_OF_GENES = constants.getNumberOfGenes();
+        this.BACK_AND_FORTH = constants.isBackAndForth();
+        this.MIN_MUTATIONS = constants.getMinMutations();
+        this.MAX_MUTATIONS = constants.getMaxMutations();
+        this.moveList = new int[NUMBER_OF_GENES];
+    }
+
+    public int getCurrentMove() {
         int currGeneIdx;
 
         if (!BACK_AND_FORTH){
@@ -35,8 +49,16 @@ public class Genes{
         return moveList[currGeneIdx];
     }
 
-    public void fromParents(Animal animal1, Animal animal2) {
-        // checking, which animal is dominant and which animal is minor
+    public static Genes fromParents(Animal animal1, Animal animal2) {
+//        Main constructor, for gene.
+//        Used after initial creation of first animals in simulation
+//
+//        Args: 2 Animals
+//
+//        Returns: Gene
+
+        Genes newGene = new Genes(animal1.getGenes().getSimulationId());
+
         Animal dominant;
         Animal minor;
         if (animal1.getCurrentEnergy() > animal2.getCurrentEnergy()){
@@ -50,9 +72,9 @@ public class Genes{
 
         // divide the number of genes to inherit
         // division not equal to integer number of genes is for the benefit of dominant
-        double proportion = (double) NUMBER_OF_GENES / (animal1.getCurrentEnergy() + animal2.getCurrentEnergy());
+        double proportion = (double) newGene.NUMBER_OF_GENES / (animal1.getCurrentEnergy() + animal2.getCurrentEnergy());
         int numberOfGensFromMinor = (int)(minor.getCurrentEnergy() * proportion);
-        int numberOfGensFromDominant = NUMBER_OF_GENES - numberOfGensFromMinor;
+        int numberOfGensFromDominant = newGene.NUMBER_OF_GENES - numberOfGensFromMinor;
 
         // choosing side of genes for dominant
         Random random = new Random();
@@ -61,28 +83,32 @@ public class Genes{
         // copied genes from parents to child
         if (side == 0){
             for (int i = 0; i < numberOfGensFromDominant; i++){
-                moveList[i] = dominant.getGenes().moveList[i];
+                newGene.moveList[i] = dominant.getGenes().moveList[i];
             }
-            for (int i = numberOfGensFromDominant; i < NUMBER_OF_GENES; i++){
-                moveList[i] = minor.getGenes().moveList[i];
+            for (int i = numberOfGensFromDominant; i < newGene.NUMBER_OF_GENES; i++){
+                newGene.moveList[i] = minor.getGenes().moveList[i];
             }
         }
         else {
             for (int i = 0; i < numberOfGensFromMinor; i++){
-                moveList[i] = minor.getGenes().moveList[i];
+                newGene.moveList[i] = minor.getGenes().moveList[i];
             }
-            for (int i = numberOfGensFromMinor; i < NUMBER_OF_GENES; i++){
-                moveList[i] = dominant.getGenes().moveList[i];
+            for (int i = numberOfGensFromMinor; i < newGene.NUMBER_OF_GENES; i++){
+                newGene.moveList[i] = dominant.getGenes().moveList[i];
             }
         }
 
         // mutating genes
-        mutateGene(moveList);
+        newGene.mutateGene();
 
         // choosing randomly starting gene
-        setStartMoveNumber();
+        newGene.setStartMoveNumber();
+
+        return newGene;
     }
 
+
+//    What is this used for???
     public void startingAnimal() {
         // choosing randomly genes
         Random random = new Random();
@@ -94,7 +120,7 @@ public class Genes{
         setStartMoveNumber();
     }
 
-    private void mutateGene(int[] moveList) {
+    private void mutateGene() {
         Random random = new Random();
 
         // choosing randomly number of mutations
@@ -117,6 +143,10 @@ public class Genes{
     private void setStartMoveNumber() {
         Random random = new Random();
         this.startMoveNumber = random.nextInt(8);
+    }
+
+    public int getSimulationId() {
+        return simulationId;
     }
 
     public int[] getMoveList() {
