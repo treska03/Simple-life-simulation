@@ -24,16 +24,6 @@ public class Simulation implements Runnable{
         this.constants = ConstantsList.getConstants(simulationId);
         this.stats = StatsList.getStats(simulationId);
         this.gameMap = map;
-        initAnimals(gameMap, startPositions);
-    }
-
-
-    private void initAnimals(WorldMap map, List<Vector2d> startPositions) {
-        for(Vector2d position : startPositions) {
-            Animal newAnimal = new Animal(position, simulationId);
-//            map.place(newAnimal);
-            animalList.add(newAnimal);
-        }
     }
 
     @Override

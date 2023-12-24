@@ -103,7 +103,8 @@ public class WorldMap {
         for(List<Animal> animalsOnTile : animalPositions.values()) {
             if(animalsOnTile.size() >= 2) {
                 AnimalPrioritySorter.sortAnimals(animalsOnTile);
-                animalsOnTile.get(0).reproduce(animalsOnTile.get(1));
+                Animal child = animalsOnTile.get(0).reproduce(animalsOnTile.get(1));
+                if(child != null) animalsOnTile.add(child);
             }
         }
     }

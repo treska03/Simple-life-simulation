@@ -8,10 +8,10 @@ import java.util.stream.IntStream;
 public class RandomNumberGenerator {
 
 
-    public int getRandomInRange(int start, int finish) {
+    public static int getRandomInRange(int start, int finish) {
         return (int)Math.floor(Math.random() * (finish - start + 1) + start);
     }
-    public int getRandomInRange(int finish) {
+    public static int getRandomInRange(int finish) {
         return getRandomInRange(0, finish);
     }
 

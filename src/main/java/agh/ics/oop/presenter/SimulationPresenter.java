@@ -42,7 +42,7 @@ public class SimulationPresenter implements MapChangeListener{
     }
 
     public SimulationPresenter(int simulationId) {
-        this.worldMap = new NormalMap();
+        this.worldMap = new NormalMap(simulationId);
         this.constants = ConstantsList.getConstants(simulationId);
     }
 
