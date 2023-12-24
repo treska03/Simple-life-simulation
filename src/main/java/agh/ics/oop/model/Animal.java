@@ -13,6 +13,9 @@ public class Animal implements WorldElement {
     private MapDirection orientation;
     private Vector2d position;
     private int currentEnergy;
+
+
+    private int childrenNumber;
     private Genes genes;
 
     public Animal(Vector2d start, int simulationId){
@@ -41,7 +44,7 @@ public class Animal implements WorldElement {
     }
 
     public void consume() {
-        currentEnergy += constants.getEnergyFromPlant();
+        this.currentEnergy += constants.getEnergyFromPlant();
     }
 
     public MapDirection getOrientation() {
@@ -66,5 +69,13 @@ public class Animal implements WorldElement {
 
     public void setGenes(Genes genes) { // only for tests
         this.genes = genes;
+    }
+
+    public void addChildrenCount() {
+        childrenNumber++;
+    }
+
+    public int getChildrenNumber() {
+        return childrenNumber;
     }
 }

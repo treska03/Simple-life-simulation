@@ -3,6 +3,7 @@ package agh.ics.oop.model.map;
 import agh.ics.oop.model.*;
 import agh.ics.oop.model.info.Constants;
 import agh.ics.oop.model.info.ConstantsList;
+import agh.ics.oop.model.util.AnimalPrioritySorter;
 import agh.ics.oop.model.util.FisherYatesShuffle;
 import agh.ics.oop.model.util.MapVisualizer;
 import agh.ics.oop.model.Vector2d;
@@ -17,7 +18,7 @@ public class WorldMap {
     protected int id;
     protected final Constants constants;
     protected List<MapChangeListener> observers = new ArrayList<>();
-    protected Map<Vector2d, Animal> animalPositions = new HashMap<>();
+    protected Map<Vector2d, List<Animal>> animalPositions = new HashMap<>();
     protected final Map<Vector2d, Plant> plantPositions = new HashMap<>();
     protected List<Vector2d> noGrassFieldsForJungle = new ArrayList<>();
     protected List<Vector2d> noGrassFieldsForSteps = new ArrayList<>();
@@ -66,29 +67,12 @@ public class WorldMap {
         }
     }
 
-    public void place(WorldElement obj) {
-        if(!(obj instanceof Animal)) {
-            plantPositions.put(obj.getPosition(),(Plant) obj);
-        }
-        else{
-            animalPositions.put(obj.getPosition(),(Animal) obj);
-        }
-    }
-
     public String toString() {
         return new MapVisualizer(this).draw(constants.getMapBoundary().lowerLeft(), constants.getMapBoundary().upperRight());
     }
 
     public void move(Animal animal){
-
-        if(animal != animalPositions.get(animal.getPosition())) {return;}
-
-        Vector2d startPos = animal.getPosition();
-
-        animal.move();
-        atMapChanged(String.format("Zwierze ruszylo sie z pozycji %s na pozycje %s", startPos, animal.getPosition()));
-        animalPositions.remove(startPos);
-        animalPositions.put(animal.getPosition(), animal);
+        return;
     }
 
     public void feedAnimal(Animal animal) {
@@ -105,8 +89,29 @@ public class WorldMap {
         }
     }
 
+    public void feedAnimals() {
+        for(Vector2d position : plantPositions.keySet()) {
+            // not sure if it won't throw concurrentmodificationexception
+            // will have to test, but the idea of feeding animals is I think correct
+            List<Animal> animalsOnTile = animalPositions.get(position);
+            if(!animalsOnTile.isEmpty()) {
+                AnimalPrioritySorter.sortAnimals(animalsOnTile);
+
+                animalsOnTile.get(0).consume();
+
+                plantPositions.remove(position);
+                if(insideJungle(position)) noGrassFieldsForJungle.add(position);
+                else noGrassFieldsForSteps.add(position);
+            }
+        }
+    }
+
     public WorldElement objectAt(Vector2d position) {
-        return animalPositions.get(position) != null ? animalPositions.get(position) : plantPositions.get(position);
+        return !animalPositions.get(position).isEmpty() ? animalPositions.get(position).get(0) : plantPositions.get(position);
+    }
+
+    private boolean insideJungle(Vector2d position) {
+        return constants.getJungleBoundary().insideBoundary(position);
     }
 
     public void addObserver(MapChangeListener observer) {
