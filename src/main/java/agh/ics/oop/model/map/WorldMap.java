@@ -10,13 +10,11 @@ import agh.ics.oop.model.Vector2d;
 import agh.ics.oop.model.util.RandomNumberGenerator;
 
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
 
 
 public class WorldMap {
 
-    static AtomicInteger uniqueId = new AtomicInteger();
-    protected int id;
+    protected int simulationId;
     protected final Constants constants;
     protected List<MapChangeListener> observers = new ArrayList<>();
     protected Map<Vector2d, List<Animal>> animalPositions = new HashMap<>();
@@ -25,9 +23,9 @@ public class WorldMap {
     protected List<Vector2d> noPlantsFieldsForSteps = new ArrayList<>();
 
 
-    public WorldMap() {
-        this.id = uniqueId.getAndIncrement();
-        this.constants = ConstantsList.getConstants(id);
+    public WorldMap(int simulationId) {
+        this.simulationId = simulationId;
+        this.constants = ConstantsList.getConstants(simulationId);
         /*
          W 2 poniższyc linijakch kodu musiałem ustawić jakieś wartości, by błedu nie wywalało,
          to są te wszytskie, gdzie jest 0 wpisane;
@@ -40,8 +38,8 @@ public class WorldMap {
         initPlants(0, noPlantsFieldsForSteps);
     }
 
-    public int getId() {
-        return id;
+    public int getSimulationId() {
+        return simulationId;
     }
 
     private void initPlants(int grassToAdd, List<Vector2d> noGrassFields) {
@@ -70,10 +68,6 @@ public class WorldMap {
 
     public String toString() {
         return new MapVisualizer(this).draw(constants.getMapBoundary().lowerLeft(), constants.getMapBoundary().upperRight());
-    }
-
-    public void move(Animal animal){
-        return;
     }
 
     public void removeDeadAnimals() {

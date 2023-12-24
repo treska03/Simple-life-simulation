@@ -41,18 +41,19 @@ public class Simulation implements Runnable{
         int i = 0;
 
         for(int tick = 0; tick < stats.getNumberOfTicks(); tick++) {
+
+            gameMap.removeDeadAnimals();
+            gameMap.moveAnimals();
+            gameMap.feedAnimals();
+            gameMap.reproduceAnimals();
+            gameMap.growPlants();
+
             try {
                 Thread.sleep(500);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
-            Animal currentAnimal = animalList.get(i);
-            gameMap.move(currentAnimal);
-            i = (i+1) % (animalList.size());
         }
     }
 
-    public List<Animal> getAnimalList() {
-        return animalList;
-    }
 }

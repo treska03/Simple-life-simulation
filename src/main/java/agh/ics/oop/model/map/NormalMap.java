@@ -7,9 +7,5 @@ public class NormalMap extends WorldMap {
         super();
     }
 
-    @Override
-    public void move(Animal animal){
-        super.move(animal);
-    }
 
 }
