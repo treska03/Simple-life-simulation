@@ -34,7 +34,7 @@ public class Constants {
         // We divide totalHeight of the map by 5*2
         // 5 because we want 20% of the map to be jungle
         // 2 because we want half of the height for calculation purpouses
-        int halfHeight =(int) ((mapBoundary.upperRight().getY() - mapBoundary.lowerLeft().getY())/10);
+        int halfHeight =(int) ((mapBoundary.upperRight().getY() - mapBoundary.lowerLeft().getY())/10 + 1);
         int wholeWidth = mapBoundary.upperRight().getX() - mapBoundary.lowerLeft().getX();
 
 
