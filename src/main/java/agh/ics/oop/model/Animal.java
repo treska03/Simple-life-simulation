@@ -47,6 +47,10 @@ public class Animal implements WorldElement {
         this.currentEnergy += constants.getEnergyFromPlant();
     }
 
+    public void reproduce(Animal animal) {
+        //TODO Add reproduce implementation for animal
+    }
+
     public MapDirection getOrientation() {
         return orientation;
     }

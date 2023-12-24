@@ -104,6 +104,15 @@ public class WorldMap {
         }
     }
 
+    public void reproduceAnimals() {
+        for(List<Animal> animalsOnTile : animalPositions.values()) {
+            if(animalsOnTile.size() >= 2) {
+                AnimalPrioritySorter.sortAnimals(animalsOnTile);
+                animalsOnTile.get(0).reproduce(animalsOnTile.get(1));
+            }
+        }
+    }
+
     public WorldElement objectAt(Vector2d position) {
         return !animalPositions.get(position).isEmpty() ? animalPositions.get(position).get(0) : plantPositions.get(position);
     }
