@@ -7,6 +7,7 @@ import agh.ics.oop.model.util.AnimalPrioritySorter;
 import agh.ics.oop.model.util.FisherYatesShuffle;
 import agh.ics.oop.model.util.MapVisualizer;
 import agh.ics.oop.model.Vector2d;
+import agh.ics.oop.model.util.RandomNumberGenerator;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -20,8 +21,8 @@ public class WorldMap {
     protected List<MapChangeListener> observers = new ArrayList<>();
     protected Map<Vector2d, List<Animal>> animalPositions = new HashMap<>();
     protected final Map<Vector2d, Plant> plantPositions = new HashMap<>();
-    protected List<Vector2d> noGrassFieldsForJungle = new ArrayList<>();
-    protected List<Vector2d> noGrassFieldsForSteps = new ArrayList<>();
+    protected List<Vector2d> noPlantsFieldsForJungle = new ArrayList<>();
+    protected List<Vector2d> noPlantsFieldsForSteps = new ArrayList<>();
 
 
     public WorldMap() {
@@ -35,15 +36,15 @@ public class WorldMap {
          bo w przeciwnym razie, by sie strasznie kod dublował;
          Ten cały blok komentarzy do usunięcia
         */
-        initGrass(0, noGrassFieldsForJungle);
-        initGrass(0, noGrassFieldsForSteps);
+        initPlants(0, noPlantsFieldsForJungle);
+        initPlants(0, noPlantsFieldsForSteps);
     }
 
     public int getId() {
         return id;
     }
 
-    private void initGrass(int grassToAdd, List<Vector2d> noGrassFields) {
+    private void initPlants(int grassToAdd, List<Vector2d> noGrassFields) {
         /*
          add new Grass on randomly chosen unique positions to grassPositions
          and remove those positions from noGrassFields;
@@ -98,8 +99,8 @@ public class WorldMap {
                 animalsOnTile.get(0).consume();
 
                 plantPositions.remove(position);
-                if(insideJungle(position)) noGrassFieldsForJungle.add(position);
-                else noGrassFieldsForSteps.add(position);
+                if(insideJungle(position)) noPlantsFieldsForJungle.add(position);
+                else noPlantsFieldsForSteps.add(position);
             }
         }
     }
@@ -111,6 +112,26 @@ public class WorldMap {
                 animalsOnTile.get(0).reproduce(animalsOnTile.get(1));
             }
         }
+    }
+
+    public void growPlants() {
+        int plantsNumbers = constants.getDailyNewGrassNumber();
+        int newJunglePlants = RandomNumberGenerator.getNumberOfNSuccessfulTrials(0.8, plantsNumbers);
+        int newStepsPlants = plantsNumbers - newJunglePlants;
+
+        if(newJunglePlants > noPlantsFieldsForJungle.size()) {
+            newStepsPlants += (newJunglePlants- noPlantsFieldsForJungle.size());
+            newJunglePlants = noPlantsFieldsForJungle.size();
+        }
+
+        if(newStepsPlants > noPlantsFieldsForSteps.size()) {
+            newJunglePlants = Math.min(noPlantsFieldsForJungle.size(),
+                    newJunglePlants + (noPlantsFieldsForSteps.size()-newStepsPlants));
+            newStepsPlants = noPlantsFieldsForSteps.size();
+        }
+
+        initPlants(newJunglePlants, noPlantsFieldsForJungle);
+        initPlants(newStepsPlants, noPlantsFieldsForSteps);
     }
 
     public WorldElement objectAt(Vector2d position) {
@@ -135,11 +156,11 @@ public class WorldMap {
         }
     }
 
-    public List<Vector2d> getNoGrassFieldsForJungle() {
-        return noGrassFieldsForJungle;
+    public List<Vector2d> getNoPlantsFieldsForJungle() {
+        return noPlantsFieldsForJungle;
     }
 
-    public List<Vector2d> getNoGrassFieldsForSteps() {
-        return noGrassFieldsForSteps;
+    public List<Vector2d> getNoPlantsFieldsForSteps() {
+        return noPlantsFieldsForSteps;
     }
 }
