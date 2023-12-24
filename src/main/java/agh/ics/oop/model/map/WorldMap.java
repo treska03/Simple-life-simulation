@@ -81,6 +81,12 @@ public class WorldMap {
         }
     }
 
+    public void moveAnimals() {
+        for(List<Animal> animalList: animalPositions.values()) {
+            animalList.forEach(Animal::move);
+        }
+    }
+
     public void feedAnimals() {
         for(Vector2d position : plantPositions.keySet()) {
             // not sure if it won't throw concurrentmodificationexception
