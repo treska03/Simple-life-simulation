@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Simulation implements Runnable{
+    //TODO Add List containing all animals that were ever present (dead too)
     private final int simulationId;
     private final Constants constants;
     private final Stats stats;
@@ -30,7 +31,7 @@ public class Simulation implements Runnable{
     private void initAnimals(WorldMap map, List<Vector2d> startPositions) {
         for(Vector2d position : startPositions) {
             Animal newAnimal = new Animal(position, simulationId);
-            map.place(newAnimal);
+//            map.place(newAnimal);
             animalList.add(newAnimal);
         }
     }

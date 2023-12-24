@@ -75,17 +75,9 @@ public class WorldMap {
         return;
     }
 
-    public void feedAnimal(Animal animal) {
-        Vector2d position = animal.getPosition();
-        if(plantPositions.get(position) == null) {return;}
-        animal.consume();
-
-        plantPositions.remove(position);
-        if(constants.getJungleBoundary().insideBoundary(position)) {
-            noGrassFieldsForJungle.add(position);
-        }
-        else {
-            noGrassFieldsForSteps.add(position);
+    public void removeDeadAnimals() {
+        for(List<Animal> animalList: animalPositions.values()) {
+            animalList.removeIf(animal -> animal.getCurrentEnergy() < 0);
         }
     }
 
