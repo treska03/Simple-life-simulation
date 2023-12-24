@@ -10,6 +10,9 @@ public class Constants {
     private final int NUMBER_OF_GENES;
     private final int MIN_MUTATIONS;
     private final int MAX_MUTATIONS;
+    private final int MIN_ENERGY_FOR_REPRODUCTION;
+    private final int ENERGY_USED_FOR_REPRODUCTION;
+    private final int NEW_ANIMAL_ENERGY;
     private final int DAILY_NEW_GRASS_NUMBER;
     private final int ENERGY_FROM_PLANT;
     private final Boundary MAP_BOUNDARY;
@@ -17,11 +20,17 @@ public class Constants {
 
 
     public Constants(boolean BACK_AND_FORTH, int NUMBER_OF_GENS, int MIN_MUTATIONS,
-                     int MAX_MUTATIONS, int DAILY_NEW_GRASS_NUMBER, int ENERGY_FROM_PLANT, Boundary MAP_BOUNDARY) {
+                     int MAX_MUTATIONS, int MIN_ENERGY_FOR_REPRODUCTION,
+                     int ENERGY_USED_FOR_REPRODUCTION, int NEW_ANIMAL_ENERGY,
+                     int DAILY_NEW_GRASS_NUMBER, int ENERGY_FROM_PLANT,
+                      Boundary MAP_BOUNDARY) {
         this.BACK_AND_FORTH = BACK_AND_FORTH;
         this.NUMBER_OF_GENES = NUMBER_OF_GENS;
         this.MIN_MUTATIONS = MIN_MUTATIONS;
         this.MAX_MUTATIONS = MAX_MUTATIONS;
+        this.MIN_ENERGY_FOR_REPRODUCTION = MIN_ENERGY_FOR_REPRODUCTION;
+        this.ENERGY_USED_FOR_REPRODUCTION = ENERGY_USED_FOR_REPRODUCTION;
+        this.NEW_ANIMAL_ENERGY = NEW_ANIMAL_ENERGY;
         this.DAILY_NEW_GRASS_NUMBER = DAILY_NEW_GRASS_NUMBER;
         this.ENERGY_FROM_PLANT = ENERGY_FROM_PLANT;
         this.MAP_BOUNDARY = MAP_BOUNDARY;
@@ -61,6 +70,19 @@ public class Constants {
     public int getMaxMutations() {
         return MAX_MUTATIONS;
     }
+
+    public int getEnergyRequiredForReproduction() {
+        return MIN_ENERGY_FOR_REPRODUCTION;
+    }
+
+    public int getEnergyUsedForReproduction() {
+        return ENERGY_USED_FOR_REPRODUCTION;
+    }
+
+    public int getNewAnimalEnergy() {
+        return NEW_ANIMAL_ENERGY;
+    }
+
     public int getDailyNewGrassNumber() {
         return DAILY_NEW_GRASS_NUMBER;
     }
