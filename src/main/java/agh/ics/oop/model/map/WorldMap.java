@@ -12,7 +12,7 @@ import agh.ics.oop.model.util.RandomNumberGenerator;
 import java.util.*;
 
 
-public class WorldMap {
+public abstract class WorldMap {
 
     protected int simulationId;
     protected final Constants constants;
@@ -71,16 +71,26 @@ public class WorldMap {
     }
 
     public void removeDeadAnimals() {
+        // not sure if it won't throw concurrentmodificationexception
+        // will have to test, but the idea of removing dead animals is I think correct
         for(List<Animal> animalList: animalPositions.values()) {
             animalList.removeIf(animal -> animal.getCurrentEnergy() < 0);
         }
     }
 
     public void moveAnimals() {
+        // not sure if it won't throw concurrentmodificationexception
+        // will have to test, but the idea of moving animals is I think correct
         for(List<Animal> animalList: animalPositions.values()) {
-            animalList.forEach(Animal::move);
+            animalList.forEach(animal -> {
+                animalList.remove(animal);
+                moveSingleAnimal(animal);
+                animalPositions.get(animal.getPosition()).add(animal);
+            });
         }
     }
+
+    abstract void moveSingleAnimal(Animal animal);
 
     public void feedAnimals() {
         for(Vector2d position : plantPositions.keySet()) {

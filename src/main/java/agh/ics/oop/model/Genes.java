@@ -20,6 +20,10 @@ public class Genes{
     private int moveNumber = 0; //number of already made moves
 
     public Genes(int simulationId) {
+        this(simulationId, true);
+    }
+
+    public Genes(int simulationId, boolean startingGene) {
         this.simulationId = simulationId;
         this.constants = ConstantsList.getConstants(simulationId);
         this.NUMBER_OF_GENES = constants.getNumberOfGenes();
@@ -27,6 +31,9 @@ public class Genes{
         this.MIN_MUTATIONS = constants.getMinMutations();
         this.MAX_MUTATIONS = constants.getMaxMutations();
         this.moveList = new int[NUMBER_OF_GENES];
+        if(startingGene) {
+            startingAnimal();
+        }
     }
 
     public int getCurrentMove() {

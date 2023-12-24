@@ -35,6 +35,14 @@ public class PositionsGenerator implements Iterable<Vector2d> {
         return allPositions;
     }
 
+    public static Vector2d generateRandomPosition(Boundary boundary) {
+        Vector2d size2d = boundary.upperRight().subtract(boundary.lowerLeft());
+        int widthDelta = RandomNumberGenerator.getRandomInRange(size2d.getX());
+        int heightDelta = RandomNumberGenerator.getRandomInRange(size2d.getY());
+
+        return boundary.lowerLeft().add(new Vector2d(widthDelta, heightDelta));
+    }
+
 
     public Iterator<Vector2d> iterator() {
         return nPositions.iterator();

@@ -45,13 +45,9 @@ public class Animal implements WorldElement {
     }
 
     public void move() {
-        // Not working atm
-
-        List<Vector2d> moveVectors = new ArrayList<>(
-                List.of(MapDirection.NORTH.toUnitVector(), MapDirection.EAST.toUnitVector(), MapDirection.SOUTH.toUnitVector(), MapDirection.WEST.toUnitVector())
-        );
-
-        this.position = position.add(moveVectors.get(orientation.ordinal()));
+        // get new orientation and move according to it forward
+        orientation = MapDirection.values()[(orientation.ordinal() + genes.getCurrentMove())];
+        position = position.add(orientation.toUnitVector());
     }
 
     public void consume() {
@@ -114,5 +110,9 @@ public class Animal implements WorldElement {
 
     public int getChildrenNumber() {
         return childrenNumber;
+    }
+
+    public void setPosition(Vector2d position) {
+        this.position = position;
     }
 }
