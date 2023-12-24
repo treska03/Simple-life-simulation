@@ -18,7 +18,7 @@ public class WorldMap {
     protected final Constants constants;
     protected List<MapChangeListener> observers = new ArrayList<>();
     protected Map<Vector2d, Animal> animalPositions = new HashMap<>();
-    protected final Map<Vector2d, Grass> grassPositions = new HashMap<>();
+    protected final Map<Vector2d, Plant> plantPositions = new HashMap<>();
     protected List<Vector2d> noGrassFieldsForJungle = new ArrayList<>();
     protected List<Vector2d> noGrassFieldsForSteps = new ArrayList<>();
 
@@ -51,7 +51,7 @@ public class WorldMap {
         FisherYatesShuffle fisherYatesShuffle = new FisherYatesShuffle();
         List<Vector2d> newPositions = fisherYatesShuffle.getValues(grassToAdd, noGrassFields);
         for (Vector2d grassPosition : newPositions) {
-            grassPositions.put(grassPosition, new Grass(grassPosition));
+            plantPositions.put(grassPosition, new Plant(grassPosition));
         }
         for (int i = 0; i < grassToAdd; i++) {
             /*
@@ -68,7 +68,7 @@ public class WorldMap {
 
     public void place(WorldElement obj) {
         if(!(obj instanceof Animal)) {
-            grassPositions.put(obj.getPosition(),(Grass) obj);
+            plantPositions.put(obj.getPosition(),(Plant) obj);
         }
         else{
             animalPositions.put(obj.getPosition(),(Animal) obj);
@@ -93,10 +93,10 @@ public class WorldMap {
 
     public void feedAnimal(Animal animal) {
         Vector2d position = animal.getPosition();
-        if(grassPositions.get(position) == null) {return;}
+        if(plantPositions.get(position) == null) {return;}
         animal.consume();
 
-        grassPositions.remove(position);
+        plantPositions.remove(position);
         if(constants.getJungleBoundary().insideBoundary(position)) {
             noGrassFieldsForJungle.add(position);
         }
@@ -106,7 +106,7 @@ public class WorldMap {
     }
 
     public WorldElement objectAt(Vector2d position) {
-        return animalPositions.get(position) != null ? animalPositions.get(position) : grassPositions.get(position);
+        return animalPositions.get(position) != null ? animalPositions.get(position) : plantPositions.get(position);
     }
 
     public void addObserver(MapChangeListener observer) {
