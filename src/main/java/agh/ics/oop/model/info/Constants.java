@@ -35,15 +35,13 @@ public class Constants {
         // 5 because we want 20% of the map to be jungle
         // 2 because we want half of the height for calculation purpouses
         int halfHeight =(int) ((mapBoundary.upperRight().getY() - mapBoundary.lowerLeft().getY())/10 + 1);
-        int wholeWidth = mapBoundary.upperRight().getX() - mapBoundary.lowerLeft().getX();
-
 
         // Middle has X value of lowerLeft, so we can use wholeWidth and not get rounding errors
         Vector2d doubleMiddle = mapBoundary.lowerLeft().add(mapBoundary.upperRight());
         Vector2d middle = new Vector2d(mapBoundary.lowerLeft().getX(), (int) doubleMiddle.getY() /2);
 
         Vector2d lowerLeft = middle.subtract(new Vector2d(0, halfHeight));
-        Vector2d upperRight = middle.add(new Vector2d(wholeWidth, halfHeight));
+        Vector2d upperRight = new Vector2d(mapBoundary.upperRight().getX(), lowerLeft.getY() + 2*halfHeight);
 
         return new Boundary(lowerLeft, upperRight);
     }
