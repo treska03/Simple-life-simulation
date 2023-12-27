@@ -2,6 +2,8 @@ package agh.ics.oop.presenter;
 
 import agh.ics.oop.model.*;
 import agh.ics.oop.*;
+import agh.ics.oop.model.info.Constants;
+import agh.ics.oop.model.info.ConstantsList;
 import agh.ics.oop.model.map.NormalMap;
 import agh.ics.oop.model.map.WorldMap;
 import agh.ics.oop.model.util.Boundary;
@@ -31,6 +33,7 @@ public class SimulationPresenter implements MapChangeListener{
     private final WorldMap worldMap;
     static final int CELL_WIDTH = 30;
     static final int CELL_HEIGHT = 30;
+    private final Constants constants;
 
 
     public void onSimulationStartClicked() throws InterruptedException {
@@ -38,8 +41,9 @@ public class SimulationPresenter implements MapChangeListener{
         simulationEngine.runAsync();
     }
 
-    public SimulationPresenter() {
-        this.worldMap = new NormalMap();
+    public SimulationPresenter(int simulationId) {
+        this.worldMap = new NormalMap(simulationId);
+        this.constants = ConstantsList.getConstants(simulationId);
     }
 
     public void setObserver(ConsoleMapDisplay observer) {
@@ -64,7 +68,7 @@ public class SimulationPresenter implements MapChangeListener{
     public void drawMap(WorldMap worldMap) {
         clearGrid();
 
-        Boundary bounds = worldMap.getBounds();
+        Boundary bounds = constants.getMapBoundary();
         Vector2d topRight = bounds.upperRight();
         Vector2d bottomLeft = bounds.lowerLeft();
         int gridWidth = topRight.getX() - bottomLeft.getX() + 2;

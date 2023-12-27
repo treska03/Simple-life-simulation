@@ -3,6 +3,7 @@ package agh.ics.oop.model;
 import agh.ics.oop.model.enums.MapDirection;
 import agh.ics.oop.model.info.Constants;
 import agh.ics.oop.model.info.ConstantsList;
+import agh.ics.oop.model.util.RandomNumberGenerator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,13 +14,26 @@ public class Animal implements WorldElement {
     private MapDirection orientation;
     private Vector2d position;
     private int currentEnergy;
+    private int childrenNumber = 0;
+    private final Animal parent1;
+    private final Animal parent2;
     private Genes genes;
 
-    public Animal(Vector2d start, int simulationId){
-        this.simulationId = simulationId;
-        this.orientation = MapDirection.NORTH;
-        this.constants = ConstantsList.getConstants(simulationId);
+    public Animal(Vector2d start, int simulationId, Animal parent1, Animal parent2){
         this.position = start;
+        this.simulationId = simulationId;
+        this.orientation = MapDirection.values()[(RandomNumberGenerator.getRandomInRange(7))];
+        this.constants = ConstantsList.getConstants(simulationId);
+        this.currentEnergy = constants.getNewAnimalEnergy();
+
+        this.parent1 = parent1;
+        this.parent2 = parent2;
+        if(parent1 != null & parent2 != null) genes = Genes.fromParents(parent1, parent2);
+        else genes = new Genes(simulationId); // I dont think it works right now
+    }
+
+    public Animal(Vector2d start, int simulationId) {
+        this(start, simulationId, null, null);
     }
 
     public String toString() {
@@ -31,21 +45,40 @@ public class Animal implements WorldElement {
     }
 
     public void move() {
-        // Not working atm
-
-        List<Vector2d> moveVectors = new ArrayList<>(
-                List.of(MapDirection.NORTH.toUnitVector(), MapDirection.EAST.toUnitVector(), MapDirection.SOUTH.toUnitVector(), MapDirection.WEST.toUnitVector())
-        );
-
-        this.position = position.add(moveVectors.get(orientation.ordinal()));
+        // get new orientation and move according to it forward
+        orientation = orientation.rotate(genes.getCurrentMove());
+        position = position.add(orientation.toUnitVector());
     }
 
     public void consume() {
-        currentEnergy += constants.getEnergyFromPlant();
+        this.currentEnergy += constants.getEnergyFromPlant();
+    }
+
+    public Animal reproduce(Animal animal) {
+
+        if(currentEnergy < constants.getEnergyRequiredForReproduction() ||
+           animal.getCurrentEnergy() < constants.getEnergyRequiredForReproduction()) {
+            return null;
+        }
+
+        Animal child = new Animal(position, simulationId, this, animal);
+
+        this.removeEnergy(0); //TODO: FIX REMOVING ENERGY
+        animal.removeEnergy(0);
+        this.addChildrenCount();
+        animal.addChildrenCount();
+        this.addChildrenCountToAncestors();
+        animal.addChildrenCountToAncestors();
+
+        return child;
     }
 
     public MapDirection getOrientation() {
         return orientation;
+    }
+
+    public void spinAnimal() {
+        orientation = orientation.rotate(4);
     }
 
     public Vector2d getPosition() {
@@ -64,7 +97,26 @@ public class Animal implements WorldElement {
         this.currentEnergy = currentEnergy;
     }
 
+    public void removeEnergy(int energyToRemove) {
+        this.currentEnergy -= energyToRemove;
+    }
+
     public void setGenes(Genes genes) { // only for tests
         this.genes = genes;
+    }
+
+    public void addChildrenCount() {
+        childrenNumber++;
+    }
+    public void addChildrenCountToAncestors() {
+        return;
+    }
+
+    public int getChildrenNumber() {
+        return childrenNumber;
+    }
+
+    public void setPosition(Vector2d position) {
+        this.position = position;
     }
 }
