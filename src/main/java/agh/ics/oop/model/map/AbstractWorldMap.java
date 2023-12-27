@@ -1,6 +1,8 @@
 package agh.ics.oop.model.map;
 
 import agh.ics.oop.model.*;
+import agh.ics.oop.model.info.Constants;
+import agh.ics.oop.model.info.ConstantsList;
 import agh.ics.oop.model.util.Boundary;
 import agh.ics.oop.model.util.FisherYatesShuffle;
 import agh.ics.oop.model.util.MapVisualizer;
@@ -14,23 +16,17 @@ abstract class AbstractWorldMap implements WorldMap {
 
     static AtomicInteger uniqueId = new AtomicInteger();
     protected int id;
-
-
-    protected Boundary bounds;
+    protected final Constants constants;
     protected List<MapChangeListener> observers = new ArrayList<>();
     protected Map<Vector2d, Animal> animalPositions = new HashMap<>();
-    private final Map<Vector2d, Grass> grassPositions = new HashMap<>();
-    private List<Vector2d> noGrassFieldsForJungle = new ArrayList<>();
-    private List<Vector2d> noGrassFieldsForSteps = new ArrayList<>();
+    protected final Map<Vector2d, Grass> grassPositions = new HashMap<>();
+    protected List<Vector2d> noGrassFieldsForJungle = new ArrayList<>();
+    protected List<Vector2d> noGrassFieldsForSteps = new ArrayList<>();
 
-
-    public Boundary getBounds() {
-        return bounds;
-    }
 
     public AbstractWorldMap() {
         this.id = uniqueId.getAndIncrement();
-        this.bounds = new Boundary(new Vector2d(0, 0), new Vector2d(10, 10));
+        this.constants = ConstantsList.getConstants(id);
         /*
          W 2 poniższyc linijakch kodu musiałem ustawić jakieś wartości, by błedu nie wywalało,
          to są te wszytskie, gdzie jest 0 wpisane;
@@ -82,7 +78,7 @@ abstract class AbstractWorldMap implements WorldMap {
     }
 
     public String toString() {
-        return new MapVisualizer(this).draw(bounds.lowerLeft(), bounds.upperRight());
+        return new MapVisualizer(this).draw(constants.getMapBoundary().lowerLeft(), constants.getMapBoundary().upperRight());
     }
 
     @Override
@@ -96,6 +92,20 @@ abstract class AbstractWorldMap implements WorldMap {
         atMapChanged(String.format("Zwierze ruszylo sie z pozycji %s na pozycje %s", startPos, animal.getPosition()));
         animalPositions.remove(startPos);
         animalPositions.put(animal.getPosition(), animal);
+    }
+
+    public void feedAnimal(Animal animal) {
+        Vector2d position = animal.getPosition();
+        if(grassPositions.get(position) == null) {return;}
+        animal.consume();
+
+        grassPositions.remove(position);
+        if(constants.getJungleBoundary().insideBoundary(position)) {
+            noGrassFieldsForJungle.add(position);
+        }
+        else {
+            noGrassFieldsForSteps.add(position);
+        }
     }
 
     @Override

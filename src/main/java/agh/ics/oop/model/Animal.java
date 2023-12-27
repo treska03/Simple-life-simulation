@@ -1,21 +1,24 @@
 package agh.ics.oop.model;
 
 import agh.ics.oop.model.enums.MapDirection;
+import agh.ics.oop.model.info.Constants;
+import agh.ics.oop.model.info.ConstantsList;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Animal implements WorldElement {
+    private final int simulationId;
+    private final Constants constants;
     private MapDirection orientation;
     private Vector2d position;
     private int currentEnergy;
     private Genes genes;
 
-    public Animal() {
-        this(new Vector2d(2, 2));
-    }
-
-    public Animal(Vector2d start){
+    public Animal(Vector2d start, int simulationId){
+        this.simulationId = simulationId;
         this.orientation = MapDirection.NORTH;
+        this.constants = ConstantsList.getConstants(simulationId);
         this.position = start;
     }
 
@@ -35,6 +38,10 @@ public class Animal implements WorldElement {
         );
 
         this.position = position.add(moveVectors.get(orientation.ordinal()));
+    }
+
+    public void consume() {
+        currentEnergy += constants.getEnergyFromPlant();
     }
 
     public MapDirection getOrientation() {

@@ -40,12 +40,6 @@ public interface WorldMap{
      */
     WorldElement objectAt(Vector2d position);
 
-    /**
-     *
-     * @return bounds of map
-     */
-    Boundary getBounds();
-
 
     public void addObserver(MapChangeListener observer);
 
