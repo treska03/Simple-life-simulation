@@ -31,19 +31,14 @@ public class Constants {
     }
 
     private static Boundary createJungleBoundary(Boundary mapBoundary) {
-        // We divide totalHeight of the map by 5*2
-        // 5 because we want 20% of the map to be jungle
-        // 2 because we want half of the height for calculation purpouses
-        int halfHeight =(int) ((mapBoundary.upperRight().getY() - mapBoundary.lowerLeft().getY())/10 + 1);
-
-        // Middle has X value of lowerLeft, so we can use wholeWidth and not get rounding errors
-        Vector2d doubleMiddle = mapBoundary.lowerLeft().add(mapBoundary.upperRight());
-        Vector2d middle = new Vector2d(mapBoundary.lowerLeft().getX(), (int) doubleMiddle.getY() /2);
-
-        Vector2d lowerLeft = middle.subtract(new Vector2d(0, halfHeight));
-        Vector2d upperRight = new Vector2d(mapBoundary.upperRight().getX(), lowerLeft.getY() + 2*halfHeight);
-
-        return new Boundary(lowerLeft, upperRight);
+        private static Boundary createJungleBoundary(Boundary mapBoundary) {
+        int tenthHeight = (int) ((mapBoundary.upperRight().getY() - mapBoundary.lowerLeft().getY())/10);
+        
+        Vector2d jungleLowerLeft = mapBoundary.lowerLeft().add(new Vector2d(0, 4*tenthHeight));
+        Vector2d jungleUpperRight = mapBoundary.upperRight().subtract(new Vector2d(0, 4*tenthHeight));
+        
+        return new Boundary(jungleLowerLeft, jungleUpperRight);
+    }
     }
 
     public int getNumberOfTicks() {
