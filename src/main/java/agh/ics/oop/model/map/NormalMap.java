@@ -19,8 +19,14 @@ public class NormalMap extends WorldMap {
         if(!mapBoundary.insideBoundary(currPos)) {
             if(currPos.getX() < mapBoundary.lowerLeft().getX()) animal.setPosition(new Vector2d(mapBoundary.upperRight().getX(), currPos.getY()));
             if(currPos.getX() > mapBoundary.upperRight().getX()) animal.setPosition(new Vector2d(mapBoundary.lowerLeft().getX(), currPos.getY()));
-            if(currPos.getY() > mapBoundary.upperRight().getY()) animal.setPosition(new Vector2d(currPos.getX(), mapBoundary.upperRight().getY()));
-            if(currPos.getY() < mapBoundary.lowerLeft().getY()) animal.setPosition(new Vector2d(currPos.getX(), mapBoundary.lowerLeft().getY()));
+            if(currPos.getY() > mapBoundary.upperRight().getY()) {
+                animal.setPosition(new Vector2d(currPos.getX(), mapBoundary.upperRight().getY()));
+                animal.spinAnimal();
+            }
+            if(currPos.getY() < mapBoundary.lowerLeft().getY()) {
+                animal.setPosition(new Vector2d(currPos.getX(), mapBoundary.lowerLeft().getY()));
+                animal.spinAnimal();
+            }
         }
     }
 }

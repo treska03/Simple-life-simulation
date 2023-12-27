@@ -74,7 +74,7 @@ public abstract class WorldMap {
         // not sure if it won't throw concurrentmodificationexception
         // will have to test, but the idea of removing dead animals is I think correct
         for(List<Animal> animalList: animalPositions.values()) {
-            animalList.removeIf(animal -> animal.getCurrentEnergy() < 0);
+            animalList.removeIf(animal -> animal.getCurrentEnergy() <= 0);
         }
     }
 
@@ -131,7 +131,7 @@ public abstract class WorldMap {
 
         if(newStepsPlants > noPlantsFieldsForSteps.size()) {
             newJunglePlants = Math.min(noPlantsFieldsForJungle.size(),
-                    newJunglePlants + (noPlantsFieldsForSteps.size()-newStepsPlants));
+                    newJunglePlants + (newStepsPlants - noPlantsFieldsForSteps.size()));
             newStepsPlants = noPlantsFieldsForSteps.size();
         }
 

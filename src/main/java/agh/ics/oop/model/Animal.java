@@ -46,7 +46,7 @@ public class Animal implements WorldElement {
 
     public void move() {
         // get new orientation and move according to it forward
-        orientation = MapDirection.values()[(orientation.ordinal() + genes.getCurrentMove())];
+        orientation = orientation.rotate(genes.getCurrentMove());
         position = position.add(orientation.toUnitVector());
     }
 
@@ -75,6 +75,10 @@ public class Animal implements WorldElement {
 
     public MapDirection getOrientation() {
         return orientation;
+    }
+
+    public void spinAnimal() {
+        orientation = orientation.rotate(4);
     }
 
     public Vector2d getPosition() {
