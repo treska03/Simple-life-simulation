@@ -31,14 +31,12 @@ public class Constants {
     }
 
     private static Boundary createJungleBoundary(Boundary mapBoundary) {
-        private static Boundary createJungleBoundary(Boundary mapBoundary) {
-        int tenthHeight = (int) ((mapBoundary.upperRight().getY() - mapBoundary.lowerLeft().getY())/10);
+        double tenthHeight =  ( (double) (mapBoundary.upperRight().getY() - mapBoundary.lowerLeft().getY()) ) / 10;
         
-        Vector2d jungleLowerLeft = mapBoundary.lowerLeft().add(new Vector2d(0, 4*tenthHeight));
-        Vector2d jungleUpperRight = mapBoundary.upperRight().subtract(new Vector2d(0, 4*tenthHeight));
+        Vector2d jungleLowerLeft = mapBoundary.lowerLeft().add(new Vector2d(0, (int) 4*tenthHeight));
+        Vector2d jungleUpperRight = mapBoundary.upperRight().subtract(new Vector2d(0, (int) 4*tenthHeight));
         
         return new Boundary(jungleLowerLeft, jungleUpperRight);
-    }
     }
 
     public int getNumberOfTicks() {
