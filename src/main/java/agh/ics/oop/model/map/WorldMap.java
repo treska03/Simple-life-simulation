@@ -1,6 +1,9 @@
 package agh.ics.oop.model.map;
 
 import agh.ics.oop.model.*;
+import agh.ics.oop.model.creatures.Animal;
+import agh.ics.oop.model.creatures.Plant;
+import agh.ics.oop.model.creatures.WorldElement;
 import agh.ics.oop.model.info.Constants;
 import agh.ics.oop.model.info.ConstantsList;
 import agh.ics.oop.model.util.AnimalPrioritySorter;

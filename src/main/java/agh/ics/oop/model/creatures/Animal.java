@@ -1,12 +1,11 @@
-package agh.ics.oop.model;
+package agh.ics.oop.model.creatures;
 
+import agh.ics.oop.model.Vector2d;
 import agh.ics.oop.model.enums.MapDirection;
 import agh.ics.oop.model.info.Constants;
 import agh.ics.oop.model.info.ConstantsList;
+import agh.ics.oop.model.util.PositionsGenerator;
 import agh.ics.oop.model.util.RandomNumberGenerator;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class Animal implements WorldElement {
     private final int simulationId;
@@ -15,25 +14,27 @@ public class Animal implements WorldElement {
     private Vector2d position;
     private int currentEnergy;
     private int childrenNumber = 0;
-    private final Animal parent1;
-    private final Animal parent2;
     private Genes genes;
 
-    public Animal(Vector2d start, int simulationId, Animal parent1, Animal parent2){
+    private Animal(Vector2d start, int simulationId, Genes genes){
         this.position = start;
         this.simulationId = simulationId;
         this.orientation = MapDirection.values()[(RandomNumberGenerator.getRandomInRange(7))];
         this.constants = ConstantsList.getConstants(simulationId);
         this.currentEnergy = constants.getNewAnimalEnergy();
-
-        this.parent1 = parent1;
-        this.parent2 = parent2;
-        if(parent1 != null & parent2 != null) genes = Genes.fromParents(parent1, parent2);
-        else genes = new Genes(simulationId); // I dont think it works right now
+        this.genes = genes;
     }
 
-    public Animal(Vector2d start, int simulationId) {
-        this(start, simulationId, null, null);
+    public static Animal fromParents(Animal p1, Animal p2) {
+        Genes genes = Genes.fromParents(p1, p2);
+        return new Animal(p1.getPosition(), p1.simulationId, genes);
+    }
+
+    public static Animal startingAnimal(int simulationId) {
+        Genes genes = Genes.startingAnimalGenes(simulationId);
+        Vector2d startPos = PositionsGenerator.generateRandomPosition(
+                ConstantsList.getConstants(simulationId).getMapBoundary());
+        return new Animal(startPos, simulationId, genes);
     }
 
     public String toString() {
@@ -61,7 +62,7 @@ public class Animal implements WorldElement {
             return null;
         }
 
-        Animal child = new Animal(position, simulationId, this, animal);
+        Animal child = Animal.fromParents(this, animal);
 
         this.removeEnergy(0); //TODO: FIX REMOVING ENERGY
         animal.removeEnergy(0);
