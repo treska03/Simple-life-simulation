@@ -1,4 +1,4 @@
-package agh.ics.oop.model;
+package agh.ics.oop.model.creatures;
 
 import agh.ics.oop.model.info.Constants;
 import agh.ics.oop.model.info.ConstantsList;
@@ -19,11 +19,7 @@ public class Genes{
     private int startMoveNumber;
     private int moveNumber = 0; //number of already made moves
 
-    public Genes(int simulationId) {
-        this(simulationId, true);
-    }
-
-    public Genes(int simulationId, boolean startingGene) {
+    private Genes(int simulationId) {
         this.simulationId = simulationId;
         this.constants = ConstantsList.getConstants(simulationId);
         this.NUMBER_OF_GENES = constants.getNumberOfGenes();
@@ -31,9 +27,6 @@ public class Genes{
         this.MIN_MUTATIONS = constants.getMinMutations();
         this.MAX_MUTATIONS = constants.getMaxMutations();
         this.moveList = new int[NUMBER_OF_GENES];
-        if(startingGene) {
-            startingAnimal();
-        }
     }
 
     public int getCurrentMove() {
@@ -115,16 +108,18 @@ public class Genes{
     }
 
 
-//    What is this used for???
-    public void startingAnimal() {
+    public static Genes startingAnimalGenes(int simulationId) {
         // choosing randomly genes
         Random random = new Random();
-        for (int i = 0; i < NUMBER_OF_GENES; i++){
-            moveList[i] = random.nextInt(8);
+        Genes genes = new Genes(simulationId);
+        for (int i = 0; i < genes.NUMBER_OF_GENES; i++){
+            genes.moveList[i] = random.nextInt(8);
         }
 
         // choosing randomly starting gene
-        setStartMoveNumber();
+        genes.setStartMoveNumber();
+
+        return genes;
     }
 
     private void mutateGene() {

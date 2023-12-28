@@ -1,6 +1,6 @@
 package agh.ics.oop.model.util;
 
-import agh.ics.oop.model.Animal;
+import agh.ics.oop.model.creatures.Animal;
 
 import java.util.Comparator;
 import java.util.List;

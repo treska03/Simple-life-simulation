@@ -1,6 +1,6 @@
 package agh.ics.oop.model.map;
 
-import agh.ics.oop.model.Animal;
+import agh.ics.oop.model.creatures.Animal;
 import agh.ics.oop.model.Vector2d;
 import agh.ics.oop.model.util.Boundary;
 import agh.ics.oop.model.util.PositionsGenerator;
