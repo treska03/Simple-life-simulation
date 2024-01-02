@@ -17,16 +17,17 @@ public class AnimalPrioritySorter {
 
     public static void sortByEnergy(List<Animal> animalList) {
         // Sorts in place by energy of each animal
-        animalList.sort(Comparator.comparingInt(Animal::getCurrentEnergy));
+        animalList.sort(Comparator.comparingInt(Animal::getCurrentEnergy).reversed());
     }
 
     public static void sortByAge(List<Animal> animalList) {
         // Sorts in place by Age of each animal
+        // TODO: Fix not reversing comparator.
         animalList.sort(Comparator.comparingInt(animal -> animal.getGenes().getCurrentMove()));
     }
     public static void sortByChildrenNo(List<Animal> animalList) {
         // Sorts in place by Children number of each animal
-        animalList.sort(Comparator.comparingInt(Animal::getChildrenNumber));
+        animalList.sort(Comparator.comparingInt(Animal::getChildrenNumber).reversed());
     }
 
 }
