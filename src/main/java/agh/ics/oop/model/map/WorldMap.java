@@ -6,11 +6,8 @@ import agh.ics.oop.model.creatures.Plant;
 import agh.ics.oop.model.creatures.WorldElement;
 import agh.ics.oop.model.info.Constants;
 import agh.ics.oop.model.info.ConstantsList;
-import agh.ics.oop.model.util.AnimalPrioritySorter;
-import agh.ics.oop.model.util.FisherYatesShuffle;
-import agh.ics.oop.model.util.MapVisualizer;
+import agh.ics.oop.model.util.*;
 import agh.ics.oop.model.Vector2d;
-import agh.ics.oop.model.util.RandomNumberGenerator;
 
 import java.util.*;
 
@@ -21,28 +18,28 @@ public abstract class WorldMap {
     protected final Constants constants;
     protected List<MapChangeListener> observers = new ArrayList<>();
     protected Map<Vector2d, List<Animal>> animalPositions = new HashMap<>();
-    protected final Map<Vector2d, Plant> plantPositions = new HashMap<>();
-    protected List<Vector2d> noPlantsFieldsForJungle = new ArrayList<>();
-    protected List<Vector2d> noPlantsFieldsForSteps = new ArrayList<>();
+    protected final HashSet<Vector2d> plantPositions = new HashSet<>();
+    protected List<Vector2d> noPlantsFieldsForJungle;
+    protected List<Vector2d> noPlantsFieldsForSteps;
 
 
     public WorldMap(int simulationId) {
         this.simulationId = simulationId;
         this.constants = ConstantsList.getConstants(simulationId);
-        /*
-         W 2 poniższyc linijakch kodu musiałem ustawić jakieś wartości, by błedu nie wywalało,
-         to są te wszytskie, gdzie jest 0 wpisane;
-         To jakie one faktycznie mają być, zostawiam już Tobie;
-         Dałem listę to argumentów przy initGrass,
-         bo w przeciwnym razie, by sie strasznie kod dublował;
-         Ten cały blok komentarzy do usunięcia
-        */
-        initPlants(0, noPlantsFieldsForJungle);
-        initPlants(0, noPlantsFieldsForSteps);
+        this.noPlantsFieldsForJungle = PositionsGenerator.generateAllPositions(constants.getJungleBoundary());
+        this.noPlantsFieldsForSteps = PositionsGenerator.generateStepsPositionList(
+                constants.getMapBoundary(), constants.getJungleBoundary());
+        initAnimals(constants.getStartingAnimalNumber());
     }
 
     public int getSimulationId() {
         return simulationId;
+    }
+
+    private void initAnimals(int animalsToAdd) {
+        for(int i=0; i<animalsToAdd; i++) {
+            addToAnimalMap(animalPositions, Animal.startingAnimal(simulationId));
+        }
     }
 
     private void initPlants(int grassToAdd, List<Vector2d> noGrassFields) {
@@ -54,7 +51,7 @@ public abstract class WorldMap {
         FisherYatesShuffle fisherYatesShuffle = new FisherYatesShuffle();
         List<Vector2d> newPositions = fisherYatesShuffle.getValues(grassToAdd, noGrassFields);
         for (Vector2d grassPosition : newPositions) {
-            plantPositions.put(grassPosition, new Plant(grassPosition));
+            plantPositions.add(grassPosition);
         }
         for (int i = 0; i < grassToAdd; i++) {
             /*
@@ -74,42 +71,40 @@ public abstract class WorldMap {
     }
 
     public void removeDeadAnimals() {
-        // not sure if it won't throw concurrentmodificationexception
-        // will have to test, but the idea of removing dead animals is I think correct
         for(List<Animal> animalList: animalPositions.values()) {
             animalList.removeIf(animal -> animal.getCurrentEnergy() <= 0);
         }
     }
 
     public void moveAnimals() {
-        // not sure if it won't throw concurrentmodificationexception
-        // will have to test, but the idea of moving animals is I think correct
+        Map<Vector2d, List<Animal>> newAnimalPositions = new HashMap<>();
+
         for(List<Animal> animalList: animalPositions.values()) {
             animalList.forEach(animal -> {
-                animalList.remove(animal);
                 moveSingleAnimal(animal);
-                animalPositions.get(animal.getPosition()).add(animal);
+                addToAnimalMap(newAnimalPositions, animal);
             });
         }
+
+        animalPositions = newAnimalPositions;
+
     }
 
     abstract void moveSingleAnimal(Animal animal);
 
     public void feedAnimals() {
-        for(Vector2d position : plantPositions.keySet()) {
-            // not sure if it won't throw concurrentmodificationexception
-            // will have to test, but the idea of feeding animals is I think correct
+        for(Vector2d position : plantPositions) {
             List<Animal> animalsOnTile = animalPositions.get(position);
             if(!animalsOnTile.isEmpty()) {
                 AnimalPrioritySorter.sortAnimals(animalsOnTile);
 
                 animalsOnTile.get(0).consume();
 
-                plantPositions.remove(position);
                 if(insideJungle(position)) noPlantsFieldsForJungle.add(position);
                 else noPlantsFieldsForSteps.add(position);
             }
         }
+        plantPositions.removeIf(pos -> animalPositions.get(pos) != null);
     }
 
     public void reproduceAnimals() {
@@ -142,8 +137,26 @@ public abstract class WorldMap {
         initPlants(newStepsPlants, noPlantsFieldsForSteps);
     }
 
+    protected void addToAnimalMap(Map<Vector2d, List<Animal>> animalList, Animal animal) {
+        List<Animal> destinationAnimalList = animalList.get(animal.getPosition());
+        if(destinationAnimalList == null) {
+            List<Animal> animalListNew = new ArrayList<>();
+            animalListNew.add(animal);
+            animalList.put(animal.getPosition(), animalListNew);
+        }
+        else {
+            destinationAnimalList.add(animal);
+        }
+    }
+
     public WorldElement objectAt(Vector2d position) {
-        return !animalPositions.get(position).isEmpty() ? animalPositions.get(position).get(0) : plantPositions.get(position);
+        if(!animalPositions.get(position).isEmpty()) {
+            return animalPositions.get(position).get(0);
+        }
+        if(plantPositions.contains(position)){
+            return new Plant(position);
+        }
+        return null;
     }
 
     private boolean insideJungle(Vector2d position) {

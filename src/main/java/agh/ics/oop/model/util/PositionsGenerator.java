@@ -25,7 +25,18 @@ public class PositionsGenerator implements Iterable<Vector2d> {
         nPositions = generateAllPositions().subList(0, numToGenerate);
     }
 
-    private List<Vector2d> generateAllPositions() {
+    public List<Vector2d> generateAllPositions() {
+        return generateAllPositions(startX, startY, finishX, finishY);
+    }
+    public static List<Vector2d> generateAllPositions(Boundary bounds) {
+        int startX = bounds.lowerLeft().getX();
+        int startY = bounds.lowerLeft().getY();
+        int finishX = bounds.upperRight().getX();
+        int finishY = bounds.upperRight().getY();
+        return generateAllPositions(startX, startY, finishX, finishY);
+    }
+
+    public static List<Vector2d> generateAllPositions(int startX, int startY, int finishX, int finishY) {
         List<Vector2d> allPositions = new ArrayList<>();
         for(int x=startX; x<=finishX; x++) {
             for(int y=startY; y<=finishY; y++) {
@@ -41,6 +52,12 @@ public class PositionsGenerator implements Iterable<Vector2d> {
         int heightDelta = RandomNumberGenerator.getRandomInRange(size2d.getY());
 
         return boundary.lowerLeft().add(new Vector2d(widthDelta, heightDelta));
+    }
+
+    public static List<Vector2d> generateStepsPositionList(Boundary mapBoundary, Boundary jgBoundary) {
+        List<Vector2d> positionList = generateAllPositions(mapBoundary);
+        positionList.removeIf(jgBoundary::insideBoundary);
+        return positionList;
     }
 
 
