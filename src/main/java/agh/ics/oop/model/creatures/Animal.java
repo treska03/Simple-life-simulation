@@ -14,27 +14,27 @@ public class Animal implements WorldElement {
     private Vector2d position;
     private int currentEnergy;
     private int childrenNumber = 0;
-    private Genes genes;
+    private Genome genome;
 
-    private Animal(Vector2d start, int simulationId, Genes genes){
+    private Animal(Vector2d start, int simulationId, Genome genes){
         this.position = start;
         this.simulationId = simulationId;
         this.orientation = MapDirection.values()[(RandomNumberGenerator.getRandomInRange(7))];
         this.constants = ConstantsList.getConstants(simulationId);
         this.currentEnergy = constants.getNewAnimalEnergy();
-        this.genes = genes;
+        this.genome = genes;
     }
 
     public static Animal fromParents(Animal p1, Animal p2) {
-        Genes genes = Genes.fromParents(p1, p2);
-        return new Animal(p1.getPosition(), p1.simulationId, genes);
+        Genome genome = Genome.fromParents(p1, p2);
+        return new Animal(p1.getPosition(), p1.simulationId, genome);
     }
 
     public static Animal startingAnimal(int simulationId) {
-        Genes genes = Genes.startingAnimalGenes(simulationId);
+        Genome genome = Genome.startingAnimalGenome(simulationId);
         Vector2d startPos = PositionsGenerator.generateRandomPosition(
                 ConstantsList.getConstants(simulationId).getMapBoundary());
-        return new Animal(startPos, simulationId, genes);
+        return new Animal(startPos, simulationId, genome);
     }
 
     public String toString() {
@@ -47,7 +47,7 @@ public class Animal implements WorldElement {
 
     public void move() {
         // get new orientation and move according to it forward
-        orientation = orientation.rotate(genes.getCurrentMove());
+        orientation = orientation.rotate(genome.getCurrentMove());
         position = position.add(orientation.toUnitVector());
     }
 
@@ -90,20 +90,12 @@ public class Animal implements WorldElement {
         return currentEnergy;
     }
 
-    public Genes getGenes() {
-        return genes;
-    }
-
-    public void setCurrentEnergy(int currentEnergy) { // only for tests
-        this.currentEnergy = currentEnergy;
+    public Genome getGenes() {
+        return genome;
     }
 
     public void removeEnergy(int energyToRemove) {
         this.currentEnergy -= energyToRemove;
-    }
-
-    public void setGenes(Genes genes) { // only for tests
-        this.genes = genes;
     }
 
     public void addChildrenCount() {
@@ -119,5 +111,15 @@ public class Animal implements WorldElement {
 
     public void setPosition(Vector2d position) {
         this.position = position;
+    }
+
+    // only for tests
+    public void setCurrentEnergyForTests(int currentEnergy) {
+        this.currentEnergy = currentEnergy;
+    }
+
+    // Only for tests
+    public void setGenesForTests(Genome genes) {
+        this.genome = genes;
     }
 }

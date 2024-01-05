@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class Genes{
+public class Genome {
     private final int simulationId;
     private final Constants constants;
     private final int NUMBER_OF_GENES;
@@ -19,7 +19,7 @@ public class Genes{
     private int startMoveNumber;
     private int moveNumber = 0; //number of already made moves
 
-    private Genes(int simulationId) {
+    private Genome(int simulationId) {
         this.simulationId = simulationId;
         this.constants = ConstantsList.getConstants(simulationId);
         this.NUMBER_OF_GENES = constants.getNumberOfGenes();
@@ -49,7 +49,7 @@ public class Genes{
         return moveList[currGeneIdx];
     }
 
-    public static Genes fromParents(Animal animal1, Animal animal2) {
+    public static Genome fromParents(Animal animal1, Animal animal2) {
 //        Main constructor, for gene.
 //        Used after initial creation of first animals in simulation
 //
@@ -57,7 +57,7 @@ public class Genes{
 //
 //        Returns: Gene
 
-        Genes newGene = new Genes(animal1.getGenes().getSimulationId());
+        Genome newGene = new Genome(animal1.getGenes().getSimulationId());
 
         Animal dominant;
         Animal minor;
@@ -108,10 +108,10 @@ public class Genes{
     }
 
 
-    public static Genes startingAnimalGenes(int simulationId) {
+    public static Genome startingAnimalGenome(int simulationId) {
         // choosing randomly genes
         Random random = new Random();
-        Genes genes = new Genes(simulationId);
+        Genome genes = new Genome(simulationId);
         for (int i = 0; i < genes.NUMBER_OF_GENES; i++){
             genes.moveList[i] = random.nextInt(8);
         }
@@ -155,11 +155,13 @@ public class Genes{
         return moveList;
     }
 
-    public void setMoveList(int[] moveList) { // only for tests
+    // only for tests
+    public void setMoveListForTests(int[] moveList) {
         this.moveList = moveList;
     }
 
-    public void setStartMoveNumber(int startMoveNumber) { // only for tests
+    // only for tests
+    public void setStartMoveNumberForTests(int startMoveNumber) {
         this.startMoveNumber = startMoveNumber;
     }
 }

@@ -184,4 +184,5 @@ public abstract class WorldMap {
     public List<Vector2d> getNoPlantsFieldsForSteps() {
         return noPlantsFieldsForSteps;
     }
+
 }

@@ -1,18 +1,14 @@
 package agh.ics.oop.model.map;
 
-import agh.ics.oop.model.DummyDataForTests;
+import agh.ics.oop.model.ConstantSetterForTests;
 import agh.ics.oop.model.Vector2d;
 import agh.ics.oop.model.creatures.Animal;
-import agh.ics.oop.model.info.ConstantsList;
-import agh.ics.oop.model.util.Boundary;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class WorldMapTest {
 
@@ -31,7 +27,8 @@ class WorldMapTest {
 //        int DAILY_NEW_GRASS_NUMBER = 25;
 //        int ENERGY_FROM_PLANT = 20;
 //        Boundary MAP_BOUNDARY = new Boundary(new Vector2d(0, 0), new Vector2d(10, 10));
-        DummyDataForTests.setUpConstants(simulationId);
+        ConstantSetterForTests dummyData = new ConstantSetterForTests();
+        dummyData.setUpConstants(simulationId);
         this.worldMap = new NormalMap(simulationId);
     }
 
@@ -44,7 +41,7 @@ class WorldMapTest {
         for(List<Animal> animalList : worldMap.animalPositions.values()) {
             for(Animal animal : animalList) {
                 if(i == 0) {
-                    animal.setCurrentEnergy(0);
+                    animal.setCurrentEnergyForTests(0);
                 }
                 i = (i + 1) % 3;
             }
@@ -99,10 +96,10 @@ class WorldMapTest {
         Animal animal3 = Animal.startingAnimal(simulationId);
         Animal animal4 = Animal.startingAnimal(simulationId);
 
-        animal1.setCurrentEnergy(50);
-        animal2.setCurrentEnergy(50);
-        animal3.setCurrentEnergy(50);
-        animal4.setCurrentEnergy(40);
+        animal1.setCurrentEnergyForTests(50);
+        animal2.setCurrentEnergyForTests(50);
+        animal3.setCurrentEnergyForTests(50);
+        animal4.setCurrentEnergyForTests(40);
 
         animal1.setPosition(new Vector2d(0, 0));
         animal2.setPosition(new Vector2d(1, 0));
