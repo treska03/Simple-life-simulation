@@ -8,6 +8,8 @@ import agh.ics.oop.model.info.Constants;
 import agh.ics.oop.model.info.ConstantsList;
 import agh.ics.oop.model.util.*;
 import agh.ics.oop.model.Vector2d;
+import agh.ics.oop.model.info.Stats;
+import agh.ics.oop.model.info.StatsList;
 
 import java.util.*;
 
@@ -16,6 +18,7 @@ public abstract class WorldMap {
 
     protected int simulationId;
     protected final Constants constants;
+    private final Stats stats;
     protected List<MapChangeListener> observers = new ArrayList<>();
     protected Map<Vector2d, List<Animal>> animalPositions = new HashMap<>();
     protected final HashSet<Vector2d> plantPositions = new HashSet<>();
@@ -26,6 +29,7 @@ public abstract class WorldMap {
     public WorldMap(int simulationId) {
         this.simulationId = simulationId;
         this.constants = ConstantsList.getConstants(simulationId);
+        this.stats = StatsList.getStats(simulationId);
         this.noPlantsFieldsForJungle = PositionsGenerator.generateAllPositions(constants.getJungleBoundary());
         this.noPlantsFieldsForSteps = PositionsGenerator.generateStepsPositionList(
                 constants.getMapBoundary(), constants.getJungleBoundary());
@@ -38,7 +42,9 @@ public abstract class WorldMap {
 
     private void initAnimals(int animalsToAdd) {
         for(int i=0; i<animalsToAdd; i++) {
-            addToAnimalMap(animalPositions, Animal.startingAnimal(simulationId));
+            Animal animal = Animal.startingAnimal(simulationId);
+            addToAnimalMap(animalPositions, animal);
+            stats.addStartingAnimal(animal);
         }
     }
 
@@ -111,8 +117,14 @@ public abstract class WorldMap {
         for(List<Animal> animalsOnTile : animalPositions.values()) {
             if(animalsOnTile.size() >= 2) {
                 AnimalPrioritySorter.sortAnimals(animalsOnTile);
-                Animal child = animalsOnTile.get(0).reproduce(animalsOnTile.get(1));
-                if(child != null) animalsOnTile.add(child);
+                Animal parent1 = animalsOnTile.get(0);
+                Animal parent2 = animalsOnTile.get(1);
+                Animal child = parent1.reproduce(parent2);
+                if(child != null) {
+                    animalsOnTile.add(child);
+                    stats.addAnimalHavingParents(child, parent1, parent2);
+                }
+
             }
         }
     }

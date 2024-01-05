@@ -6,10 +6,12 @@ import agh.ics.oop.model.info.Constants;
 import agh.ics.oop.model.info.ConstantsList;
 import agh.ics.oop.model.util.PositionsGenerator;
 import agh.ics.oop.model.util.RandomNumberGenerator;
+import java.util.UUID;
 
 public class Animal implements WorldElement {
     private final int simulationId;
     private final Constants constants;
+    private final UUID id;
     private MapDirection orientation;
     private Vector2d position;
     private int currentEnergy;
@@ -19,6 +21,7 @@ public class Animal implements WorldElement {
     private Animal(Vector2d start, int simulationId, Genome genes){
         this.position = start;
         this.simulationId = simulationId;
+        this.id = UUID.randomUUID();
         this.orientation = MapDirection.values()[(RandomNumberGenerator.getRandomInRange(7))];
         this.constants = ConstantsList.getConstants(simulationId);
         this.currentEnergy = constants.getNewAnimalEnergy();
@@ -92,6 +95,10 @@ public class Animal implements WorldElement {
 
     public Genome getGenes() {
         return genome;
+    }
+
+    public UUID getId() {
+        return id;
     }
 
     public void removeEnergy(int energyToRemove) {
