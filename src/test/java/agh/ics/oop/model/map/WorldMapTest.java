@@ -1,7 +1,9 @@
 package agh.ics.oop.model.map;
 
 import agh.ics.oop.model.ConstantSetterForTests;
-import agh.ics.oop.model.Vector2d;
+import agh.ics.oop.model.info.Stats;
+import agh.ics.oop.model.info.StatsList;
+import agh.ics.oop.model.util.Vector2d;
 import agh.ics.oop.model.creatures.Animal;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -29,6 +31,8 @@ class WorldMapTest {
 //        Boundary MAP_BOUNDARY = new Boundary(new Vector2d(0, 0), new Vector2d(10, 10));
         ConstantSetterForTests dummyData = new ConstantSetterForTests();
         dummyData.setUpConstants(simulationId);
+        Stats stats = new Stats(0); // default number of ticks
+        StatsList.addToStatsList(1, stats);
         this.worldMap = new NormalMap(simulationId);
     }
 
@@ -37,7 +41,6 @@ class WorldMapTest {
         worldMap.removeDeadAnimals();
 
         int i = 0;
-        //
         for(List<Animal> animalList : worldMap.animalPositions.values()) {
             for(Animal animal : animalList) {
                 if(i == 0) {
@@ -66,8 +69,6 @@ class WorldMapTest {
 
         Assertions.assertEquals(15, animalCount);
         Assertions.assertEquals(10, animalCountAfterClear);
-
-
     }
 
     @Test

@@ -1,9 +1,7 @@
 package agh.ics.oop.model.info;
 
-import agh.ics.oop.model.Vector2d;
+import agh.ics.oop.model.util.Vector2d;
 import agh.ics.oop.model.util.Boundary;
-
-import java.util.HashMap;
 
 public class Constants {
     private final boolean BACK_AND_FORTH;

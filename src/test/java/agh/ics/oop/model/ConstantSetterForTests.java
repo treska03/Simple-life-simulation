@@ -3,6 +3,7 @@ package agh.ics.oop.model;
 import agh.ics.oop.model.info.Constants;
 import agh.ics.oop.model.info.ConstantsList;
 import agh.ics.oop.model.util.Boundary;
+import agh.ics.oop.model.util.Vector2d;
 
 public class ConstantSetterForTests {
     private boolean BACK_AND_FORTH = false;

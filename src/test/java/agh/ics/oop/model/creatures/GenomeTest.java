@@ -1,14 +1,13 @@
-package agh.ics.oop.model;
+package agh.ics.oop.model.creatures;
 
-import agh.ics.oop.model.creatures.Animal;
-import agh.ics.oop.model.creatures.Genome;
+import agh.ics.oop.model.ConstantSetterForTests;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import java.util.*;
 
-public class GenesTest {
+public class GenomeTest {
     @Test
-    public void GetMove_test() {
+    public void getMove_test() {
 
         // creating default list of genes
         int[] moveList = {0,1,7,6,2,3,5,4};
@@ -51,7 +50,7 @@ public class GenesTest {
     }
 
     @Test
-    public void fromParents() {
+    public void fromParents_test() {
         /*
          if there is no mutations in the list of genes can be made only in 2 ways
          result1 and result2 in this example

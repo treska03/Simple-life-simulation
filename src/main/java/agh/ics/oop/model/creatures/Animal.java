@@ -1,6 +1,6 @@
 package agh.ics.oop.model.creatures;
 
-import agh.ics.oop.model.Vector2d;
+import agh.ics.oop.model.util.Vector2d;
 import agh.ics.oop.model.enums.MapDirection;
 import agh.ics.oop.model.info.Constants;
 import agh.ics.oop.model.info.ConstantsList;

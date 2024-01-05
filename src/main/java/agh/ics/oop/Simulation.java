@@ -5,7 +5,7 @@ import agh.ics.oop.model.info.Constants;
 import agh.ics.oop.model.info.ConstantsList;
 import agh.ics.oop.model.info.Stats;
 import agh.ics.oop.model.info.StatsList;
-import agh.ics.oop.model.Vector2d;
+import agh.ics.oop.model.util.Vector2d;
 import agh.ics.oop.model.map.WorldMap;
 
 import java.util.ArrayList;

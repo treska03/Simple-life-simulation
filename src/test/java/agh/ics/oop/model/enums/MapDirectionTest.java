@@ -2,7 +2,7 @@ package agh.ics.oop.model.enums;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import agh.ics.oop.model.Vector2d;
+import agh.ics.oop.model.util.Vector2d;
 
 public class MapDirectionTest {
     @Test

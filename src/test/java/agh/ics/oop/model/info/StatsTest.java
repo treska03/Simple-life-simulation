@@ -4,6 +4,7 @@ import agh.ics.oop.model.ConstantSetterForTests;
 import agh.ics.oop.model.creatures.Animal;
 import agh.ics.oop.model.util.GraphVertex;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.util.HashSet;
 import java.util.List;
@@ -11,14 +12,19 @@ import java.util.Map;
 import java.util.UUID;
 
 public class StatsTest {
-    @Test
-    public void addStartingAnimaTest(){
+    private Stats stats;
+
+    @BeforeEach
+    void setUp() {
         // creating stats and default constants
-        Stats stats = new Stats(0); // default number of ticks
+        this.stats = new Stats(0); // default number of ticks
         StatsList.addToStatsList(1, stats);
         ConstantSetterForTests constantSetter = new ConstantSetterForTests();
         constantSetter.setUpConstants(1);
-
+    }
+    
+    @Test
+    public void addStartingAnimaTest(){
         // creating animals
         Animal animal1 = Animal.startingAnimal(1);
         Animal animal2 = Animal.startingAnimal(1);
@@ -40,12 +46,6 @@ public class StatsTest {
     public void addAnimalHavingParents(){
         //this test doesn't check the list of descendants
         //another test is designed for this purpose;
-
-        // creating stats and default constants
-        Stats stats = new Stats(0); // default number of ticks
-        StatsList.addToStatsList(1, stats);
-        ConstantSetterForTests constantSetter = new ConstantSetterForTests();
-        constantSetter.setUpConstants(1);
 
         // creating animals
         Animal parent1 = Animal.startingAnimal(1);
@@ -71,12 +71,6 @@ public class StatsTest {
 
     @Test
     public void descendantsListTest(){
-        // creating stats, default constants
-        Stats stats = new Stats(0); // default number of ticks
-        StatsList.addToStatsList(1, stats);
-        ConstantSetterForTests constantSetter = new ConstantSetterForTests();
-        constantSetter.setUpConstants(1);
-
         // creating animals and adding them to stats
         Animal animal1 = Animal.startingAnimal(1);
         Animal animal2 = Animal.startingAnimal(1);
