@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 public class Vector2dTest {
 
     @Test
-    public void Equals_test() {
+    public void testEquals() {
         Vector2d vector1 = new Vector2d(3, 0);
         Vector2d vector2 = new Vector2d(3, 0);
         Vector2d vector3 = new Vector2d(3, 3);
@@ -19,7 +19,7 @@ public class Vector2dTest {
     }
 
     @Test
-    public void ToString_test() {
+    public void testToString() {
         Vector2d vector1 = new Vector2d(3, 0);
         Vector2d vector2 = new Vector2d(0, 3);
         Vector2d vector3 = new Vector2d(3, 3);
@@ -30,7 +30,7 @@ public class Vector2dTest {
     }
 
     @Test
-    public void Precedes_test() {
+    public void testPrecedes() {
         Vector2d vector1 = new Vector2d(1, 1);
         Vector2d vector2 = new Vector2d(2, 2);
         Vector2d vector3 = new Vector2d(2, 3);
@@ -47,7 +47,7 @@ public class Vector2dTest {
     }
 
     @Test
-    public void Follows_test() {
+    public void testFollows() {
         Vector2d vector1 = new Vector2d(1, 1);
         Vector2d vector2 = new Vector2d(2, 2);
         Vector2d vector3 = new Vector2d(2, 3);
@@ -64,7 +64,7 @@ public class Vector2dTest {
     }
 
     @Test
-    public void UpperRight_test() {
+    public void testUpperRight() {
         Vector2d vector1 = new Vector2d(1, 1);
         Vector2d vector2 = new Vector2d(2, 2);
         Vector2d vector3 = new Vector2d(2, 3);
@@ -82,7 +82,7 @@ public class Vector2dTest {
     }
 
     @Test
-    public void LowerLeft_test() {
+    public void testLowerLeft() {
         Vector2d vector1 = new Vector2d(1, 1);
         Vector2d vector2 = new Vector2d(2, 2);
         Vector2d vector3 = new Vector2d(2, 3);
@@ -99,7 +99,7 @@ public class Vector2dTest {
     }
 
     @Test
-    public void Add_test() {
+    public void testAdd() {
         Vector2d vector1 = new Vector2d(1, 1);
         Vector2d vector2 = new Vector2d(2, 2);
         Vector2d vector3 = new Vector2d(2, 3);
@@ -127,7 +127,7 @@ public class Vector2dTest {
     }
 
     @Test
-    public void Subtract_test() {
+    public void testSubtract() {
         Vector2d vector1 = new Vector2d(1, 1);
         Vector2d vector2 = new Vector2d(2, 2);
         Vector2d vector3 = new Vector2d(2, 3);
@@ -154,7 +154,7 @@ public class Vector2dTest {
     }
 
     @Test
-    public void Opposite_test() {
+    public void testOpposite() {
         Vector2d vector1 = new Vector2d(1, 1);
         Vector2d vector2 = new Vector2d(2, 2);
         Vector2d vector3 = new Vector2d(2, 3);

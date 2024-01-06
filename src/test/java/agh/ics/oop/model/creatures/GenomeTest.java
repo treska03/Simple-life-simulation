@@ -7,7 +7,7 @@ import java.util.*;
 
 public class GenomeTest {
     @Test
-    public void getCurrentMove_test() {
+    public void testGetCurrentMove() {
 
         // creating default list of genes
         int[] moveList = {0,1,7,6,2,3,5,4};
@@ -48,7 +48,7 @@ public class GenomeTest {
     }
 
     @Test
-    public void fromParents_test() {
+    public void testFromParents() {
         /*
          if there is no mutations in the list of genes can be made only in 2 ways
          result1 and result2 in this example

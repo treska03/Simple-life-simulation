@@ -7,7 +7,7 @@ import java.util.UUID;
 
 public class GraphVertexTest {
     @Test
-    public void children_test(){
+    public void testChildren(){
         // creating graph vertices
         GraphVertex parent = new GraphVertex(UUID.randomUUID());
         GraphVertex child1 = new GraphVertex(UUID.randomUUID());

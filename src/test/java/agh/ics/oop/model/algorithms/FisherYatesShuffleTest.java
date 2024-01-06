@@ -9,7 +9,7 @@ import java.util.List;
 
 public class FisherYatesShuffleTest {
     @Test
-    public void getIntegerValues_test() {
+    public void testGetIntegerValues() {
         List<Integer> list = new ArrayList<>();
         list.add(3);
         list.add(2);
@@ -33,7 +33,7 @@ public class FisherYatesShuffleTest {
     }
 
     @Test
-    public void getVector2DValues_test() {
+    public void testGetVector2DValues() {
         List<Vector2d> list = new ArrayList<>();
         list.add(new Vector2d(3,3));
         list.add(new Vector2d(2,2));

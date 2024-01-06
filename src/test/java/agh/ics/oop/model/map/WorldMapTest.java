@@ -36,7 +36,7 @@ class WorldMapTest {
     }
 
     @Test
-    void removeDeadAnimals() {
+    void testRemoveDeadAnimals() {
         worldMap.removeDeadAnimals();
 
         int i = 0;
@@ -71,7 +71,7 @@ class WorldMapTest {
     }
 
     @Test
-    void moveAnimals() {
+    void testMoveAnimals() {
         // Sometimes it randomly doesn't work
 
         Optional<List<Animal>> firstList = worldMap.animalPositions.values().stream().findFirst();
@@ -90,7 +90,7 @@ class WorldMapTest {
     }
 
     @Test
-    void feedAnimals() {
+    void testFeedAnimals() {
         Animal animal1 = Animal.startingAnimal(simulationId);
         Animal animal2 = Animal.startingAnimal(simulationId);
         Animal animal3 = Animal.startingAnimal(simulationId);
@@ -123,12 +123,12 @@ class WorldMapTest {
     }
 
     @Test
-    void reproduceAnimals() {
+    void testReproduceAnimals() {
         worldMap.reproduceAnimals();
     }
 
     @Test
-    void growPlants() {
+    void testGrowPlants() {
         Assertions.assertEquals(0, worldMap.plantPositions.size());
         worldMap.growPlants();
         Assertions.assertEquals(25, worldMap.plantPositions.size());

@@ -22,7 +22,7 @@ public class StatsTest {
     }
 
     @Test
-    public void addStartingAnimaTest(){
+    public void testAddStartingAnimal(){
         // this test doesn't check genes related statistics;
         // another test is designed for this purpose;
 
@@ -44,7 +44,7 @@ public class StatsTest {
     }
 
     @Test
-    public void addAnimalHavingParents(){
+    public void testAddAnimalHavingParents(){
         /*
          this test doesn't check the list of descendants
          and genes related statistics;
@@ -74,7 +74,7 @@ public class StatsTest {
     }
 
     @Test
-    public void descendantsListTest(){
+    public void TestDescendantsList(){
         // creating animals and adding them to stats
         Animal animal1 = Animal.startingAnimal(1);
         Animal animal2 = Animal.startingAnimal(1);
@@ -185,7 +185,7 @@ public class StatsTest {
     }
 
     @Test
-    public void genesStats_test(){
+    public void testGenesStats(){
         // create animal1 with given moveList1
         Animal animal1 = Animal.startingAnimal(1);
         int[] moveList1 = {3,3,3,5,4,0};
