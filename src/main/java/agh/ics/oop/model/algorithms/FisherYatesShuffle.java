@@ -1,4 +1,4 @@
-package agh.ics.oop.model.util;
+package agh.ics.oop.model.algorithms;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,8 +1,9 @@
-package agh.ics.oop.model.util;
+package agh.ics.oop.model.algorithms;
 
+import agh.ics.oop.model.algorithms.FisherYatesShuffle;
+import agh.ics.oop.model.util.Vector2d;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
 import java.util.ArrayList;
 import java.util.List;
 

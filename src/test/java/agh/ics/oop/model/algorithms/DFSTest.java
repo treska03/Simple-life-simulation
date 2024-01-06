@@ -1,5 +1,7 @@
-package agh.ics.oop.model.util;
+package agh.ics.oop.model.algorithms;
 
+import agh.ics.oop.model.algorithms.DFS;
+import agh.ics.oop.model.util.GraphVertex;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import java.util.List;

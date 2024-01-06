@@ -1,8 +1,7 @@
 package agh.ics.oop.model.info;
 
 import agh.ics.oop.model.creatures.Animal;
-import agh.ics.oop.model.creatures.Genome;
-import agh.ics.oop.model.util.DFS;
+import agh.ics.oop.model.algorithms.DFS;
 import agh.ics.oop.model.util.GraphVertex;
 
 import java.util.*;

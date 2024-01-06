@@ -1,6 +1,7 @@
 package agh.ics.oop.model.map;
 
 import agh.ics.oop.model.*;
+import agh.ics.oop.model.algorithms.FisherYatesShuffle;
 import agh.ics.oop.model.creatures.Animal;
 import agh.ics.oop.model.creatures.Plant;
 import agh.ics.oop.model.creatures.WorldElement;
@@ -10,7 +11,6 @@ import agh.ics.oop.model.util.*;
 import agh.ics.oop.model.util.Vector2d;
 import agh.ics.oop.model.info.Stats;
 import agh.ics.oop.model.info.StatsList;
-
 import java.util.*;
 
 

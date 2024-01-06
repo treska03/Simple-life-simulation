@@ -2,7 +2,7 @@ package agh.ics.oop.model.creatures;
 
 import agh.ics.oop.model.info.Constants;
 import agh.ics.oop.model.info.ConstantsList;
-import agh.ics.oop.model.util.FisherYatesShuffle;
+import agh.ics.oop.model.algorithms.FisherYatesShuffle;
 
 import java.util.ArrayList;
 import java.util.List;

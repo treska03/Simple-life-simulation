@@ -1,9 +1,6 @@
 package agh.ics.oop;
-import agh.ics.oop.model.*;
-import javafx.application.Application;
 
-import java.util.ArrayList;
-import java.util.List;
+import javafx.application.Application;
 
 public class World {
     public static void main(String[] args) throws InterruptedException {

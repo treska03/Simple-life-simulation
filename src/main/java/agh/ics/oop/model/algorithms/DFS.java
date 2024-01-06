@@ -1,4 +1,6 @@
-package agh.ics.oop.model.util;
+package agh.ics.oop.model.algorithms;
+
+import agh.ics.oop.model.util.GraphVertex;
 
 import java.util.ArrayList;
 import java.util.HashSet;
