@@ -1,5 +1,7 @@
 package agh.ics.oop.model.creatures;
 
+import agh.ics.oop.model.info.Stats;
+import agh.ics.oop.model.info.StatsList;
 import agh.ics.oop.model.util.Vector2d;
 import agh.ics.oop.model.enums.MapDirection;
 import agh.ics.oop.model.info.Constants;
@@ -11,11 +13,13 @@ import java.util.UUID;
 public class Animal implements WorldElement {
     private final int simulationId;
     private final Constants constants;
+    private final Stats stats;
     private final UUID id;
     private MapDirection orientation;
     private Vector2d position;
     private int currentEnergy;
     private int childrenNumber = 0;
+    private final int dateOfBirth;
     private Genome genome;
 
     private Animal(Vector2d start, int simulationId, Genome genome){
@@ -25,6 +29,8 @@ public class Animal implements WorldElement {
         this.orientation = MapDirection.values()[(RandomNumberGenerator.getRandomInRange(7))];
         this.constants = ConstantsList.getConstants(simulationId);
         this.currentEnergy = constants.getNewAnimalEnergy();
+        this.stats = StatsList.getStats(simulationId);
+        this.dateOfBirth = stats.getDay();
         this.genome = genome;
     }
 
@@ -71,8 +77,6 @@ public class Animal implements WorldElement {
         animal.removeEnergy(0);
         this.addChildrenCount();
         animal.addChildrenCount();
-        this.addChildrenCountToAncestors();
-        animal.addChildrenCountToAncestors();
 
         return child;
     }
@@ -112,12 +116,13 @@ public class Animal implements WorldElement {
     public void addChildrenCount() {
         childrenNumber++;
     }
-    public void addChildrenCountToAncestors() {
-        return;
-    }
 
     public int getChildrenNumber() {
         return childrenNumber;
+    }
+
+    public int getDateOfBirth() {
+        return dateOfBirth;
     }
 
     public void setPosition(Vector2d position) {
@@ -129,7 +134,7 @@ public class Animal implements WorldElement {
         this.currentEnergy = currentEnergy;
     }
 
-    // Only for tests
+    // only for tests
     public void setGenesForTests(Genome genes) {
         this.genome = genes;
     }

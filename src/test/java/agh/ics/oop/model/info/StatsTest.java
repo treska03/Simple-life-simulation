@@ -14,7 +14,7 @@ public class StatsTest {
     @BeforeEach
     void setUp() {
         // creating stats and default constants
-        this.stats = new Stats(0); // default number of ticks
+        this.stats = new Stats();
         StatsList.addToStatsList(1, stats);
         ConstantSetterForTests constantSetter = new ConstantSetterForTests();
         constantSetter.setNUMBER_OF_GENS(6);
@@ -48,7 +48,7 @@ public class StatsTest {
         /*
          this test doesn't check the list of descendants
          and genes related statistics;
-         another tests are designed for this purpose;
+         another tests are designed for those purposes;
         */
 
         // creating animals
@@ -110,7 +110,7 @@ public class StatsTest {
         Assertions.assertTrue(descendants1.contains(animal4.getId()));
 
         // checking if the size of the HashSet of descendants is correct
-        Assertions.assertEquals(1, descendants1.size());
+        Assertions.assertEquals(1, stats.getNumberOfDescendants());
 
         // creating animals and adding them to stats
         Animal animal5 = Animal.fromParents(animal2, animal3);
@@ -156,7 +156,7 @@ public class StatsTest {
         Assertions.assertTrue(descendants2.contains(animal8.getId()));
 
         // checking if the size of the HashSet of descendants is correct
-        Assertions.assertEquals(4, descendants2.size());
+        Assertions.assertEquals(4, stats.getNumberOfDescendants());
 
         // deleting mark
         stats.deleteMark();
@@ -181,7 +181,7 @@ public class StatsTest {
         Assertions.assertTrue(descendants4.contains(animal8.getId()));
 
         // checking if the size of the HashSet of descendants is correct
-        Assertions.assertEquals(3, descendants4.size());
+        Assertions.assertEquals(3, stats.getNumberOfDescendants());
     }
 
     @Test
@@ -199,16 +199,16 @@ public class StatsTest {
         stats.reportAddingStartingAnimal(animal2);
 
         /*
-         genotype  |  number of each genotype  |  animals having this genotype
-         __________|___________________________|______________________________
-             0     |             2             |        animal1, animal2
-             1     |             2             |             animal2
-             2     |             2             |             animal2
-             3     |             3             |             animal1
-             4     |             1             |             animal1
-             5     |             1             |             animal1
-             6     |             0             |                -
-             7     |             1             |             animal2
+          genotype  |  number of each genotype  |  animals having this genotype
+         ___________|___________________________|_______________________________
+             0      |             2             |        animal1, animal2
+             1      |             2             |            animal2
+             2      |             2             |            animal2
+             3      |             3             |            animal1
+             4      |             1             |            animal1
+             5      |             1             |            animal1
+             6      |             0             |               -
+             7      |             1             |            animal2
         */
 
         // check if the number of each genotype is correct
@@ -223,23 +223,24 @@ public class StatsTest {
         Assertions.assertEquals(popularGenotypeAnimals1, correctPopularGenotypeAnimals1);
 
 
-        // create animal3 with given moveList3
-        Animal animal3 = Animal.startingAnimal(1);
+        // create animal3 with given moveList3;
+        // genes are in fact not inherited from parents for the test purpose;
+        Animal animal3 = Animal.fromParents(animal1, animal2);
         int[] moveList3 = {2,2,3,4,7,7};
         animal3.getGenome().setMoveListForTests(moveList3);
-        stats.reportAddingStartingAnimal(animal3);
+        stats.reportAddingAnimalHavingParents(animal3, animal1, animal2);
 
         /*
-         genotype  |  number of each genotype  |  animals having this genotype
-         __________|___________________________|______________________________
-             0     |             2             |        animal1, animal2
-             1     |             2             |             animal2
-             2     |             4             |        animal2, animal3
-             3     |             4             |        animal1, animal3
-             4     |             2             |        animal1, animal3
-             5     |             1             |             animal1
-             6     |             0             |                -
-             7     |             3             |        animal2, animal3
+          genotype  |  number of each genotype  |  animals having this genotype
+         ___________|___________________________|_______________________________
+             0      |             2             |        animal1, animal2
+             1      |             2             |            animal2
+             2      |             4             |        animal2, animal3
+             3      |             4             |        animal1, animal3
+             4      |             2             |        animal1, animal3
+             5      |             1             |            animal1
+             6      |             0             |               -
+             7      |             3             |        animal2, animal3
         */
 
         // check if the number of each genotype is correct
@@ -255,23 +256,24 @@ public class StatsTest {
         correctPopularGenotypeAnimals2.add(animal3);
         Assertions.assertEquals(popularGenotypeAnimals2, correctPopularGenotypeAnimals2);
 
-        // create animal4 with given moveList4
-        Animal animal4 = Animal.startingAnimal(1);
+        // create animal4 with given moveList4;
+        // genes are in fact not inherited from parents for the test purpose;
+        Animal animal4 = Animal.fromParents(animal1, animal2);
         int[] moveList4 = {5,5,5,0,7,7};
         animal4.getGenome().setMoveListForTests(moveList4);
-        stats.reportAddingStartingAnimal(animal4);
+        stats.reportAddingAnimalHavingParents(animal4, animal1, animal2);
 
         /*
-         genotype  |  number of each genotype  |  animals having this genotype
-         __________|___________________________|______________________________
-             0     |             3             |   animal1, animal2, animal4
-             1     |             2             |             animal2
-             2     |             4             |        animal2, animal3
-             3     |             4             |        animal1, animal3
-             4     |             2             |        animal1, animal3
-             5     |             4             |        animal1, animal4
-             6     |             0             |                -
-             7     |             5             |   animal2, animal3, animal4
+          genotype  |  number of each genotype  |  animals having this genotype
+         ___________|___________________________|_______________________________
+             0      |             3             |   animal1, animal2, animal4
+             1      |             2             |            animal2
+             2      |             4             |        animal2, animal3
+             3      |             4             |        animal1, animal3
+             4      |             2             |        animal1, animal3
+             5      |             4             |        animal1, animal4
+             6      |             0             |               -
+             7      |             5             |   animal2, animal3, animal4
         */
 
         // check if the number of each genotype is correct
@@ -291,16 +293,16 @@ public class StatsTest {
         stats.reportDeathOfAnimal(animal3);
 
         /*
-         genotype  |  number of each genotype  |  animals having this genotype
-         __________|___________________________|______________________________
-             0     |             3             |   animal1, animal2, animal4
-             1     |             2             |             animal2
-             2     |             2             |             animal2
-             3     |             3             |             animal1
-             4     |             1             |             animal1
-             5     |             4             |        animal1, animal4
-             6     |             0             |                -
-             7     |             3             |        animal2, animal4
+          genotype  |  number of each genotype  |  animals having this genotype
+         ___________|___________________________|_______________________________
+             0      |             3             |   animal1, animal2, animal4
+             1      |             2             |            animal2
+             2      |             2             |            animal2
+             3      |             3             |            animal1
+             4      |             1             |            animal1
+             5      |             4             |        animal1, animal4
+             6      |             0             |               -
+             7      |             3             |        animal2, animal4
         */
 
         // check if the number of each genotype is correct
@@ -314,5 +316,90 @@ public class StatsTest {
         correctPopularGenotypeAnimals4.add(animal1);
         correctPopularGenotypeAnimals4.add(animal4);
         Assertions.assertEquals(popularGenotypeAnimals4, correctPopularGenotypeAnimals4);
+    }
+
+    @Test
+    public void testTimeStats(){
+        // day 1;
+        // adding animal1 and animal2;
+        Animal animal1 = Animal.startingAnimal(1);
+        stats.reportAddingStartingAnimal(animal1);
+        Animal animal2 = Animal.startingAnimal(1);
+        stats.reportAddingStartingAnimal(animal2);
+        stats.reportEndOfTheDay(null); // the map is not used in this test
+
+        // day 2;
+        // adding animal3;
+        Animal animal3 = Animal.fromParents(animal1, animal2);
+        stats.reportAddingAnimalHavingParents(animal3, animal1, animal2);
+        stats.reportEndOfTheDay(null);
+
+        // no one has died yet, so it should be a default value, which is 0
+        Assertions.assertEquals(0, stats.getAverageDaysOfLiving());
+
+        // day 3;
+        // mark animal 3;
+        // adding animal 4;
+        stats.addMark(animal3);
+        Animal animal4 = Animal.fromParents(animal1, animal2);
+        stats.reportAddingAnimalHavingParents(animal4, animal1, animal2);
+        stats.reportEndOfTheDay(null);
+
+        // day 4;
+        // remove animal1
+        stats.reportDeathOfAnimal(animal1);
+        stats.reportEndOfTheDay(null);
+
+        // day 5;
+        // remove animal4
+        stats.reportDeathOfAnimal(animal4);
+
+        /*
+            animal  |  day of birth  |  day of death  |  days of living
+          __________|________________|________________|_________________
+           animal1  |        1       |       4        |        3
+           animal2  |        1       |       -        |        4
+           animal3  |        2       |       -        |        3
+           animal4  |        3       |       5        |        2
+        */
+
+        // checking days of living for marked animal (animal3)
+        Assertions.assertEquals(3, stats.getDaysOfLiving());
+        // checking average days of living for dead animals
+        Assertions.assertEquals(2.5, stats.getAverageDaysOfLiving());
+
+        stats.reportEndOfTheDay(null);
+
+        // day 6;
+        // adding animal 5;
+        Animal animal5 = Animal.fromParents(animal1, animal2);
+        stats.reportAddingAnimalHavingParents(animal5, animal2, animal3);
+        stats.reportEndOfTheDay(null);
+
+        // day 7;
+        // mark animal 5;
+        stats.addMark(animal2);
+        stats.reportEndOfTheDay(null);
+
+        // day 8;
+        // remove animal2
+        // remove animal3
+        stats.reportDeathOfAnimal(animal2);
+        stats.reportDeathOfAnimal(animal3);
+
+        /*
+            animal  |  day of birth  |  day of death  |  days of living
+          __________|________________|________________|_________________
+           animal1  |        1       |       4        |        3
+           animal2  |        1       |       8        |        7
+           animal3  |        2       |       8        |        6
+           animal4  |        3       |       5        |        2
+           animal5  |        6       |       -        |        2
+        */
+
+        // checking the day of death for marked animal (animal2)
+        Assertions.assertEquals(8, stats.getDayOfDeath());
+        // checking average days of living for dead animals
+        Assertions.assertEquals(4.5, stats.getAverageDaysOfLiving());
     }
 }

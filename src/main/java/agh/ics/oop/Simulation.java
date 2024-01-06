@@ -27,15 +27,15 @@ public class Simulation implements Runnable{
 
     @Override
     public void run() {
-        int i = 0;
 
-        for(int tick = 0; tick < stats.getNumberOfTicks(); tick++) {
+        for (int day = 0; day < 10; day++) { // end condition only temporarily
 
             gameMap.removeDeadAnimals();
             gameMap.moveAnimals();
             gameMap.feedAnimals();
             gameMap.reproduceAnimals();
             gameMap.growPlants();
+            stats.reportEndOfTheDay(gameMap);
 
             try {
                 Thread.sleep(500);

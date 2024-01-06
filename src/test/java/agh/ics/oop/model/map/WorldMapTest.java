@@ -30,7 +30,7 @@ class WorldMapTest {
 //        Boundary MAP_BOUNDARY = new Boundary(new Vector2d(0, 0), new Vector2d(10, 10));
         ConstantSetterForTests dummyData = new ConstantSetterForTests();
         dummyData.setUpConstants(simulationId);
-        Stats stats = new Stats(0); // default number of ticks
+        Stats stats = new Stats();
         StatsList.addToStatsList(1, stats);
         this.worldMap = new NormalMap(simulationId);
     }
