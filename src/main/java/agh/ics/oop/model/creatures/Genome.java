@@ -49,6 +49,12 @@ public class Genome {
         return moveList[currGeneIdx];
     }
 
+    public int getActivatedGene(){
+        int currentGene = getCurrentMove();
+        moveNumber-=1;
+        return currentGene;
+    }
+
     public static Genome fromParents(Animal animal1, Animal animal2) {
 //        Main constructor, for gene.
 //        Used after initial creation of first animals in simulation
@@ -57,7 +63,7 @@ public class Genome {
 //
 //        Returns: Gene
 
-        Genome newGene = new Genome(animal1.getGenes().getSimulationId());
+        Genome newGene = new Genome(animal1.getSimulationId());
 
         Animal dominant;
         Animal minor;
@@ -83,18 +89,18 @@ public class Genome {
         // copied genes from parents to child
         if (side == 0){
             for (int i = 0; i < numberOfGensFromDominant; i++){
-                newGene.moveList[i] = dominant.getGenes().moveList[i];
+                newGene.moveList[i] = dominant.getGenome().moveList[i];
             }
             for (int i = numberOfGensFromDominant; i < newGene.NUMBER_OF_GENES; i++){
-                newGene.moveList[i] = minor.getGenes().moveList[i];
+                newGene.moveList[i] = minor.getGenome().moveList[i];
             }
         }
         else {
             for (int i = 0; i < numberOfGensFromMinor; i++){
-                newGene.moveList[i] = minor.getGenes().moveList[i];
+                newGene.moveList[i] = minor.getGenome().moveList[i];
             }
             for (int i = numberOfGensFromMinor; i < newGene.NUMBER_OF_GENES; i++){
-                newGene.moveList[i] = dominant.getGenes().moveList[i];
+                newGene.moveList[i] = dominant.getGenome().moveList[i];
             }
         }
 
@@ -145,10 +151,6 @@ public class Genome {
     private void setStartMoveNumber() {
         Random random = new Random();
         this.startMoveNumber = random.nextInt(8);
-    }
-
-    public int getSimulationId() {
-        return simulationId;
     }
 
     public int[] getMoveList() {

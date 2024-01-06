@@ -1,4 +1,4 @@
-package agh.ics.oop.model;
+package agh.ics.oop.model.util;
 
 import agh.ics.oop.model.util.Vector2d;
 import org.junit.jupiter.api.Assertions;

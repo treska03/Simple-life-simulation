@@ -23,7 +23,7 @@ public class DFSTest {
          |    v         v                     v           |
          - > [11]      [12]  < - - - - - - - [13] < - - - -
 
-         [1], [2], [3] and [4] are roots
+         [1], [2], [3] and [4] are roots;
          [1] - first
          [2] - second
          [3] - third

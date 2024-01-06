@@ -44,7 +44,7 @@ public abstract class WorldMap {
         for(int i=0; i<animalsToAdd; i++) {
             Animal animal = Animal.startingAnimal(simulationId);
             addToAnimalMap(animalPositions, animal);
-            stats.addStartingAnimal(animal);
+            stats.reportAddingStartingAnimal(animal);
         }
     }
 
@@ -122,7 +122,7 @@ public abstract class WorldMap {
                 Animal child = parent1.reproduce(parent2);
                 if(child != null) {
                     animalsOnTile.add(child);
-                    stats.addAnimalHavingParents(child, parent1, parent2);
+                    stats.reportAddingAnimalHavingParents(child, parent1, parent2);
                 }
 
             }

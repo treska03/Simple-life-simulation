@@ -18,14 +18,14 @@ public class Animal implements WorldElement {
     private int childrenNumber = 0;
     private Genome genome;
 
-    private Animal(Vector2d start, int simulationId, Genome genes){
+    private Animal(Vector2d start, int simulationId, Genome genome){
         this.position = start;
         this.simulationId = simulationId;
         this.id = UUID.randomUUID();
         this.orientation = MapDirection.values()[(RandomNumberGenerator.getRandomInRange(7))];
         this.constants = ConstantsList.getConstants(simulationId);
         this.currentEnergy = constants.getNewAnimalEnergy();
-        this.genome = genes;
+        this.genome = genome;
     }
 
     public static Animal fromParents(Animal p1, Animal p2) {
@@ -93,12 +93,16 @@ public class Animal implements WorldElement {
         return currentEnergy;
     }
 
-    public Genome getGenes() {
+    public Genome getGenome() {
         return genome;
     }
 
     public UUID getId() {
         return id;
+    }
+
+    public int getSimulationId() {
+        return simulationId;
     }
 
     public void removeEnergy(int energyToRemove) {

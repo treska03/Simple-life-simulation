@@ -7,7 +7,7 @@ import java.util.*;
 
 public class GenomeTest {
     @Test
-    public void getMove_test() {
+    public void getCurrentMove_test() {
 
         // creating default list of genes
         int[] moveList = {0,1,7,6,2,3,5,4};
@@ -17,36 +17,34 @@ public class GenomeTest {
         ConstantSetterForTests constantSetter1 = new ConstantSetterForTests();
         constantSetter1.setNUMBER_OF_GENS(8);
         constantSetter1.setBACK_AND_FORTH(false);
-        constantSetter1.setSTARTING_ANIMALS_NUMBER(1);
         constantSetter1.setUpConstants(1);
 
         // creating genome
-        Genome genes1 = Genome.startingAnimalGenome(1);
-        genes1.setStartMoveNumberForTests(6);
-        genes1.setMoveListForTests(moveList);
+        Genome genome1 = Genome.startingAnimalGenome(1);
+        genome1.setStartMoveNumberForTests(6);
+        genome1.setMoveListForTests(moveList);
 
         // tests
-        Assertions.assertEquals(genes1.getCurrentMove(), 5);
-        Assertions.assertEquals(genes1.getCurrentMove(), 4);
-        Assertions.assertEquals(genes1.getCurrentMove(), 0);
+        Assertions.assertEquals(genome1.getCurrentMove(), 5);
+        Assertions.assertEquals(genome1.getCurrentMove(), 4);
+        Assertions.assertEquals(genome1.getCurrentMove(), 0);
 
         // test for BACK_AND_FORTH = true
         // set constants
         ConstantSetterForTests constantSetter2 = new ConstantSetterForTests();
         constantSetter2.setNUMBER_OF_GENS(8);
         constantSetter2.setBACK_AND_FORTH(true);
-        constantSetter2.setSTARTING_ANIMALS_NUMBER(1);
         constantSetter2.setUpConstants(2);
 
         // creating genome
-        Genome genes2 = Genome.startingAnimalGenome(2);
-        genes2.setStartMoveNumberForTests(6);
-        genes2.setMoveListForTests(moveList);
+        Genome genome2 = Genome.startingAnimalGenome(2);
+        genome2.setStartMoveNumberForTests(6);
+        genome2.setMoveListForTests(moveList);
 
         // tests
-        Assertions.assertEquals(genes2.getCurrentMove(), 5);
-        Assertions.assertEquals(genes2.getCurrentMove(), 4);
-        Assertions.assertEquals(genes2.getCurrentMove(), 4);
+        Assertions.assertEquals(genome2.getCurrentMove(), 5);
+        Assertions.assertEquals(genome2.getCurrentMove(), 4);
+        Assertions.assertEquals(genome2.getCurrentMove(), 4);
     }
 
     @Test
@@ -59,6 +57,7 @@ public class GenomeTest {
         int[] result1 = {0, 1, 6, 7, 4, 5, 6, 7};
         int[] result2 = {4, 5, 6, 7, 4, 5, 2, 3};
 
+        // declaring variables that will be later used
         Animal parent1;
         Animal parent2;
 
@@ -70,10 +69,10 @@ public class GenomeTest {
         constantSetter1.setUpConstants(1);
         parent1 = setParent(1, 1);
         parent2 = setParent(1, 2);
-        Genome genes3 = Genome.fromParents(parent1, parent2);
+        Genome genome1 = Genome.fromParents(parent1, parent2);
 
         // checking if the list of genes is either equal (by values) to result1 or result2
-        int[] receivedList = genes3.getMoveList();
+        int[] receivedList = genome1.getMoveList();
         boolean check1 = Arrays.equals(receivedList, result1);
         boolean check2 = Arrays.equals(receivedList, result2);
         Assertions.assertTrue(check1 || check2);
@@ -86,10 +85,10 @@ public class GenomeTest {
         constantSetter2.setUpConstants(2);
         parent1 = setParent(2,1);
         parent2 = setParent(2,2);
-        Genome genes4 = Genome.fromParents(parent1, parent2);
+        Genome genome2 = Genome.fromParents(parent1, parent2);
 
         // checking if the numbers of inherited genes from parents is correct
-        int numberOfInherited2 = getNumberOfInherited(genes4, result1, result2);
+        int numberOfInherited2 = getNumberOfInherited(genome2, result1, result2);
         Assertions.assertTrue(numberOfInherited2 >= 5);
 
         // creating genes5 and set constants
@@ -100,10 +99,10 @@ public class GenomeTest {
         constantSetter3.setUpConstants(3);
         parent1 = setParent(3,1);
         parent2 = setParent(3,2);
-        Genome genes5 = Genome.fromParents(parent1, parent2);
+        Genome genome3 = Genome.fromParents(parent1, parent2);
 
         // checking if the numbers of inherited genes from parents is correct
-        int numberOfInherited3 = getNumberOfInherited(genes5, result1, result2);
+        int numberOfInherited3 = getNumberOfInherited(genome3, result1, result2);
         Assertions.assertTrue(numberOfInherited3 >= 7);
     }
 

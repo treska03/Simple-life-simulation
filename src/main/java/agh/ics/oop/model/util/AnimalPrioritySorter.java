@@ -23,7 +23,7 @@ public class AnimalPrioritySorter {
     public static void sortByAge(List<Animal> animalList) {
         // Sorts in place by Age of each animal
         // TODO: Fix not reversing comparator.
-        animalList.sort(Comparator.comparingInt(animal -> animal.getGenes().getCurrentMove()));
+        animalList.sort(Comparator.comparingInt(animal -> animal.getGenome().getCurrentMove()));
     }
     public static void sortByChildrenNo(List<Animal> animalList) {
         // Sorts in place by Children number of each animal
