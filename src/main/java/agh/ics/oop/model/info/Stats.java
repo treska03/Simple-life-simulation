@@ -8,17 +8,20 @@ import agh.ics.oop.model.util.GraphVertex;
 import java.util.*;
 
 public class Stats {
-    private final Map<UUID, GraphVertex> familyTree = new HashMap<>();
-    private Animal markedAnimal;
-    private boolean markedAnimalIsDead = false;
-    private int daysOfLiving;
-    private int dayOfDeath;
-    private final HashSet<UUID> descendants = new HashSet<>();
+    private int day = 1;
     private final int[] numberOfEachGenotype = new int[8];
     private int sumOfDaysOfLiving = 0;
     private int numberOfDeadAnimals = 0;
     private final HashSet<Animal>[] commonGenotypeAnimals = new HashSet[8];
-    private int day = 1;
+    private Animal markedAnimal;
+    private boolean markedAnimalIsDead = false;
+    private int daysOfLiving;
+    private int dayOfDeath;
+    private int currentEnergy;
+    private int childrenNumber = 0;
+    private int numberOfEatenPlants = 0;
+    private final HashSet<UUID> descendants = new HashSet<>();
+    private final Map<UUID, GraphVertex> familyTree = new HashMap<>();
 
     public Stats() {
         for (int i = 0; i < 8; i++) {
@@ -95,8 +98,14 @@ public class Stats {
 
     public void reportEndOfTheDay(WorldMap map){
         day++;
-        if (!(markedAnimal == null) && !markedAnimalIsDead){
-            daysOfLiving++;
+        // statistics for marked animal
+        if (!(markedAnimal == null)){
+            if (!markedAnimalIsDead){
+                daysOfLiving++;
+            }
+            currentEnergy = markedAnimal.getCurrentEnergy();
+            numberOfEatenPlants = markedAnimal.getNumberOfEatenPlants();
+            childrenNumber = markedAnimal.getChildrenNumber();
         }
     }
 
@@ -168,6 +177,14 @@ public class Stats {
         return 0; // default if there are no dead animals
     }
 
+    public Animal getMarkedAnimal() {
+        return markedAnimal;
+    }
+
+    public boolean isMarkedAnimalIsDead() {
+        return markedAnimalIsDead;
+    }
+
     public int[] getGenome(){
         return markedAnimal.getGenome().getMoveList();
     }
@@ -176,16 +193,28 @@ public class Stats {
         return markedAnimal.getGenome().getActivatedGene();
     }
 
+    public int getCurrentEnergy() {
+        return currentEnergy;
+    }
+
+    public int getChildrenNumber() {
+        return childrenNumber;
+    }
+
+    public int getNumberOfEatenPlants() {
+        return numberOfEatenPlants;
+    }
+
+    public int getNumberOfDescendants() {
+        return descendants.size();
+    }
+
     public int getDaysOfLiving() {
         return daysOfLiving;
     }
 
     public int getDayOfDeath() {
         return dayOfDeath;
-    }
-
-    public int getNumberOfDescendants() {
-        return descendants.size();
     }
 
     // only for tests

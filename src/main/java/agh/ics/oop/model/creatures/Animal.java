@@ -19,6 +19,7 @@ public class Animal implements WorldElement {
     private Vector2d position;
     private int currentEnergy;
     private int childrenNumber = 0;
+    private int numberOfEatenPlants = 0;
     private final int dateOfBirth;
     private Genome genome;
 
@@ -61,7 +62,8 @@ public class Animal implements WorldElement {
     }
 
     public void consume() {
-        this.currentEnergy += constants.getEnergyFromPlant();
+        currentEnergy += constants.getEnergyFromPlant();
+        numberOfEatenPlants++;
     }
 
     public Animal reproduce(Animal animal) {
@@ -119,6 +121,10 @@ public class Animal implements WorldElement {
 
     public int getChildrenNumber() {
         return childrenNumber;
+    }
+
+    public int getNumberOfEatenPlants() {
+        return numberOfEatenPlants;
     }
 
     public int getDateOfBirth() {
