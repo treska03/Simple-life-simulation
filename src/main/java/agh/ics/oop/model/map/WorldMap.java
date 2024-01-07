@@ -18,8 +18,8 @@ public abstract class WorldMap {
 
     protected int simulationId;
     protected final Constants constants;
-    private final Stats stats;
-    private final List<MapChangeListener> observers = new ArrayList<>();
+    protected final Stats stats;
+    protected final List<MapChangeListener> observers = new ArrayList<>();
     protected Map<Vector2d, List<Animal>> animalPositions = new HashMap<>();
     private final HashSet<Vector2d> plantPositions = new HashSet<>();
     private final List<Vector2d> noPlantsFieldsForJungle;
@@ -84,11 +84,22 @@ public abstract class WorldMap {
 
     public void removeDeadAnimals() {
         for(List<Animal> animalList: animalPositions.values()) {
-            for (Animal animal : animalList){
+            Iterator<Animal> iterator = animalList.iterator();
+            while (iterator.hasNext()) {
+                Animal animal = iterator.next();
                 if (animal.getCurrentEnergy() <= 0){
+                    iterator.remove();
                     stats.reportDeathOfAnimal(animal);
-                    animalList.remove(animal);
                 }
+            }
+        }
+        Iterator<Map.Entry<Vector2d, List<Animal>>> iterator = animalPositions.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<Vector2d, List<Animal>> entry = iterator.next();
+            List<Animal> animalsOnTile = entry.getValue();
+
+            if (animalsOnTile.isEmpty()) {
+                iterator.remove();
             }
         }
     }
@@ -112,7 +123,7 @@ public abstract class WorldMap {
     public void feedAnimals() {
         for(Vector2d position : plantPositions) {
             List<Animal> animalsOnTile = animalPositions.get(position);
-            if(!animalsOnTile.isEmpty()) {
+            if(animalsOnTile != null) {
                 AnimalPrioritySorter.sortAnimals(animalsOnTile);
 
                 animalsOnTile.get(0).consume();
@@ -215,5 +226,54 @@ public abstract class WorldMap {
 
     public Map<Vector2d, List<Animal>> getAnimalPositions() {
         return animalPositions;
+    }
+
+    // only for tests
+    public void setAnimalPositionsForTests(Map<Vector2d, List<Animal>> animalPositions) {
+        // delete previous animals from stats
+        for (List<Animal> animalList : this.animalPositions.values()){
+            for (Animal animal : animalList){
+                stats.reportDeathOfAnimal(animal);
+            }
+        }
+        stats.getFamilyTreeForTests().clear();
+        stats.setNumberOfDeadAnimalsForTests(0);
+        stats.setSumOfEnergyForTests(0);
+        stats.setNumberOfNewAnimalsForTests(0);
+
+        // replace the hash set of existing animals
+        this.animalPositions = animalPositions;
+
+        // add new animals to stats
+        for (List<Animal> animalList : animalPositions.values()){
+            for (Animal animal : animalList){
+                stats.reportAddingStartingAnimal(animal);
+            }
+        }
+    }
+
+    // only for tests
+    public void setPlantPositionsForTests(HashSet<Vector2d> newPlantPositions) {
+        // remove all plants
+        for (Vector2d position : plantPositions){
+            if (insideJungle(position)){
+                noPlantsFieldsForJungle.add(position);
+            }
+            else {
+                noPlantsFieldsForSteps.add(position);
+            }
+        }
+        plantPositions.clear();
+
+        // set new plants
+        for (Vector2d position : newPlantPositions){
+            if (insideJungle(position)){
+                noPlantsFieldsForJungle.remove(position);
+            }
+            else {
+                noPlantsFieldsForJungle.remove(position);
+            }
+            plantPositions.add(position);
+        }
     }
 }

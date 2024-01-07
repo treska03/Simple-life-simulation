@@ -27,8 +27,9 @@ public class Simulation implements Runnable{
     @Override
     public void run() {
 
-        for (int day = 0; day < 10; day++) { // end condition only temporarily
+        for (int day = 1; day <= 10; day++) { // end condition only temporarily
 
+            gameMap.reduceAnimalEnergy();
             gameMap.removeDeadAnimals();
             gameMap.moveAnimals();
             gameMap.feedAnimals();

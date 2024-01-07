@@ -2,7 +2,12 @@ package agh.ics.oop.model.info;
 
 import agh.ics.oop.model.ConstantSetterForTests;
 import agh.ics.oop.model.creatures.Animal;
+import agh.ics.oop.model.creatures.Genome;
+import agh.ics.oop.model.enums.MapDirection;
+import agh.ics.oop.model.map.NormalMap;
+import agh.ics.oop.model.map.WorldMap;
 import agh.ics.oop.model.util.GraphVertex;
+import agh.ics.oop.model.util.Vector2d;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,15 +15,22 @@ import java.util.*;
 
 public class StatsTest {
     private Stats stats;
+    private Constants constants;
 
     @BeforeEach
     void setUp() {
         // creating stats and default constants
-        this.stats = new Stats(1);
-        StatsList.addToStatsList(1, stats);
         ConstantSetterForTests constantSetter = new ConstantSetterForTests();
         constantSetter.setNumberOfGenes(6);
+        constantSetter.setEnergyRequiredForReproduction(25);
+        constantSetter.setEnergyUsedForReproduction(10);
+        constantSetter.setNewAnimalEnergy(15);
+        constantSetter.setDailyEnergyLoss(4);
+        constantSetter.setEnergyFromPlant(21);
         constantSetter.setUpConstants(1);
+        this.constants = ConstantsList.getConstants(1);
+        this.stats = new Stats(1);
+        StatsList.addToStatsList(1, stats);
     }
 
     @Test
@@ -100,7 +112,6 @@ public class StatsTest {
         // marking animal1 and getting its descendants and the family tree
         stats.addMark(animal1);
         HashSet<UUID> descendants1 = stats.getDescendantsForTests();
-        Map<UUID, GraphVertex> familyTree1 = stats.getFamilyTreeForTests();
 
         // checking if correct animals' Ids are in the HashSet of descendants of animal1
         // and incorrect are not;
@@ -142,7 +153,6 @@ public class StatsTest {
 
         // getting descendants of animal1 and the family tree
         HashSet<UUID> descendants2 = stats.getDescendantsForTests();
-        Map<UUID, GraphVertex> familyTree2 = stats.getFamilyTreeForTests();
 
         // checking if correct animals' Ids are in the HashSet of descendants of animal1
         // and incorrect are not;
@@ -320,19 +330,22 @@ public class StatsTest {
 
     @Test
     public void testTimeStats(){
+        // create default map
+        WorldMap map = new NormalMap(1);
+
         // day 1;
         // adding animal1 and animal2;
         Animal animal1 = Animal.startingAnimal(1);
         stats.reportAddingStartingAnimal(animal1);
         Animal animal2 = Animal.startingAnimal(1);
         stats.reportAddingStartingAnimal(animal2);
-        stats.reportEndOfTheDay(null); // the map is not used in this test
+        stats.reportEndOfTheDay(map);
 
         // day 2;
         // adding animal3;
         Animal animal3 = Animal.fromParents(animal1, animal2);
         stats.reportAddingAnimalHavingParents(animal3, animal1, animal2);
-        stats.reportEndOfTheDay(null);
+        stats.reportEndOfTheDay(map);
 
         // no one has died yet, so it should be a default value, which is 0
         Assertions.assertEquals(0, stats.getAverageDaysOfLiving());
@@ -343,12 +356,12 @@ public class StatsTest {
         stats.addMark(animal3);
         Animal animal4 = Animal.fromParents(animal1, animal2);
         stats.reportAddingAnimalHavingParents(animal4, animal1, animal2);
-        stats.reportEndOfTheDay(null);
+        stats.reportEndOfTheDay(map);
 
         // day 4;
         // remove animal1
         stats.reportDeathOfAnimal(animal1);
-        stats.reportEndOfTheDay(null);
+        stats.reportEndOfTheDay(map);
 
         // day 5;
         // remove animal4
@@ -368,18 +381,18 @@ public class StatsTest {
         // checking average days of living for dead animals
         Assertions.assertEquals(2.5, stats.getAverageDaysOfLiving());
 
-        stats.reportEndOfTheDay(null);
+        stats.reportEndOfTheDay(map);
 
         // day 6;
         // adding animal 5;
         Animal animal5 = Animal.fromParents(animal1, animal2);
         stats.reportAddingAnimalHavingParents(animal5, animal2, animal3);
-        stats.reportEndOfTheDay(null);
+        stats.reportEndOfTheDay(map);
 
         // day 7;
         // mark animal 5;
         stats.addMark(animal2);
-        stats.reportEndOfTheDay(null);
+        stats.reportEndOfTheDay(map);
 
         // day 8;
         // remove animal2
@@ -401,5 +414,244 @@ public class StatsTest {
         Assertions.assertEquals(8, stats.getDayOfDeath());
         // checking average days of living for dead animals
         Assertions.assertEquals(4.5, stats.getAverageDaysOfLiving());
+    }
+
+    @Test
+    public void testEmptyFields(){
+        /*
+         create map;
+         map's lowerLeft boundary is (0,0)
+         and upperRight Boundary is (10,10);
+         so there are 100 fields in this map;
+        */
+        WorldMap map = new NormalMap(1);
+
+        // setting plants on: (10,10), (30,20), (30,40), (60,60) positions
+        HashSet<Vector2d> plantPositions = new HashSet<>();
+        plantPositions.add(new Vector2d(1, 1));
+        plantPositions.add(new Vector2d(3, 2));
+        plantPositions.add(new Vector2d(3, 4));
+        plantPositions.add(new Vector2d(6, 6));
+        map.setPlantPositionsForTests(plantPositions);
+
+        // setting 2 animals on: (30,20) position;
+        // setting 1 animal each on: (20, 20), (50, 50) positions;
+        HashMap<Vector2d, List<Animal>> animalPositions = new HashMap<>();
+        Animal animal1 = Animal.startingAnimal(1);
+        animal1.setPosition(new Vector2d(3, 2));
+        Animal animal2 = Animal.startingAnimal(1);
+        animal2.setPosition(new Vector2d(3, 2));
+        animalPositions.put(new Vector2d(3, 2), Arrays.asList(animal1, animal2));
+        Animal animal3 = Animal.startingAnimal(1);
+        animal3.setPosition(new Vector2d(2, 2));
+        animalPositions.put(new Vector2d(2, 2), List.of(animal3));
+        Animal animal4 = Animal.startingAnimal(1);
+        animal4.setPosition(new Vector2d(5, 5));
+        animalPositions.put(new Vector2d(5, 5), List.of(animal4));
+        map.setAnimalPositionsForTests(animalPositions);
+
+        // taking statistics as the day ends
+        stats.reportEndOfTheDay(map);
+        int numberOfEmptyFields = stats.getNumberOfEmptyFields();
+
+        /*
+         There are:
+         100 fields;
+         4 fields containing plants;
+         3 fields containing animals;
+         1 filed containing both plant and animal(s);
+         So the number of empty fields (based on inclusion - exclusion principle)
+         should be 100 - 4 - 3 + 1 = 94;
+        */
+
+        // checking if the number of empty fields is correct
+        Assertions.assertEquals(94, numberOfEmptyFields);
+    }
+
+    @Test
+    public void testAverageEnergyStatistics() {
+        /*
+         Constants:
+         energy required for reproduction - 25;
+         energy used for reproduction - 10;
+         new animal energy - 15;
+         daily energy loss - 4;
+         energy from plant - 21;
+        */
+
+        // create map
+        WorldMap map = new NormalMap(1);
+
+        // add plants to map
+        HashSet<Vector2d> plantPositions = new HashSet<>();
+        plantPositions.add(new Vector2d(10, 10));
+        plantPositions.add(new Vector2d(8, 10));
+        map.setPlantPositionsForTests(plantPositions);
+
+        // add animals to map
+        HashMap<Vector2d, List<Animal>> animalPositions = new HashMap<>();
+
+        // add animal1
+        Animal animal1 = Animal.startingAnimal(1);
+        Genome genome1 = Genome.startingAnimalGenome(1);
+        genome1.setMoveListForTests(new int[]{0, 0, 0, 0, 0, 0});
+        animal1.setGenesForTests(genome1);
+        animal1.setOrientationForTests(MapDirection.WEST);
+        animal1.setPosition(new Vector2d(10, 10));
+        animalPositions.put(new Vector2d(10, 10),List.of(animal1));
+
+        // add animal2
+        Animal animal2 = Animal.startingAnimal(1);
+        Genome genome2 = Genome.startingAnimalGenome(1);
+        genome2.setMoveListForTests(new int[]{0, 0, 0, 0, 0, 0});
+        animal2.setGenesForTests(genome2);
+        animal2.setOrientationForTests(MapDirection.EAST);
+        animal2.setPosition(new Vector2d(8, 10));
+        animalPositions.put(new Vector2d(8, 10),List.of(animal2));
+
+        // add animal3
+        Animal animal3 = Animal.startingAnimal(1);
+        animal3.setPosition(new Vector2d(3, 3));
+        animalPositions.put(new Vector2d(3, 3), List.of(animal3));
+
+        map.setAnimalPositionsForTests(animalPositions);
+
+        /*
+            animal  |  current energy
+          __________|_________________
+           animal1  |        15
+           animal2  |        15
+           animal3  |        15
+        */
+
+        // check animals' current energy
+        Assertions.assertEquals(15, animal1.getCurrentEnergy());
+        Assertions.assertEquals(15, animal2.getCurrentEnergy());
+        Assertions.assertEquals(15, animal3.getCurrentEnergy());
+
+        // check average energy for living animals
+        Assertions.assertEquals(15, stats.getAverageEnergy());
+
+        // report end of day 0
+        stats.reportEndOfTheDay(map);
+
+        /*
+         day 1;
+         subtract animals' energy, kill dead animals (if they exist) and feed them;
+         other actions are skipped;
+         animal1 and animal2 will get energy from plants
+        */
+        map.reduceAnimalEnergy();
+        map.removeDeadAnimals();
+        map.feedAnimals();
+        stats.reportEndOfTheDay(map);
+
+        /*
+           animal   | energy before | daily lost | from plants | energy now
+          __________|_______________|____________|_____________|____________
+           animal1  |       15      |     -4     |     +21     |     32
+           animal2  |       15      |     -4     |     +21     |     32
+           animal3  |       15      |     -4     |      -      |     11
+        */
+
+        // check animals' current energy
+        Assertions.assertEquals(32, animal1.getCurrentEnergy());
+        Assertions.assertEquals(32, animal2.getCurrentEnergy());
+        Assertions.assertEquals(11, animal3.getCurrentEnergy());
+
+        // check average energy for living animals
+        Assertions.assertEquals(25, stats.getAverageEnergy());
+
+        /*
+         day 2;
+         subtract animals' energy, kill dead animals (if they exist), move them and reproduce them;
+         other actions are skipped;
+         animal1 and animal2 will be parents of new animal4;
+        */
+        map.reduceAnimalEnergy();
+        map.removeDeadAnimals();
+        map.moveAnimals();
+        map.reproduceAnimals();
+        stats.reportEndOfTheDay(map);
+
+        List<Animal> animalList = map.getAnimalPositions().get(new Vector2d(9, 10));
+        Animal animal4 = animalList.get(animalList.size() - 1);
+
+        /*
+           animal   | energy before | daily lost | reproduction | energy now
+          __________|_______________|____________|______________|____________
+           animal1  |       32      |     -4     |     -10      |      18
+           animal2  |       32      |     -4     |     -10      |      18
+           animal3  |       11      |     -4     |      -       |      7
+           animal4  |       -       |      -     |     +20      |      20
+        */
+
+        // check animals' current energy
+        Assertions.assertEquals(18, animal1.getCurrentEnergy());
+        Assertions.assertEquals(18, animal2.getCurrentEnergy());
+        Assertions.assertEquals(7, animal3.getCurrentEnergy());
+        Assertions.assertEquals(20, animal4.getCurrentEnergy());
+
+        // check average energy for living animals
+        Assertions.assertEquals(15.75, stats.getAverageEnergy());
+
+        /*
+         day 3 and 4;
+         subtract animals' energy every day, kill dead animals every day (if they exist);
+         other actions are skipped;
+         animal4 will die on the 4th day;
+        */
+        map.reduceAnimalEnergy();
+        map.removeDeadAnimals();
+        stats.reportEndOfTheDay(map);
+        map.reduceAnimalEnergy();
+        map.removeDeadAnimals();
+        stats.reportEndOfTheDay(map);
+
+        /*
+           animal   | energy before | 2 times daily lost | energy now
+          __________|_______________|____________________|____________
+           animal1  |       18      |         -8         |      10
+           animal2  |       18      |         -8         |      10
+           animal3  |       7       |         -7         |      -
+           animal4  |       20      |         -8         |      12
+        */
+
+        // check animals' current energy
+        Assertions.assertEquals(10, animal1.getCurrentEnergy());
+        Assertions.assertEquals(10, animal2.getCurrentEnergy());
+        Assertions.assertEquals(12, animal4.getCurrentEnergy());
+
+        // check average energy for living animals to the precision of two digits
+        System.out.println(stats.getAverageEnergy());
+        Assertions.assertTrue((stats.getAverageEnergy() - 10.66 > 0) &&
+                (stats.getAverageEnergy() - 10.67 < 0));
+
+        /*
+         day 5, 6 and 7;
+         subtract animals' energy every day, kill dead animals every day (if they exist);
+         other actions are skipped;
+         all animals will die on the 7th day;
+        */
+        map.reduceAnimalEnergy();
+        map.removeDeadAnimals();
+        stats.reportEndOfTheDay(map);
+        map.reduceAnimalEnergy();
+        map.removeDeadAnimals();
+        stats.reportEndOfTheDay(map);
+        map.reduceAnimalEnergy();
+        map.removeDeadAnimals();
+        stats.reportEndOfTheDay(map);
+
+        /*
+           animal   | energy before | 3 times daily lost | energy now
+          __________|_______________|____________________|____________
+           animal1  |       10      |        -10         |      -
+           animal2  |       10      |        -10         |      -
+           animal4  |       12       |       -12         |      -
+        */
+
+        // check default value if there are no live animals
+        Assertions.assertEquals(0, stats.getAverageEnergy());
     }
 }

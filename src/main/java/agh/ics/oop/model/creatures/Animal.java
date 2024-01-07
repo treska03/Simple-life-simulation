@@ -75,7 +75,6 @@ public class Animal implements WorldElement {
            animal.getCurrentEnergy() < constants.getEnergyRequiredForReproduction()) {
             return null;
         }
-
         Animal child = Animal.fromParents(this, animal);
 
         this.removeEnergy(constants.getEnergyUsedForReproduction());
@@ -144,7 +143,12 @@ public class Animal implements WorldElement {
     }
 
     // only for tests
-    public void setGenesForTests(Genome genes) {
-        this.genome = genes;
+    public void setGenesForTests(Genome genome) {
+        this.genome = genome;
+    }
+
+    // only for tests
+    public void setOrientationForTests(MapDirection orientation){
+        this.orientation = orientation;
     }
 }

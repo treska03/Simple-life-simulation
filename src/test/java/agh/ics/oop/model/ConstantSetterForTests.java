@@ -10,13 +10,13 @@ public class ConstantSetterForTests {
     private int NUMBER_OF_GENS = 10;
     private int MIN_MUTATIONS = 0;
     private int MAX_MUTATIONS = 3;
-    private int MIN_ENERGY_FOR_REPRODUCTION = 30;
-    private int ENERGY_USED_FOR_REPRODUCTION = 25;
+    private int MIN_ENERGY_FOR_REPRODUCTION = 25;
+    private int ENERGY_USED_FOR_REPRODUCTION = 10;
     private int STARTING_ANIMALS_NUMBER = 15;
     private int NEW_ANIMAL_ENERGY = 15;
     private int DAILY_NEW_GRASS_NUMBER = 25;
-    private int DAILY_ENERGY_LOSS = 5;
-    private int ENERGY_FROM_PLANT = 20;
+    private int DAILY_ENERGY_LOSS = 4;
+    private int ENERGY_FROM_PLANT = 21;
     private Boundary MAP_BOUNDARY = new Boundary(new Vector2d(0, 0), new Vector2d(10, 10));
 
     public void setUpConstants(int simulationId) {

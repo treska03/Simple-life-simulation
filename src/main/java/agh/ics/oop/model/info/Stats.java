@@ -122,21 +122,34 @@ public class Stats {
 
     public void reportEndOfTheDay(WorldMap map){
         day++;
+
         // subtract daily energy loss for all animals
         // that are alive and hasn't been born that day;
         sumOfEnergy -= (numberOfLiveAnimals - numberOfNewAnimals) * constants.getDailyEnergyLoss();
+
         numberOfNewAnimals = 0;
         numberOfPlants = map.getPlantPositions().size();
-        // counting how many fields contains both plant and at least one animal;
         numberOfEmptyFields = 0;
+
+        // counting number of all fields
+        int width = constants.getMapBoundary().upperRight().getX() -
+                constants.getMapBoundary().lowerLeft().getX();
+        int height = constants.getMapBoundary().upperRight().getY() -
+                constants.getMapBoundary().lowerLeft().getY();
+        int numberOfAllFields = height * width;
+
+        // counting how many fields contains both plant and at least one animal;
+        int numberOfCombinedFields = 0;
         for (Vector2d grassPosition : map.getPlantPositions()){
             if (map.getAnimalPositions().containsKey(grassPosition)) {
-                numberOfEmptyFields ++;
+                numberOfCombinedFields ++;
             }
         }
-        // Using inclusion - exclusion principle
+
+        // Use inclusion - exclusion principle
         // to calculate number of empty fields;
-        numberOfEmptyFields = numberOfPlants + map.getAnimalPositions().size() - numberOfEmptyFields;
+        numberOfEmptyFields = numberOfAllFields - numberOfPlants -
+                map.getAnimalPositions().size() + numberOfCombinedFields;
 
         // statistics for marked animal
         if (!(markedAnimal == null) && !(markedAnimalDead)){
@@ -276,6 +289,21 @@ public class Stats {
 
     public int getDayOfDeath() {
         return dayOfDeath;
+    }
+
+    // only for tests
+    public void setNumberOfDeadAnimalsForTests(int numberOfDeadAnimals) {
+        this.numberOfDeadAnimals = numberOfDeadAnimals;
+    }
+
+    // only for tests
+    public void setNumberOfNewAnimalsForTests(int numberOfNewAnimals) {
+        this.numberOfNewAnimals = numberOfNewAnimals;
+    }
+
+    // only for tests
+    public void setSumOfEnergyForTests(int sumOfEnergy) {
+        this.sumOfEnergy = sumOfEnergy;
     }
 
     // only for tests
