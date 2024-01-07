@@ -532,9 +532,6 @@ public class StatsTest {
         // check average energy for living animals
         Assertions.assertEquals(15, stats.getAverageEnergy());
 
-        // report end of day 0
-        stats.reportEndOfTheDay(map);
-
         /*
          day 1;
          subtract animals' energy, kill dead animals (if they exist) and feed them;

@@ -43,7 +43,6 @@ public class Stats {
         familyTree.put(animal.getId(), animalVertex);
 
         numberOfLiveAnimals++;
-        numberOfNewAnimals++;
         sumOfEnergy += constants.getNewAnimalEnergy();
         addToGenomeStats(animal);
     }
@@ -294,11 +293,6 @@ public class Stats {
     // only for tests
     public void setNumberOfDeadAnimalsForTests(int numberOfDeadAnimals) {
         this.numberOfDeadAnimals = numberOfDeadAnimals;
-    }
-
-    // only for tests
-    public void setNumberOfNewAnimalsForTests(int numberOfNewAnimals) {
-        this.numberOfNewAnimals = numberOfNewAnimals;
     }
 
     // only for tests

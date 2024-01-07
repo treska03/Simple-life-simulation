@@ -239,7 +239,6 @@ public abstract class WorldMap {
         stats.getFamilyTreeForTests().clear();
         stats.setNumberOfDeadAnimalsForTests(0);
         stats.setSumOfEnergyForTests(0);
-        stats.setNumberOfNewAnimalsForTests(0);
 
         // replace the hash set of existing animals
         this.animalPositions = animalPositions;
