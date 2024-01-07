@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 public class ConstantsList {
 
-    private static HashMap<Integer, Constants> constantsList = new HashMap<>();
+    private static final HashMap<Integer, Constants> constantsList = new HashMap<>();
 
     public static Constants getConstants(int simulationId) {
         return constantsList.get(simulationId);

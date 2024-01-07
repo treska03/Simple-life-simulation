@@ -15,8 +15,8 @@ public class GenomeTest {
         // test for BACK_AND_FORTH = false
         // set constants
         ConstantSetterForTests constantSetter1 = new ConstantSetterForTests();
-        constantSetter1.setNUMBER_OF_GENS(8);
-        constantSetter1.setBACK_AND_FORTH(false);
+        constantSetter1.setNumberOfGenes(8);
+        constantSetter1.setBackAndForth(false);
         constantSetter1.setUpConstants(1);
 
         // creating genome
@@ -32,8 +32,8 @@ public class GenomeTest {
         // test for BACK_AND_FORTH = true
         // set constants
         ConstantSetterForTests constantSetter2 = new ConstantSetterForTests();
-        constantSetter2.setNUMBER_OF_GENS(8);
-        constantSetter2.setBACK_AND_FORTH(true);
+        constantSetter2.setNumberOfGenes(8);
+        constantSetter2.setBackAndForth(true);
         constantSetter2.setUpConstants(2);
 
         // creating genome
@@ -63,9 +63,9 @@ public class GenomeTest {
 
         // creating genes3 and set constants
         ConstantSetterForTests constantSetter1 = new ConstantSetterForTests();
-        constantSetter1.setNUMBER_OF_GENS(8);
-        constantSetter1.setMIN_MUTATIONS(0);
-        constantSetter1.setMAX_MUTATIONS(0);
+        constantSetter1.setNumberOfGenes(8);
+        constantSetter1.setMinMutations(0);
+        constantSetter1.setMaxMutations(0);
         constantSetter1.setUpConstants(1);
         parent1 = setParent(1, 1);
         parent2 = setParent(1, 2);
@@ -79,9 +79,9 @@ public class GenomeTest {
 
         // creating genes4 and set constants
         ConstantSetterForTests constantSetter2 = new ConstantSetterForTests();
-        constantSetter2.setNUMBER_OF_GENS(8);
-        constantSetter2.setMIN_MUTATIONS(2);
-        constantSetter2.setMAX_MUTATIONS(3);
+        constantSetter2.setNumberOfGenes(8);
+        constantSetter2.setMinMutations(2);
+        constantSetter2.setMaxMutations(3);
         constantSetter2.setUpConstants(2);
         parent1 = setParent(2,1);
         parent2 = setParent(2,2);
@@ -93,9 +93,9 @@ public class GenomeTest {
 
         // creating genes5 and set constants
         ConstantSetterForTests constantSetter3 = new ConstantSetterForTests();
-        constantSetter3.setNUMBER_OF_GENS(8);
-        constantSetter3.setMIN_MUTATIONS(1);
-        constantSetter3.setMAX_MUTATIONS(1);
+        constantSetter3.setNumberOfGenes(8);
+        constantSetter3.setMinMutations(1);
+        constantSetter3.setMaxMutations(1);
         constantSetter3.setUpConstants(3);
         parent1 = setParent(3,1);
         parent2 = setParent(3,2);

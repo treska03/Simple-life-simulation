@@ -14,10 +14,10 @@ public class StatsTest {
     @BeforeEach
     void setUp() {
         // creating stats and default constants
-        this.stats = new Stats();
+        this.stats = new Stats(1);
         StatsList.addToStatsList(1, stats);
         ConstantSetterForTests constantSetter = new ConstantSetterForTests();
-        constantSetter.setNUMBER_OF_GENS(6);
+        constantSetter.setNumberOfGenes(6);
         constantSetter.setUpConstants(1);
     }
 

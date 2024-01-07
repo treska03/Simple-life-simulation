@@ -23,28 +23,31 @@ public class Animal implements WorldElement {
     private final int dateOfBirth;
     private Genome genome;
 
-    private Animal(Vector2d start, int simulationId, Genome genome){
+    private Animal(Vector2d start, int simulationId, Genome genome, int energy){
         this.position = start;
         this.simulationId = simulationId;
         this.id = UUID.randomUUID();
         this.orientation = MapDirection.values()[(RandomNumberGenerator.getRandomInRange(7))];
         this.constants = ConstantsList.getConstants(simulationId);
-        this.currentEnergy = constants.getNewAnimalEnergy();
+        this.currentEnergy = energy;
         this.stats = StatsList.getStats(simulationId);
         this.dateOfBirth = stats.getDay();
         this.genome = genome;
     }
 
     public static Animal fromParents(Animal p1, Animal p2) {
+        Constants constants = ConstantsList.getConstants(p1.getSimulationId());
         Genome genome = Genome.fromParents(p1, p2);
-        return new Animal(p1.getPosition(), p1.simulationId, genome);
+        int energy = 2 * constants.getEnergyUsedForReproduction();
+        return new Animal(p1.getPosition(), p1.simulationId, genome, energy);
     }
 
     public static Animal startingAnimal(int simulationId) {
+        Constants constants = ConstantsList.getConstants(simulationId);
         Genome genome = Genome.startingAnimalGenome(simulationId);
-        Vector2d startPos = PositionsGenerator.generateRandomPosition(
-                ConstantsList.getConstants(simulationId).getMapBoundary());
-        return new Animal(startPos, simulationId, genome);
+        Vector2d startPos = PositionsGenerator.generateRandomPosition(constants.getMapBoundary());
+        int energy = constants.getNewAnimalEnergy();
+        return new Animal(startPos, simulationId, genome, energy);
     }
 
     public String toString() {
@@ -75,8 +78,8 @@ public class Animal implements WorldElement {
 
         Animal child = Animal.fromParents(this, animal);
 
-        this.removeEnergy(0); //TODO: FIX REMOVING ENERGY
-        animal.removeEnergy(0);
+        this.removeEnergy(constants.getEnergyUsedForReproduction());
+        animal.removeEnergy(constants.getEnergyUsedForReproduction());
         this.addChildrenCount();
         animal.addChildrenCount();
 

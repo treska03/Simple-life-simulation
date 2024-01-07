@@ -139,7 +139,7 @@ public class Genome {
         for (int i = 0; i < NUMBER_OF_GENES; i++){
             indexes.add(i);
         }
-        FisherYatesShuffle fisherYatesShuffle = new FisherYatesShuffle();
+        FisherYatesShuffle<Integer> fisherYatesShuffle = new FisherYatesShuffle<>();
         List<Integer> indexesToMutate = fisherYatesShuffle.getValues(numberOfMutatingGens, indexes);
 
         // choosing random gens in mutations

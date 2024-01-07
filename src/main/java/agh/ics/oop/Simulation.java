@@ -16,7 +16,6 @@ public class Simulation implements Runnable{
     private final Constants constants;
     private final Stats stats;
     private final WorldMap gameMap;
-    private final List<Animal> animalList = new ArrayList<>();
 
     public Simulation(WorldMap map, List<Vector2d> startPositions, int simulationId) {
         this.simulationId = simulationId;

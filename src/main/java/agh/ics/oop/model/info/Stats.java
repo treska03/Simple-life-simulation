@@ -4,26 +4,34 @@ import agh.ics.oop.model.creatures.Animal;
 import agh.ics.oop.model.algorithms.DFS;
 import agh.ics.oop.model.map.WorldMap;
 import agh.ics.oop.model.util.GraphVertex;
+import agh.ics.oop.model.util.Vector2d;
 
 import java.util.*;
 
+import static java.lang.Math.min;
+
 public class Stats {
+    private Constants constants;
     private int day = 1;
     private final int[] numberOfEachGenotype = new int[8];
+    private int numberOfLiveAnimals = 0;
+    private int numberOfPlants;
+    private int numberOfEmptyFields;
+    private int numberOfNewAnimals = 0;
+    private int sumOfEnergy = 0;
     private int sumOfDaysOfLiving = 0;
     private int numberOfDeadAnimals = 0;
+    private int sumOfChildrenNumber = 0;
     private final HashSet<Animal>[] commonGenotypeAnimals = new HashSet[8];
     private Animal markedAnimal;
-    private boolean markedAnimalIsDead = false;
+    private boolean markedAnimalDead = false;
     private int daysOfLiving;
     private int dayOfDeath;
-    private int currentEnergy;
-    private int childrenNumber = 0;
-    private int numberOfEatenPlants = 0;
     private final HashSet<UUID> descendants = new HashSet<>();
     private final Map<UUID, GraphVertex> familyTree = new HashMap<>();
 
-    public Stats() {
+    public Stats(int simulationID) {
+        this.constants = ConstantsList.getConstants(simulationID);
         for (int i = 0; i < 8; i++) {
             this.commonGenotypeAnimals[i] = new HashSet<>();
         }
@@ -33,6 +41,10 @@ public class Stats {
         // adding animal to familyTree
         GraphVertex animalVertex = new GraphVertex(animal.getId());
         familyTree.put(animal.getId(), animalVertex);
+
+        numberOfLiveAnimals++;
+        numberOfNewAnimals++;
+        sumOfEnergy += constants.getNewAnimalEnergy();
         addToGenomeStats(animal);
     }
 
@@ -59,6 +71,9 @@ public class Stats {
             }
         }
 
+        numberOfLiveAnimals++;
+        numberOfNewAnimals++;
+        sumOfChildrenNumber += 2;
         addToGenomeStats(child);
     }
 
@@ -74,14 +89,19 @@ public class Stats {
 
     public void reportDeathOfAnimal (Animal animal){
         numberOfDeadAnimals++;
+        numberOfLiveAnimals--;
+        sumOfChildrenNumber -= animal.getChildrenNumber();
         sumOfDaysOfLiving += (day - animal.getDateOfBirth());
 
         // change statistics for marked animal if that was it who died
         if (animal == markedAnimal){
-            markedAnimalIsDead = true;
+            markedAnimalDead = true;
             dayOfDeath = day;
             daysOfLiving = 0;
         }
+
+        // the animal's current energy was already subtracted by daily energy loss;
+        sumOfEnergy -= (constants.getDailyEnergyLoss() + animal.getCurrentEnergy());
 
         removeFromGenomeStats(animal);
     }
@@ -91,21 +111,36 @@ public class Stats {
         for (int gene : genes){
             // removing genes of this animal from statistics
             numberOfEachGenotype[gene] -=1;
-            // the dead animal no longer is counted
+            // the dead animal is no longer counted
             commonGenotypeAnimals[gene].remove(animal); // if it's not there, no effects
         }
     }
 
+    public void reportPlantConsumption(){
+        sumOfEnergy += constants.getEnergyFromPlant();
+    }
+
     public void reportEndOfTheDay(WorldMap map){
         day++;
-        // statistics for marked animal
-        if (!(markedAnimal == null)){
-            if (!markedAnimalIsDead){
-                daysOfLiving++;
+        // subtract daily energy loss for all animals
+        // that are alive and hasn't been born that day;
+        sumOfEnergy -= (numberOfLiveAnimals - numberOfNewAnimals) * constants.getDailyEnergyLoss();
+        numberOfNewAnimals = 0;
+        numberOfPlants = map.getPlantPositions().size();
+        // counting how many fields contains both plant and at least one animal;
+        numberOfEmptyFields = 0;
+        for (Vector2d grassPosition : map.getPlantPositions()){
+            if (map.getAnimalPositions().containsKey(grassPosition)) {
+                numberOfEmptyFields ++;
             }
-            currentEnergy = markedAnimal.getCurrentEnergy();
-            numberOfEatenPlants = markedAnimal.getNumberOfEatenPlants();
-            childrenNumber = markedAnimal.getChildrenNumber();
+        }
+        // Using inclusion - exclusion principle
+        // to calculate number of empty fields;
+        numberOfEmptyFields = numberOfPlants + map.getAnimalPositions().size() - numberOfEmptyFields;
+
+        // statistics for marked animal
+        if (!(markedAnimal == null) && !(markedAnimalDead)){
+            daysOfLiving++;
         }
     }
 
@@ -139,15 +174,11 @@ public class Stats {
         return day;
     }
 
-    public int[] getNumberOfEachGenotype() {
-        return numberOfEachGenotype;
-    }
-
     public HashSet<Animal> getPopularGenotypeAnimals(){
         /*
          getting animals having the most popular genotype(s)
          if the number of some genotypes are equal,
-         the animal that have one of its genes are counted;
+         animals that have one of its genes are counted;
          return the HashSet of animals;
         */
         int maxValue = numberOfEachGenotype[0];
@@ -170,6 +201,29 @@ public class Stats {
         return popularGenotypeAnimals;
     }
 
+    public int getNumberOfLiveAnimals() {
+        return numberOfLiveAnimals;
+    }
+
+    public int getNumberOfPlants() {
+        return numberOfPlants;
+    }
+
+    public int getNumberOfEmptyFields() {
+        return numberOfEmptyFields;
+    }
+
+    public int[] getNumberOfEachGenotype() {
+        return numberOfEachGenotype;
+    }
+
+    public double getAverageEnergy(){
+        if (numberOfLiveAnimals != 0){
+            return (double) sumOfEnergy / (double) numberOfLiveAnimals;
+        }
+        return 0; // default if there are no live animals
+    }
+
     public double getAverageDaysOfLiving(){
         if (numberOfDeadAnimals != 0){
             return (double) sumOfDaysOfLiving / (double) numberOfDeadAnimals;
@@ -177,12 +231,19 @@ public class Stats {
         return 0; // default if there are no dead animals
     }
 
+    public double getAverageChildrenNumber(){
+        if (numberOfLiveAnimals != 0){
+            return (double) sumOfChildrenNumber/ (double) numberOfLiveAnimals;
+        }
+        return 0; // default if there are no live animals
+    }
+
     public Animal getMarkedAnimal() {
         return markedAnimal;
     }
 
-    public boolean isMarkedAnimalIsDead() {
-        return markedAnimalIsDead;
+    public boolean isMarkedAnimalDead() {
+        return markedAnimalDead;
     }
 
     public int[] getGenome(){
@@ -194,15 +255,15 @@ public class Stats {
     }
 
     public int getCurrentEnergy() {
-        return currentEnergy;
+        return markedAnimal.getCurrentEnergy();
     }
 
     public int getChildrenNumber() {
-        return childrenNumber;
+        return markedAnimal.getChildrenNumber();
     }
 
     public int getNumberOfEatenPlants() {
-        return numberOfEatenPlants;
+        return markedAnimal.getNumberOfEatenPlants();
     }
 
     public int getNumberOfDescendants() {
@@ -222,6 +283,7 @@ public class Stats {
         return familyTree;
     }
 
+    // only for tests
     public HashSet<UUID> getDescendantsForTests() {
         return descendants;
     }

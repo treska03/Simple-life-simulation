@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 public class StatsList {
 
-    private static HashMap<Integer, Stats> statsList = new HashMap<>();
+    private static final HashMap<Integer, Stats> statsList = new HashMap<>();
 
     public static void addToStatsList(int simulationId, Stats stats) {
         statsList.put(simulationId, stats);

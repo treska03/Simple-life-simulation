@@ -19,11 +19,11 @@ public abstract class WorldMap {
     protected int simulationId;
     protected final Constants constants;
     private final Stats stats;
-    protected List<MapChangeListener> observers = new ArrayList<>();
+    private final List<MapChangeListener> observers = new ArrayList<>();
     protected Map<Vector2d, List<Animal>> animalPositions = new HashMap<>();
-    protected final HashSet<Vector2d> plantPositions = new HashSet<>();
-    protected List<Vector2d> noPlantsFieldsForJungle;
-    protected List<Vector2d> noPlantsFieldsForSteps;
+    private final HashSet<Vector2d> plantPositions = new HashSet<>();
+    private final List<Vector2d> noPlantsFieldsForJungle;
+    private final List<Vector2d> noPlantsFieldsForSteps;
 
 
     public WorldMap(int simulationId) {
@@ -54,11 +54,9 @@ public abstract class WorldMap {
          and remove those positions from noGrassFields;
          positions are chosen using Fisher-Yates shuffle;
         */
-        FisherYatesShuffle fisherYatesShuffle = new FisherYatesShuffle();
+        FisherYatesShuffle<Vector2d> fisherYatesShuffle = new FisherYatesShuffle<>();
         List<Vector2d> newPositions = fisherYatesShuffle.getValues(grassToAdd, noGrassFields);
-        for (Vector2d grassPosition : newPositions) {
-            plantPositions.add(grassPosition);
-        }
+        plantPositions.addAll(newPositions);
         for (int i = 0; i < grassToAdd; i++) {
             /*
              Fisher-Yates shuffle place chosen positions at the end of the list;
@@ -76,9 +74,22 @@ public abstract class WorldMap {
         return new MapVisualizer(this).draw(constants.getMapBoundary().lowerLeft(), constants.getMapBoundary().upperRight());
     }
 
+    public void reduceAnimalEnergy() {
+        for(List<Animal> animalList: animalPositions.values()) {
+            for (Animal animal : animalList) {
+                animal.removeEnergy(constants.getDailyEnergyLoss());
+            }
+        }
+    }
+
     public void removeDeadAnimals() {
         for(List<Animal> animalList: animalPositions.values()) {
-            animalList.removeIf(animal -> animal.getCurrentEnergy() <= 0);
+            for (Animal animal : animalList){
+                if (animal.getCurrentEnergy() <= 0){
+                    stats.reportDeathOfAnimal(animal);
+                    animalList.remove(animal);
+                }
+            }
         }
     }
 
@@ -105,6 +116,7 @@ public abstract class WorldMap {
                 AnimalPrioritySorter.sortAnimals(animalsOnTile);
 
                 animalsOnTile.get(0).consume();
+                stats.reportPlantConsumption();
 
                 if(insideJungle(position)) noPlantsFieldsForJungle.add(position);
                 else noPlantsFieldsForSteps.add(position);
@@ -189,6 +201,10 @@ public abstract class WorldMap {
         }
     }
 
+    public HashSet<Vector2d> getPlantPositions() {
+        return plantPositions;
+    }
+
     public List<Vector2d> getNoPlantsFieldsForJungle() {
         return noPlantsFieldsForJungle;
     }
@@ -197,4 +213,7 @@ public abstract class WorldMap {
         return noPlantsFieldsForSteps;
     }
 
+    public Map<Vector2d, List<Animal>> getAnimalPositions() {
+        return animalPositions;
+    }
 }
