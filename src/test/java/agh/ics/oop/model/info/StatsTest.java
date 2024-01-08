@@ -35,15 +35,15 @@ public class StatsTest {
 
     @Test
     public void testAddStartingAnimal(){
-        // this test doesn't check genes related statistics;
-        // another test is designed for this purpose;
+        // this test only check
+        // if animal is correctly assigned to the familyTree;
 
         // creating animals
         Animal animal1 = Animal.startingAnimal(1);
         Animal animal2 = Animal.startingAnimal(1);
         Animal animal3 = Animal.startingAnimal(1);
 
-        // adding animals to familyTree
+        // adding animals
         stats.reportAddingStartingAnimal(animal1);
         stats.reportAddingStartingAnimal(animal2);
         stats.reportAddingStartingAnimal(animal3);
@@ -57,18 +57,15 @@ public class StatsTest {
 
     @Test
     public void testAddAnimalHavingParents(){
-        /*
-         this test doesn't check the list of descendants
-         and genes related statistics;
-         another tests are designed for those purposes;
-        */
+        // this test only check
+        // if animal is correctly assigned to the familyTree and to its parents;
 
         // creating animals
         Animal parent1 = Animal.startingAnimal(1);
         Animal parent2 = Animal.startingAnimal(1);
         Animal child = Animal.fromParents(parent1, parent2);
 
-        // adding animals to familyTree
+        // adding animals
         stats.reportAddingStartingAnimal(parent1);
         stats.reportAddingStartingAnimal(parent2);
         stats.reportAddingAnimalHavingParents(child, parent1, parent2);
@@ -583,7 +580,7 @@ public class StatsTest {
            animal4  |       -       |      -     |     +20      |      20
         */
 
-        // check animals' current energy
+        // check animals' average current energy
         Assertions.assertEquals(18, animal1.getCurrentEnergy());
         Assertions.assertEquals(18, animal2.getCurrentEnergy());
         Assertions.assertEquals(7, animal3.getCurrentEnergy());
@@ -614,7 +611,7 @@ public class StatsTest {
            animal4  |       20      |         -8         |      12
         */
 
-        // check animals' current energy
+        // check animals' average current energy
         Assertions.assertEquals(10, animal1.getCurrentEnergy());
         Assertions.assertEquals(10, animal2.getCurrentEnergy());
         Assertions.assertEquals(12, animal4.getCurrentEnergy());
@@ -650,5 +647,118 @@ public class StatsTest {
 
         // check default value if there are no live animals
         Assertions.assertEquals(0, stats.getAverageEnergy());
+    }
+
+    @Test
+    public void averageNumberOfChildren() {
+        // create map
+        WorldMap map = new NormalMap(1);
+
+        // add animals
+        HashMap<Vector2d, List<Animal>> animalPositions = new HashMap<>();
+
+        // animal1 and animal2 are on the same position
+        // and have proper energy for more than one reproduction;
+        Animal animal1 = Animal.startingAnimal(1);
+        animal1.setCurrentEnergyForTests(100);
+        animal1.setPosition(new Vector2d(1,1));
+        Animal animal2 = Animal.startingAnimal(1);
+        animal2.setPosition(new Vector2d(1,1));
+        animal2.setCurrentEnergyForTests(100);
+        animalPositions.put(animal1.getPosition(), new ArrayList<>(List.of(animal1, animal2)));
+
+        // add animal 3;
+        Animal animal3 = Animal.startingAnimal(1);
+        animal3.setPosition(new Vector2d(5,5));
+        animalPositions.put(animal3.getPosition(), new ArrayList<>(List.of(animal3)));
+
+        map.setAnimalPositionsForTests(animalPositions);
+
+        /*
+           animal   |  number of children
+          __________|_____________________
+           animal1  |          0
+           animal2  |          0
+           animal3  |          0
+        */
+
+        // check average children number for living animals
+        Assertions.assertEquals(0, stats.getAverageChildrenNumber());
+
+        // reproduce animals;
+        // animal1 and animal2 will be parents;
+        map.reproduceAnimals();
+
+        /*
+           animal   |  number of children
+          __________|_____________________
+           animal1  |          1
+           animal2  |          1
+           animal3  |          0
+           animal4  |          0
+        */
+
+        // check average children number for living animals
+        Assertions.assertEquals(0.5, stats.getAverageChildrenNumber());
+
+        // get animal4 and set its energy to 100, so it can have a child
+        List<Animal> animalList = map.getAnimalPositions().get(new Vector2d(1,1));
+        Animal animal4 = animalList.get(animalList.size() - 1);
+        animal4.setCurrentEnergyForTests(100);
+
+        // set genomes and orientations for animal1 and animal4,
+        // so that they will be on the same position after the next move;
+        animal1.getGenome().setMoveListForTests(new int[]{0, 0, 0, 0, 0, 0});
+        animal1.setOrientationForTests(MapDirection.NORTH);
+        animal3.getGenome().setMoveListForTests(new int[]{0, 0, 0, 0, 0, 0});
+        animal3.setOrientationForTests(MapDirection.EAST);
+        animal4.getGenome().setMoveListForTests(new int[]{0, 0, 0, 0, 0, 0});
+        animal4.setOrientationForTests(MapDirection.NORTH);
+
+        // move and reproduce animals;
+        // animal1 and animal4 will be parents;
+        map.moveAnimals();
+        map.reproduceAnimals();
+
+        // get animal5
+        List<Animal> animalList2 = map.getAnimalPositions().get(new Vector2d(1,2));
+        Animal animal5 = animalList.get(animalList2.size() - 1);
+
+        /*
+           animal   |  number of children
+          __________|_____________________
+           animal1  |          2
+           animal2  |          1
+           animal3  |          0
+           animal4  |          1
+           animal5  |          0
+        */
+
+        // check average children number for living animals
+        Assertions.assertEquals(0.8, stats.getAverageChildrenNumber());
+
+        // remove animal2
+        stats.reportDeathOfAnimal(animal2);
+
+        /*
+           animal   |  number of children
+          __________|_____________________
+           animal1  |          2
+           animal3  |          0
+           animal4  |          1
+           animal5  |          0
+        */
+
+        // check average children number for living animals
+        Assertions.assertEquals(0.75, stats.getAverageChildrenNumber());
+
+        // remove animal1, animal3, animal4 and animal5
+        stats.reportDeathOfAnimal(animal1);
+        stats.reportDeathOfAnimal(animal3);
+        stats.reportDeathOfAnimal(animal4);
+        stats.reportDeathOfAnimal(animal5);
+
+        // check default value if there are no live animals
+        Assertions.assertEquals(0, stats.getAverageChildrenNumber());
     }
 }
