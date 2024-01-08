@@ -121,9 +121,9 @@ class WorldMapTest {
         worldMap.getPlantPositions().add(new Vector2d(2, 0));
 
         worldMap.feedAnimals();
-        Assertions.assertEquals(70, animal1.getCurrentEnergy());
-        Assertions.assertEquals(70, animal2.getCurrentEnergy());
-        Assertions.assertEquals(70, animal3.getCurrentEnergy());
+        Assertions.assertEquals(71, animal1.getCurrentEnergy());
+        Assertions.assertEquals(71, animal2.getCurrentEnergy());
+        Assertions.assertEquals(71, animal3.getCurrentEnergy());
         Assertions.assertEquals(40, animal4.getCurrentEnergy());
     }
 

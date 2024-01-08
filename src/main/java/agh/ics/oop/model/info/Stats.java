@@ -182,6 +182,23 @@ public class Stats {
         dayOfDeath = 0;
     }
 
+    // only for tests
+    public void reportClearingAnimalListForTests(){
+        familyTree.clear();
+        numberOfDeadAnimals = 0;
+        numberOfNewAnimals = 0;
+        numberOfLiveAnimals = 0;
+        sumOfEnergy = 0;
+        sumOfChildrenNumber = 0;
+        sumOfDaysOfLiving = 0;
+        for (int i =0; i<8; i++){
+            numberOfEachGenotype[i] = 0;
+        }
+        for (HashSet<Animal> hashSet : commonGenotypeAnimals) {
+            hashSet.clear();
+        }
+    }
+
     public int getDay() {
         return day;
     }
@@ -288,16 +305,6 @@ public class Stats {
 
     public int getDayOfDeath() {
         return dayOfDeath;
-    }
-
-    // only for tests
-    public void setNumberOfDeadAnimalsForTests(int numberOfDeadAnimals) {
-        this.numberOfDeadAnimals = numberOfDeadAnimals;
-    }
-
-    // only for tests
-    public void setSumOfEnergyForTests(int sumOfEnergy) {
-        this.sumOfEnergy = sumOfEnergy;
     }
 
     // only for tests

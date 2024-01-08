@@ -231,14 +231,7 @@ public abstract class WorldMap {
     // only for tests
     public void setAnimalPositionsForTests(Map<Vector2d, List<Animal>> animalPositions) {
         // delete previous animals from stats
-        for (List<Animal> animalList : this.animalPositions.values()){
-            for (Animal animal : animalList){
-                stats.reportDeathOfAnimal(animal);
-            }
-        }
-        stats.getFamilyTreeForTests().clear();
-        stats.setNumberOfDeadAnimalsForTests(0);
-        stats.setSumOfEnergyForTests(0);
+        stats.reportClearingAnimalListForTests();
 
         // replace the hash set of existing animals
         this.animalPositions = animalPositions;

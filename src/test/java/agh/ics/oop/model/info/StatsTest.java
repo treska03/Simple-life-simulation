@@ -617,7 +617,6 @@ public class StatsTest {
         Assertions.assertEquals(12, animal4.getCurrentEnergy());
 
         // check average energy for living animals to the precision of two digits
-        System.out.println(stats.getAverageEnergy());
         Assertions.assertTrue((stats.getAverageEnergy() - 10.66 > 0) &&
                 (stats.getAverageEnergy() - 10.67 < 0));
 
