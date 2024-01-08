@@ -250,21 +250,21 @@ public class Stats {
         if (numberOfLiveAnimals != 0){
             return (double) sumOfEnergy / (double) numberOfLiveAnimals;
         }
-        return 0; // default if there are no live animals
+        return -1; // default if there are no live animals
     }
 
     public double getAverageDaysOfLiving(){
         if (numberOfDeadAnimals != 0){
             return (double) sumOfDaysOfLiving / (double) numberOfDeadAnimals;
         }
-        return 0; // default if there are no dead animals
+        return -1; // default if there are no dead animals
     }
 
     public double getAverageChildrenNumber(){
         if (numberOfLiveAnimals != 0){
             return (double) sumOfChildrenNumber/ (double) numberOfLiveAnimals;
         }
-        return 0; // default if there are no live animals
+        return -1; // default if there are no live animals
     }
 
     public Animal getMarkedAnimal() {

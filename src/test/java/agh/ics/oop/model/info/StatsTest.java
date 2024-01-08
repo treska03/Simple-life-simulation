@@ -344,8 +344,8 @@ public class StatsTest {
         stats.reportAddingAnimalHavingParents(animal3, animal1, animal2);
         stats.reportEndOfTheDay(map);
 
-        // no one has died yet, so it should be a default value, which is 0
-        Assertions.assertEquals(0, stats.getAverageDaysOfLiving());
+        // no one has died yet, so it should be a default value, which is -1
+        Assertions.assertEquals(-1, stats.getAverageDaysOfLiving());
 
         // day 3;
         // mark animal 3;
@@ -644,8 +644,8 @@ public class StatsTest {
            animal4  |       12       |       -12         |      -
         */
 
-        // check default value if there are no live animals
-        Assertions.assertEquals(0, stats.getAverageEnergy());
+        // check default value, which is -1, if there are no live animals
+        Assertions.assertEquals(-1, stats.getAverageEnergy());
     }
 
     @Test
@@ -757,7 +757,7 @@ public class StatsTest {
         stats.reportDeathOfAnimal(animal4);
         stats.reportDeathOfAnimal(animal5);
 
-        // check default value if there are no live animals
-        Assertions.assertEquals(0, stats.getAverageChildrenNumber());
+        // check default value, which is -1, if there are no live animals
+        Assertions.assertEquals(-1, stats.getAverageChildrenNumber());
     }
 }
