@@ -348,9 +348,9 @@ public class StatsTest {
         Assertions.assertEquals(-1, stats.getAverageDaysOfLiving());
 
         // day 3;
-        // mark animal 3;
+        // mark animal 2;
         // adding animal 4;
-        stats.addMark(animal3);
+        stats.addMark(animal2);
         Animal animal4 = Animal.fromParents(animal1, animal2);
         stats.reportAddingAnimalHavingParents(animal4, animal1, animal2);
         stats.reportEndOfTheDay(map);
@@ -374,7 +374,7 @@ public class StatsTest {
         */
 
         // checking days of living for marked animal (animal3)
-        Assertions.assertEquals(3, stats.getDaysOfLiving());
+        Assertions.assertEquals(5, stats.getDaysOfLiving());
         // checking average days of living for dead animals
         Assertions.assertEquals(2.5, stats.getAverageDaysOfLiving());
 
@@ -419,7 +419,7 @@ public class StatsTest {
          create map;
          map's lowerLeft boundary is (0,0)
          and upperRight Boundary is (10,10);
-         so there are 100 fields in this map;
+         so there are 121 fields in this map;
         */
         WorldMap map = new NormalMap(1);
 
@@ -453,16 +453,16 @@ public class StatsTest {
 
         /*
          There are:
-         100 fields;
+         121 fields;
          4 fields containing plants;
          3 fields containing animals;
          1 filed containing both plant and animal(s);
          So the number of empty fields (based on inclusion - exclusion principle)
-         should be 100 - 4 - 3 + 1 = 94;
+         should be 121 - 4 - 3 + 1 = 115;
         */
 
         // checking if the number of empty fields is correct
-        Assertions.assertEquals(94, numberOfEmptyFields);
+        Assertions.assertEquals(115, numberOfEmptyFields);
     }
 
     @Test
@@ -666,6 +666,7 @@ public class StatsTest {
         animal2.setCurrentEnergyForTests(100);
         animalPositions.put(animal1.getPosition(), new ArrayList<>(List.of(animal1, animal2)));
 
+
         // add animal 3;
         Animal animal3 = Animal.startingAnimal(1);
         animal3.setPosition(new Vector2d(5,5));
@@ -688,6 +689,11 @@ public class StatsTest {
         // animal1 and animal2 will be parents;
         map.reproduceAnimals();
 
+        // get animal4 and set its energy to 100, so it can have a child
+        List<Animal> animalList = map.getAnimalPositions().get(new Vector2d(1,1));
+        Animal animal4 = animalList.get(animalList.size() - 1);
+        animal4.setCurrentEnergyForTests(100);
+
         /*
            animal   |  number of children
           __________|_____________________
@@ -697,20 +703,21 @@ public class StatsTest {
            animal4  |          0
         */
 
+        // check if animals have correct number of children
+        Assertions.assertEquals(animal1.getChildrenNumber(), 1);
+        Assertions.assertEquals(animal2.getChildrenNumber(), 1);
+        Assertions.assertEquals(animal3.getChildrenNumber(), 0);
+        Assertions.assertEquals(animal4.getChildrenNumber(), 0);
+
         // check average children number for living animals
         Assertions.assertEquals(0.5, stats.getAverageChildrenNumber());
-
-        // get animal4 and set its energy to 100, so it can have a child
-        List<Animal> animalList = map.getAnimalPositions().get(new Vector2d(1,1));
-        Animal animal4 = animalList.get(animalList.size() - 1);
-        animal4.setCurrentEnergyForTests(100);
 
         // set genomes and orientations for animal1 and animal4,
         // so that they will be on the same position after the next move;
         animal1.getGenome().setMoveListForTests(new int[]{0, 0, 0, 0, 0, 0});
         animal1.setOrientationForTests(MapDirection.NORTH);
-        animal3.getGenome().setMoveListForTests(new int[]{0, 0, 0, 0, 0, 0});
-        animal3.setOrientationForTests(MapDirection.EAST);
+        animal2.getGenome().setMoveListForTests(new int[]{0, 0, 0, 0, 0, 0});
+        animal2.setOrientationForTests(MapDirection.EAST);
         animal4.getGenome().setMoveListForTests(new int[]{0, 0, 0, 0, 0, 0});
         animal4.setOrientationForTests(MapDirection.NORTH);
 
@@ -721,7 +728,7 @@ public class StatsTest {
 
         // get animal5
         List<Animal> animalList2 = map.getAnimalPositions().get(new Vector2d(1,2));
-        Animal animal5 = animalList.get(animalList2.size() - 1);
+        Animal animal5 = animalList2.get(animalList2.size() - 1);
 
         /*
            animal   |  number of children
@@ -732,6 +739,13 @@ public class StatsTest {
            animal4  |          1
            animal5  |          0
         */
+
+        // check if animals have correct number of children
+        Assertions.assertEquals(animal1.getChildrenNumber(), 2);
+        Assertions.assertEquals(animal2.getChildrenNumber(), 1);
+        Assertions.assertEquals(animal3.getChildrenNumber(), 0);
+        Assertions.assertEquals(animal4.getChildrenNumber(), 1);
+        Assertions.assertEquals(animal5.getChildrenNumber(), 0);
 
         // check average children number for living animals
         Assertions.assertEquals(0.8, stats.getAverageChildrenNumber());
@@ -747,6 +761,12 @@ public class StatsTest {
            animal4  |          1
            animal5  |          0
         */
+
+        // check if animals have correct number of children
+        Assertions.assertEquals(animal1.getChildrenNumber(), 2);
+        Assertions.assertEquals(animal3.getChildrenNumber(), 0);
+        Assertions.assertEquals(animal4.getChildrenNumber(), 1);
+        Assertions.assertEquals(animal5.getChildrenNumber(), 0);
 
         // check average children number for living animals
         Assertions.assertEquals(0.75, stats.getAverageChildrenNumber());

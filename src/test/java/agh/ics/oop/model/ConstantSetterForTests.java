@@ -29,6 +29,16 @@ public class ConstantSetterForTests {
         ConstantsList.addToConstantsList(simulationId, mockConsts);
     }
 
+    public Constants getConstants(int simulationId) {
+
+        Constants mockConsts = new Constants(BACK_AND_FORTH, NUMBER_OF_GENS, MIN_MUTATIONS,
+                MAX_MUTATIONS, MIN_ENERGY_FOR_REPRODUCTION, ENERGY_USED_FOR_REPRODUCTION,
+                STARTING_ANIMALS_NUMBER, NEW_ANIMAL_ENERGY, DAILY_NEW_GRASS_NUMBER, DAILY_ENERGY_LOSS,
+                ENERGY_FROM_PLANT, MAP_BOUNDARY);
+
+        return mockConsts;
+    }
+
     public void setBackAndForth(boolean BACK_AND_FORTH) {
         this.BACK_AND_FORTH = BACK_AND_FORTH;
     }

@@ -130,12 +130,8 @@ public class Stats {
         numberOfPlants = map.getPlantPositions().size();
         numberOfEmptyFields = 0;
 
-        // counting number of all fields
-        int width = constants.getMapBoundary().upperRight().getX() -
-                constants.getMapBoundary().lowerLeft().getX();
-        int height = constants.getMapBoundary().upperRight().getY() -
-                constants.getMapBoundary().lowerLeft().getY();
-        int numberOfAllFields = height * width;
+        // getting number of all fields
+        int numberOfAllFields = constants.getMapBoundary().numberOfFieldsInsideBoundary();
 
         // counting how many fields contains both plant and at least one animal;
         int numberOfCombinedFields = 0;
@@ -171,7 +167,7 @@ public class Stats {
             descendants.add(vertex.getId());
         }
 
-        daysOfLiving = 1;
+        daysOfLiving = day - markedAnimal.getDateOfBirth() + 1;
     }
 
     public void deleteMark(){

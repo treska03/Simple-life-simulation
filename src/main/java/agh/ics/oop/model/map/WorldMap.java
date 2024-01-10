@@ -124,9 +124,9 @@ public abstract class WorldMap {
         for(Vector2d position : plantPositions) {
             List<Animal> animalsOnTile = animalPositions.get(position);
             if(animalsOnTile != null) {
-                AnimalPrioritySorter.sortAnimals(animalsOnTile);
-
-                animalsOnTile.get(0).consume();
+                MaximalAnimalsFinder maximalAnimalsFinder = new MaximalAnimalsFinder();
+                Animal maximalAnimal = maximalAnimalsFinder.getOneMax(animalsOnTile);
+                maximalAnimal.consume();
                 stats.reportPlantConsumption();
 
                 if(insideJungle(position)) noPlantsFieldsForJungle.add(position);
@@ -139,9 +139,10 @@ public abstract class WorldMap {
     public void reproduceAnimals() {
         for(List<Animal> animalsOnTile : animalPositions.values()) {
             if(animalsOnTile.size() >= 2) {
-                AnimalPrioritySorter.sortAnimals(animalsOnTile);
-                Animal parent1 = animalsOnTile.get(0);
-                Animal parent2 = animalsOnTile.get(1);
+                MaximalAnimalsFinder maximalAnimalsFinder = new MaximalAnimalsFinder();
+                List<Animal> maximalAnimals = maximalAnimalsFinder.getTwoMax(animalsOnTile);
+                Animal parent1 = maximalAnimals.get(0);
+                Animal parent2 = maximalAnimals.get(1);
                 Animal child = parent1.reproduce(parent2);
                 if(child != null) {
                     animalsOnTile.add(child);
@@ -185,7 +186,7 @@ public abstract class WorldMap {
     }
 
     public WorldElement objectAt(Vector2d position) {
-        if(!animalPositions.get(position).isEmpty()) {
+        if(!(animalPositions.get(position) == null)) {
             return animalPositions.get(position).get(0);
         }
         if(plantPositions.contains(position)){

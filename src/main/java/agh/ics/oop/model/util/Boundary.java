@@ -21,6 +21,12 @@ public record Boundary(Vector2d lowerLeft, Vector2d upperRight) {
         return new Boundary(lowerLeftPosition, upperRightPosition);
     }
 
+    public int numberOfFieldsInsideBoundary() {
+        int width = upperRight().getX() - lowerLeft().getX() + 1;
+        int height = upperRight().getY() - lowerLeft().getY() + 1;
+        return height * width;
+    }
+
     public boolean insideBoundary(Vector2d toTest) {
         return toTest.follows(lowerLeft) && toTest.precedes(upperRight);
     }

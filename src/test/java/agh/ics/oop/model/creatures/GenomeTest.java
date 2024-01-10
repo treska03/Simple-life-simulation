@@ -1,13 +1,22 @@
 package agh.ics.oop.model.creatures;
 
 import agh.ics.oop.model.ConstantSetterForTests;
+import agh.ics.oop.model.info.Stats;
+import agh.ics.oop.model.info.StatsList;
+import agh.ics.oop.model.map.NormalMap;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.util.*;
 
 public class GenomeTest {
+
     @Test
     public void testGetCurrentMove() {
+        Stats stats1 = new Stats(1);
+        StatsList.addToStatsList(1, stats1);
+        Stats stats2 = new Stats(2);
+        StatsList.addToStatsList(2, stats2);
 
         // creating default list of genes
         int[] moveList = {0,1,7,6,2,3,5,4};
@@ -49,6 +58,13 @@ public class GenomeTest {
 
     @Test
     public void testFromParents() {
+        Stats stats1 = new Stats(1);
+        StatsList.addToStatsList(1, stats1);
+        Stats stats2 = new Stats(2);
+        StatsList.addToStatsList(2, stats2);
+        Stats stats3 = new Stats(3);
+        StatsList.addToStatsList(3, stats3);
+
         /*
          if there is no mutations in the list of genes can be made only in 2 ways
          result1 and result2 in this example

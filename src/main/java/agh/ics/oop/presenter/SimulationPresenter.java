@@ -108,8 +108,7 @@ public class SimulationPresenter implements MapChangeListener{
         this.setObserver(new ConsoleMapDisplay());
         String[] paramArray = textField.getText().split(" ");
         List<Vector2d> positions = List.of(new Vector2d(2,2), new Vector2d(3,4));
-        return new SimulationEngine(List.of(new Simulation(gameMap,
-                positions, 1)));
+        return new SimulationEngine(List.of(new Simulation( 1)));
 
 //        IN ABOVE LINE IN INITIALIZATION OF SIMULATION, 1 IS TEMPORARY.
 //        IT REPRESENTS ID OF SIMULATION

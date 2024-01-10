@@ -4,6 +4,8 @@ import agh.ics.oop.model.info.Constants;
 import agh.ics.oop.model.info.ConstantsList;
 import agh.ics.oop.model.info.Stats;
 import agh.ics.oop.model.info.StatsList;
+import agh.ics.oop.model.map.NormalMap;
+import agh.ics.oop.model.util.MapVisualizer;
 import agh.ics.oop.model.util.Vector2d;
 import agh.ics.oop.model.map.WorldMap;
 import java.util.List;
@@ -14,12 +16,14 @@ public class Simulation implements Runnable{
     private final Constants constants;
     private final Stats stats;
     private final WorldMap gameMap;
+    private final MapVisualizer mapVisualizer;
 
-    public Simulation(WorldMap map, List<Vector2d> startPositions, int simulationId) {
+    public Simulation(int simulationId) {
         this.simulationId = simulationId;
         this.constants = ConstantsList.getConstants(simulationId);
         this.stats = StatsList.getStats(simulationId);
-        this.gameMap = map;
+        this.gameMap = new NormalMap(simulationId);
+        this.mapVisualizer = new MapVisualizer(gameMap);
     }
 
     @Override
@@ -34,6 +38,7 @@ public class Simulation implements Runnable{
             gameMap.reproduceAnimals();
             gameMap.growPlants();
             stats.reportEndOfTheDay(gameMap);
+            mapVisualizer.draw(constants.getMapBoundary().lowerLeft(), constants.getMapBoundary().upperRight());
 
             try {
                 Thread.sleep(500);
