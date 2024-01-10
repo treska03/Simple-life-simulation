@@ -1,9 +1,7 @@
 package agh.ics.oop.model.info;
 
-import agh.ics.oop.model.Vector2d;
+import agh.ics.oop.model.util.Vector2d;
 import agh.ics.oop.model.util.Boundary;
-
-import java.util.HashMap;
 
 public class Constants {
     private final boolean BACK_AND_FORTH;
@@ -15,6 +13,7 @@ public class Constants {
     private final int STARTING_ANIMALS_NUMBER;
     private final int NEW_ANIMAL_ENERGY;
     private final int DAILY_NEW_GRASS_NUMBER;
+    private final int DAILY_ENERGY_LOSS;
     private final int ENERGY_FROM_PLANT;
     private final Boundary MAP_BOUNDARY;
     private final Boundary JUNGLE_BOUNDARY;
@@ -23,7 +22,7 @@ public class Constants {
     public Constants(boolean BACK_AND_FORTH, int NUMBER_OF_GENS, int MIN_MUTATIONS,
                      int MAX_MUTATIONS, int MIN_ENERGY_FOR_REPRODUCTION,
                      int ENERGY_USED_FOR_REPRODUCTION, int STARTING_ANIMALS_NUMBER,
-                     int NEW_ANIMAL_ENERGY, int DAILY_NEW_GRASS_NUMBER,
+                     int NEW_ANIMAL_ENERGY, int DAILY_NEW_GRASS_NUMBER, int DAILY_ENERGY_LOSS,
                      int ENERGY_FROM_PLANT, Boundary MAP_BOUNDARY) {
         this.BACK_AND_FORTH = BACK_AND_FORTH;
         this.NUMBER_OF_GENES = NUMBER_OF_GENS;
@@ -34,6 +33,7 @@ public class Constants {
         this.STARTING_ANIMALS_NUMBER = STARTING_ANIMALS_NUMBER;
         this.NEW_ANIMAL_ENERGY = NEW_ANIMAL_ENERGY;
         this.DAILY_NEW_GRASS_NUMBER = DAILY_NEW_GRASS_NUMBER;
+        this.DAILY_ENERGY_LOSS = DAILY_ENERGY_LOSS;
         this.ENERGY_FROM_PLANT = ENERGY_FROM_PLANT;
         this.MAP_BOUNDARY = MAP_BOUNDARY;
         this.JUNGLE_BOUNDARY = createJungleBoundary(MAP_BOUNDARY);
@@ -81,6 +81,10 @@ public class Constants {
 
     public int getDailyNewGrassNumber() {
         return DAILY_NEW_GRASS_NUMBER;
+    }
+
+    public int getDailyEnergyLoss() {
+        return DAILY_ENERGY_LOSS;
     }
 
     public int getEnergyFromPlant() {

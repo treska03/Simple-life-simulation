@@ -1,15 +1,15 @@
-package agh.ics.oop.model.util;
+package agh.ics.oop.model.algorithms;
 
-import agh.ics.oop.model.Vector2d;
+import agh.ics.oop.model.algorithms.FisherYatesShuffle;
+import agh.ics.oop.model.util.Vector2d;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class FisherYatesShuffleTest {
     @Test
-    public void getIntegerValues_test() {
+    public void testGetIntegerValues() {
         List<Integer> list = new ArrayList<>();
         list.add(3);
         list.add(2);
@@ -33,7 +33,7 @@ public class FisherYatesShuffleTest {
     }
 
     @Test
-    public void getVector2DValues_test() {
+    public void testGetVector2DValues() {
         List<Vector2d> list = new ArrayList<>();
         list.add(new Vector2d(3,3));
         list.add(new Vector2d(2,2));

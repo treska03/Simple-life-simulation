@@ -2,13 +2,13 @@ package agh.ics.oop.model.creatures;
 
 import agh.ics.oop.model.info.Constants;
 import agh.ics.oop.model.info.ConstantsList;
-import agh.ics.oop.model.util.FisherYatesShuffle;
+import agh.ics.oop.model.algorithms.FisherYatesShuffle;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class Genes{
+public class Genome {
     private final int simulationId;
     private final Constants constants;
     private final int NUMBER_OF_GENES;
@@ -19,7 +19,7 @@ public class Genes{
     private int startMoveNumber;
     private int moveNumber = 0; //number of already made moves
 
-    private Genes(int simulationId) {
+    private Genome(int simulationId) {
         this.simulationId = simulationId;
         this.constants = ConstantsList.getConstants(simulationId);
         this.NUMBER_OF_GENES = constants.getNumberOfGenes();
@@ -49,7 +49,13 @@ public class Genes{
         return moveList[currGeneIdx];
     }
 
-    public static Genes fromParents(Animal animal1, Animal animal2) {
+    public int getActivatedGene(){
+        int currentGene = getCurrentMove();
+        moveNumber-=1;
+        return currentGene;
+    }
+
+    public static Genome fromParents(Animal animal1, Animal animal2) {
 //        Main constructor, for gene.
 //        Used after initial creation of first animals in simulation
 //
@@ -57,7 +63,7 @@ public class Genes{
 //
 //        Returns: Gene
 
-        Genes newGene = new Genes(animal1.getGenes().getSimulationId());
+        Genome newGene = new Genome(animal1.getSimulationId());
 
         Animal dominant;
         Animal minor;
@@ -83,18 +89,18 @@ public class Genes{
         // copied genes from parents to child
         if (side == 0){
             for (int i = 0; i < numberOfGensFromDominant; i++){
-                newGene.moveList[i] = dominant.getGenes().moveList[i];
+                newGene.moveList[i] = dominant.getGenome().moveList[i];
             }
             for (int i = numberOfGensFromDominant; i < newGene.NUMBER_OF_GENES; i++){
-                newGene.moveList[i] = minor.getGenes().moveList[i];
+                newGene.moveList[i] = minor.getGenome().moveList[i];
             }
         }
         else {
             for (int i = 0; i < numberOfGensFromMinor; i++){
-                newGene.moveList[i] = minor.getGenes().moveList[i];
+                newGene.moveList[i] = minor.getGenome().moveList[i];
             }
             for (int i = numberOfGensFromMinor; i < newGene.NUMBER_OF_GENES; i++){
-                newGene.moveList[i] = dominant.getGenes().moveList[i];
+                newGene.moveList[i] = dominant.getGenome().moveList[i];
             }
         }
 
@@ -108,10 +114,10 @@ public class Genes{
     }
 
 
-    public static Genes startingAnimalGenes(int simulationId) {
+    public static Genome startingAnimalGenome(int simulationId) {
         // choosing randomly genes
         Random random = new Random();
-        Genes genes = new Genes(simulationId);
+        Genome genes = new Genome(simulationId);
         for (int i = 0; i < genes.NUMBER_OF_GENES; i++){
             genes.moveList[i] = random.nextInt(8);
         }
@@ -133,7 +139,7 @@ public class Genes{
         for (int i = 0; i < NUMBER_OF_GENES; i++){
             indexes.add(i);
         }
-        FisherYatesShuffle fisherYatesShuffle = new FisherYatesShuffle();
+        FisherYatesShuffle<Integer> fisherYatesShuffle = new FisherYatesShuffle<>();
         List<Integer> indexesToMutate = fisherYatesShuffle.getValues(numberOfMutatingGens, indexes);
 
         // choosing random gens in mutations
@@ -147,19 +153,17 @@ public class Genes{
         this.startMoveNumber = random.nextInt(8);
     }
 
-    public int getSimulationId() {
-        return simulationId;
-    }
-
     public int[] getMoveList() {
         return moveList;
     }
 
-    public void setMoveList(int[] moveList) { // only for tests
+    // only for tests
+    public void setMoveListForTests(int[] moveList) {
         this.moveList = moveList;
     }
 
-    public void setStartMoveNumber(int startMoveNumber) { // only for tests
+    // only for tests
+    public void setStartMoveNumberForTests(int startMoveNumber) {
         this.startMoveNumber = startMoveNumber;
     }
 }

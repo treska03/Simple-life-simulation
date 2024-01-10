@@ -7,7 +7,7 @@ import agh.ics.oop.model.info.ConstantsList;
 import agh.ics.oop.model.map.NormalMap;
 import agh.ics.oop.model.map.WorldMap;
 import agh.ics.oop.model.util.Boundary;
-import agh.ics.oop.model.Vector2d;
+import agh.ics.oop.model.util.Vector2d;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.HPos;
@@ -17,7 +17,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
-
 import java.util.List;
 
 public class SimulationPresenter implements MapChangeListener{
@@ -109,8 +108,7 @@ public class SimulationPresenter implements MapChangeListener{
         this.setObserver(new ConsoleMapDisplay());
         String[] paramArray = textField.getText().split(" ");
         List<Vector2d> positions = List.of(new Vector2d(2,2), new Vector2d(3,4));
-        return new SimulationEngine(List.of(new Simulation(gameMap,
-                positions, 1)));
+        return new SimulationEngine(List.of(new Simulation( 1)));
 
 //        IN ABOVE LINE IN INITIALIZATION OF SIMULATION, 1 IS TEMPORARY.
 //        IT REPRESENTS ID OF SIMULATION

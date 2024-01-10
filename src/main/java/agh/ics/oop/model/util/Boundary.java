@@ -1,7 +1,5 @@
 package agh.ics.oop.model.util;
 
-import agh.ics.oop.model.Vector2d;
-
 import java.util.List;
 
 public record Boundary(Vector2d lowerLeft, Vector2d upperRight) {
@@ -21,6 +19,12 @@ public record Boundary(Vector2d lowerLeft, Vector2d upperRight) {
             upperRightPosition = upperRightPosition.upperRight(vector);
         }
         return new Boundary(lowerLeftPosition, upperRightPosition);
+    }
+
+    public int numberOfFieldsInsideBoundary() {
+        int width = upperRight().getX() - lowerLeft().getX() + 1;
+        int height = upperRight().getY() - lowerLeft().getY() + 1;
+        return height * width;
     }
 
     public boolean insideBoundary(Vector2d toTest) {

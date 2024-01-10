@@ -2,11 +2,11 @@ package agh.ics.oop.model.enums;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import agh.ics.oop.model.Vector2d;
+import agh.ics.oop.model.util.Vector2d;
 
 public class MapDirectionTest {
     @Test
-    public void Rotate_test() {
+    public void testRotate() {
         Assertions.assertEquals(MapDirection.NORTH.rotate(0), MapDirection.NORTH);
         Assertions.assertEquals(MapDirection.NORTH.rotate(1), MapDirection.NORTH_EAST);
         Assertions.assertEquals(MapDirection.NORTH_EAST.rotate(2), MapDirection.SOUTH_EAST);
@@ -18,7 +18,7 @@ public class MapDirectionTest {
     }
 
     @Test
-    public void ToString_test() {
+    public void testToString() {
         Assertions.assertEquals(MapDirection.NORTH.toString(), "N");
         Assertions.assertEquals(MapDirection.NORTH_EAST.toString(), "NE");
         Assertions.assertEquals(MapDirection.EAST.toString(), "E");
@@ -30,7 +30,7 @@ public class MapDirectionTest {
     }
 
     @Test
-    public void ToUnitVector() {
+    public void testToUnitVector() {
         Assertions.assertEquals(MapDirection.NORTH.toUnitVector(), new Vector2d(0,1));
         Assertions.assertEquals(MapDirection.NORTH_EAST.toUnitVector(), new Vector2d(1,1));
         Assertions.assertEquals(MapDirection.EAST.toUnitVector(), new Vector2d(1,0));

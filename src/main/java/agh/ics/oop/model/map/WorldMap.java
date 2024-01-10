@@ -1,14 +1,16 @@
 package agh.ics.oop.model.map;
 
 import agh.ics.oop.model.*;
+import agh.ics.oop.model.algorithms.FisherYatesShuffle;
 import agh.ics.oop.model.creatures.Animal;
 import agh.ics.oop.model.creatures.Plant;
 import agh.ics.oop.model.creatures.WorldElement;
 import agh.ics.oop.model.info.Constants;
 import agh.ics.oop.model.info.ConstantsList;
 import agh.ics.oop.model.util.*;
-import agh.ics.oop.model.Vector2d;
-
+import agh.ics.oop.model.util.Vector2d;
+import agh.ics.oop.model.info.Stats;
+import agh.ics.oop.model.info.StatsList;
 import java.util.*;
 
 
@@ -16,16 +18,18 @@ public abstract class WorldMap {
 
     protected int simulationId;
     protected final Constants constants;
-    protected List<MapChangeListener> observers = new ArrayList<>();
+    protected final Stats stats;
+    protected final List<MapChangeListener> observers = new ArrayList<>();
     protected Map<Vector2d, List<Animal>> animalPositions = new HashMap<>();
-    protected final HashSet<Vector2d> plantPositions = new HashSet<>();
-    protected List<Vector2d> noPlantsFieldsForJungle;
-    protected List<Vector2d> noPlantsFieldsForSteps;
+    private final HashSet<Vector2d> plantPositions = new HashSet<>();
+    private final List<Vector2d> noPlantsFieldsForJungle;
+    private final List<Vector2d> noPlantsFieldsForSteps;
 
 
     public WorldMap(int simulationId) {
         this.simulationId = simulationId;
         this.constants = ConstantsList.getConstants(simulationId);
+        this.stats = StatsList.getStats(simulationId);
         this.noPlantsFieldsForJungle = PositionsGenerator.generateAllPositions(constants.getJungleBoundary());
         this.noPlantsFieldsForSteps = PositionsGenerator.generateStepsPositionList(
                 constants.getMapBoundary(), constants.getJungleBoundary());
@@ -38,7 +42,9 @@ public abstract class WorldMap {
 
     private void initAnimals(int animalsToAdd) {
         for(int i=0; i<animalsToAdd; i++) {
-            addToAnimalMap(animalPositions, Animal.startingAnimal(simulationId));
+            Animal animal = Animal.startingAnimal(simulationId);
+            addToAnimalMap(animalPositions, animal);
+            stats.reportAddingStartingAnimal(animal);
         }
     }
 
@@ -48,11 +54,9 @@ public abstract class WorldMap {
          and remove those positions from noGrassFields;
          positions are chosen using Fisher-Yates shuffle;
         */
-        FisherYatesShuffle fisherYatesShuffle = new FisherYatesShuffle();
+        FisherYatesShuffle<Vector2d> fisherYatesShuffle = new FisherYatesShuffle<>();
         List<Vector2d> newPositions = fisherYatesShuffle.getValues(grassToAdd, noGrassFields);
-        for (Vector2d grassPosition : newPositions) {
-            plantPositions.add(grassPosition);
-        }
+        plantPositions.addAll(newPositions);
         for (int i = 0; i < grassToAdd; i++) {
             /*
              Fisher-Yates shuffle place chosen positions at the end of the list;
@@ -70,9 +74,33 @@ public abstract class WorldMap {
         return new MapVisualizer(this).draw(constants.getMapBoundary().lowerLeft(), constants.getMapBoundary().upperRight());
     }
 
+    public void reduceAnimalEnergy() {
+        for(List<Animal> animalList: animalPositions.values()) {
+            for (Animal animal : animalList) {
+                animal.removeEnergy(constants.getDailyEnergyLoss());
+            }
+        }
+    }
+
     public void removeDeadAnimals() {
         for(List<Animal> animalList: animalPositions.values()) {
-            animalList.removeIf(animal -> animal.getCurrentEnergy() <= 0);
+            Iterator<Animal> iterator = animalList.iterator();
+            while (iterator.hasNext()) {
+                Animal animal = iterator.next();
+                if (animal.getCurrentEnergy() <= 0){
+                    iterator.remove();
+                    stats.reportDeathOfAnimal(animal);
+                }
+            }
+        }
+        Iterator<Map.Entry<Vector2d, List<Animal>>> iterator = animalPositions.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<Vector2d, List<Animal>> entry = iterator.next();
+            List<Animal> animalsOnTile = entry.getValue();
+
+            if (animalsOnTile.isEmpty()) {
+                iterator.remove();
+            }
         }
     }
 
@@ -95,10 +123,11 @@ public abstract class WorldMap {
     public void feedAnimals() {
         for(Vector2d position : plantPositions) {
             List<Animal> animalsOnTile = animalPositions.get(position);
-            if(!animalsOnTile.isEmpty()) {
-                AnimalPrioritySorter.sortAnimals(animalsOnTile);
-
-                animalsOnTile.get(0).consume();
+            if(animalsOnTile != null) {
+                MaximalAnimalsFinder maximalAnimalsFinder = new MaximalAnimalsFinder();
+                Animal maximalAnimal = maximalAnimalsFinder.getOneMax(animalsOnTile);
+                maximalAnimal.consume();
+                stats.reportPlantConsumption();
 
                 if(insideJungle(position)) noPlantsFieldsForJungle.add(position);
                 else noPlantsFieldsForSteps.add(position);
@@ -110,9 +139,16 @@ public abstract class WorldMap {
     public void reproduceAnimals() {
         for(List<Animal> animalsOnTile : animalPositions.values()) {
             if(animalsOnTile.size() >= 2) {
-                AnimalPrioritySorter.sortAnimals(animalsOnTile);
-                Animal child = animalsOnTile.get(0).reproduce(animalsOnTile.get(1));
-                if(child != null) animalsOnTile.add(child);
+                MaximalAnimalsFinder maximalAnimalsFinder = new MaximalAnimalsFinder();
+                List<Animal> maximalAnimals = maximalAnimalsFinder.getTwoMax(animalsOnTile);
+                Animal parent1 = maximalAnimals.get(0);
+                Animal parent2 = maximalAnimals.get(1);
+                Animal child = parent1.reproduce(parent2);
+                if(child != null) {
+                    animalsOnTile.add(child);
+                    stats.reportAddingAnimalHavingParents(child, parent1, parent2);
+                }
+
             }
         }
     }
@@ -150,7 +186,7 @@ public abstract class WorldMap {
     }
 
     public WorldElement objectAt(Vector2d position) {
-        if(!animalPositions.get(position).isEmpty()) {
+        if(!(animalPositions.get(position) == null)) {
             return animalPositions.get(position).get(0);
         }
         if(plantPositions.contains(position)){
@@ -177,11 +213,60 @@ public abstract class WorldMap {
         }
     }
 
+    public HashSet<Vector2d> getPlantPositions() {
+        return plantPositions;
+    }
+
     public List<Vector2d> getNoPlantsFieldsForJungle() {
         return noPlantsFieldsForJungle;
     }
 
     public List<Vector2d> getNoPlantsFieldsForSteps() {
         return noPlantsFieldsForSteps;
+    }
+
+    public Map<Vector2d, List<Animal>> getAnimalPositions() {
+        return animalPositions;
+    }
+
+    // only for tests
+    public void setAnimalPositionsForTests(Map<Vector2d, List<Animal>> animalPositions) {
+        // delete previous animals from stats
+        stats.reportClearingAnimalListForTests();
+
+        // replace the hash set of existing animals
+        this.animalPositions = animalPositions;
+
+        // add new animals to stats
+        for (List<Animal> animalList : animalPositions.values()){
+            for (Animal animal : animalList){
+                stats.reportAddingStartingAnimal(animal);
+            }
+        }
+    }
+
+    // only for tests
+    public void setPlantPositionsForTests(HashSet<Vector2d> newPlantPositions) {
+        // remove all plants
+        for (Vector2d position : plantPositions){
+            if (insideJungle(position)){
+                noPlantsFieldsForJungle.add(position);
+            }
+            else {
+                noPlantsFieldsForSteps.add(position);
+            }
+        }
+        plantPositions.clear();
+
+        // set new plants
+        for (Vector2d position : newPlantPositions){
+            if (insideJungle(position)){
+                noPlantsFieldsForJungle.remove(position);
+            }
+            else {
+                noPlantsFieldsForJungle.remove(position);
+            }
+            plantPositions.add(position);
+        }
     }
 }

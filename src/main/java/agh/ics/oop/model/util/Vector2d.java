@@ -1,4 +1,4 @@
-package agh.ics.oop.model;
+package agh.ics.oop.model.util;
 
 import java.util.Objects;
 
@@ -63,6 +63,7 @@ public class Vector2d {
         return new Vector2d(-this.getX(), -this.getY());
     }
 
+    @Override
     public boolean equals(Object other) {
         if(this == other) {
             return true;
@@ -73,6 +74,7 @@ public class Vector2d {
         return (this.getX() == ((Vector2d) other).getX() && this.getY() == ((Vector2d) other).getY());
     }
 
+    @Override
     public int hashCode() {
         return Objects.hash(this.getX(), this.getY());
     }
