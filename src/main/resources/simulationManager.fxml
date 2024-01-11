@@ -12,7 +12,7 @@
             minHeight="550.0" minWidth="1250.0"
             fx:controller="agh.ics.oop.presenter.SimulationWindowManager">
     <center>
-        <VBox alignment="CENTER" style="-fx-spacing: 20">
+        <VBox alignment="CENTER" style="-fx-spacing: 15">
             <VBox style="-fx-spacing: 0; -fx-alignment: center">
                 <Label>Czy chcesz opcję tam i z powrotem?</Label>
                 <CheckBox fx:id="backAndForth"></CheckBox>
@@ -71,6 +71,10 @@
                     <IntegerField fx:id="mapHeight" style="-fx-max-width: 90"></IntegerField>
                 </VBox>
             </HBox>
+            <VBox style="-fx-spacing: 0; -fx-alignment: center">
+                <Label>Wczytaj z pliku config</Label>
+                <Button onAction="#fileSelecter" minHeight="30.0" minWidth="60" >Boop</Button>
+            </VBox>
             <Label>KLIKNIJ PRZYCISK ZEBY ODPALIC SYMULACJE</Label>
             <Button fx:id="startButton" onAction="#handleNewWindow" minHeight="50.0" minWidth="125.0" style="-fx-font-size: 20">Start</Button>
         </VBox>

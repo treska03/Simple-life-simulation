@@ -11,8 +11,11 @@ import com.sun.javafx.scene.control.IntegerField;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.CheckBox;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class SimulationWindowManager {
@@ -121,6 +124,56 @@ public class SimulationWindowManager {
 
 //      If nothing goes wrong, then the data is valid!
         return true;
+    }
+
+    private void setFields(String[] vals) {
+        backAndForth.setSelected(Boolean.parseBoolean(vals[0]));
+        portalToHell.setSelected(Boolean.parseBoolean(vals[1]));
+        numberOfGenes.setValue(Integer.parseInt(vals[2]));
+        minMutations.setValue(Integer.parseInt(vals[3]));
+        maxMutations.setValue(Integer.parseInt(vals[4]));
+        minEnergyForReproduction.setValue(Integer.parseInt(vals[5]));
+        energyUsedForReproduction.setValue(Integer.parseInt(vals[6]));
+        startingAnimalNumber.setValue(Integer.parseInt(vals[7]));
+        newAnimalEnergy.setValue(Integer.parseInt(vals[8]));
+        dailyNewGrassNumber.setValue(Integer.parseInt(vals[9]));
+        dailyEnergyLoss.setValue(Integer.parseInt(vals[10]));
+        energyGainFromPlant.setValue(Integer.parseInt(vals[11]));
+        mapWidth.setValue(Integer.parseInt(vals[12]));
+        mapHeight.setValue(Integer.parseInt(vals[13]));
+    }
+
+    public void fileSelecter() {
+        Stage newWindow = new Stage();
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Open Resource File");
+
+        String[] lines = new String[15];
+        int i = 0;
+        try(Scanner scanner = new Scanner(fileChooser.showOpenDialog(newWindow))) {
+            while(scanner.hasNextLine()) {
+                if(i >= 15) {
+                    break;
+                }
+                String line = scanner.nextLine();
+                lines[i] = line;
+                i++;
+            }
+        }
+        catch (IOException e) {
+            showError("Wrong file format selected. Make sure config is alright");
+        }
+
+        if(i != 14) {
+            showError("Wrong file length. File should be 14 lines long!");
+        }
+
+        try {
+            setFields(lines);
+        } catch (NumberFormatException e) {
+            showError("Wrong file format. Some values are not integers");
+        }
+
     }
     public void handleNewWindow() throws IOException, InterruptedException {
         if(!isValidData()) return;
