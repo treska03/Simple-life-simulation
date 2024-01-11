@@ -24,29 +24,23 @@ import java.util.List;
 public class SimulationPresenter implements MapChangeListener{
 
     @FXML
-    public TextField textField;
-    public Button startButton;
-
-    @FXML
     private GridPane mapGrid;
-    @FXML
-    private Label infoLabel;
-    private final int simulationId;
-    private final WorldMap worldMap;
     static final int CELL_WIDTH = 30;
     static final int CELL_HEIGHT = 30;
-    private final Constants constants;
-    private final Stats stats;
-    private final SimulationEngine engine;
+    private int simulationId;
+    private WorldMap worldMap;
+    private Constants constants;
+    private Stats stats;
+    private SimulationEngine engine;
 
 
-    public void onSimulationStartClicked() throws InterruptedException {
+    public void run() throws InterruptedException {
         engine.runAsync();
     }
 
-    public SimulationPresenter() {
-        int simulationId = 1; //TODO: this is temporary id, we need to pass it
-                              // so that we can have more than one presenter
+    public SimulationPresenter() {}
+
+    public void setUp(int simulationId) {
         this.simulationId = simulationId;
         this.constants = ConstantsList.getConstants(simulationId);
         this.stats = StatsList.getStats(simulationId);
@@ -59,9 +53,9 @@ public class SimulationPresenter implements MapChangeListener{
 
     @Override
     public void mapChanged(WorldMap worldMap, String message) {
+        if(simulationId == -1) throw new RuntimeException("Didn't set-up UI presenter before calling mapChanged");
         Platform.runLater(() -> {
             drawMap(worldMap);
-            infoLabel.setText(message);
         });
     }
 

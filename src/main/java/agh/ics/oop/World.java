@@ -13,24 +13,22 @@ public class World {
 
         System.out.println("System wystartował");
 
+        Application.launch(SimulationApp.class);
 
-        for (int i = 1; i<= 1; i++){ // end condition only temporarily
-
-            setUpConstants(i);
-            Stats stats = new Stats(i);
-            StatsList.addToStatsList(i, stats);
-            Simulation simulation = new Simulation(1);
-
-            Application.launch(SimulationApp.class, String.valueOf(1));
-
+//        for (int i = 1; i<= 1; i++){ // end condition only temporarily
+//
+//            setUpConstants(i);
+//            Stats stats = new Stats(i);
+//            StatsList.addToStatsList(i, stats);
+//            Simulation simulation = new Simulation(1);
 //            simulation.run();
-        }
+//        }
 
         System.out.println("System zakończył działanie");
 
     }
 
-    private static void setUpConstants(int simulationId) {
+    public static void setUpConstants(int simulationId) {
         boolean BACK_AND_FORTH = false;
         int NUMBER_OF_GENS = 10;
         int MIN_MUTATIONS = 0;
