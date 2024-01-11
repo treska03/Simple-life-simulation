@@ -125,7 +125,6 @@ public class SimulationWindowManager {
 //      If nothing goes wrong, then the data is valid!
         return true;
     }
-
     private void setFields(String[] vals) {
         backAndForth.setSelected(Boolean.parseBoolean(vals[0]));
         portalToHell.setSelected(Boolean.parseBoolean(vals[1]));
@@ -143,7 +142,7 @@ public class SimulationWindowManager {
         mapHeight.setValue(Integer.parseInt(vals[13]));
     }
 
-    public void fileSelecter() {
+    public void fileSelector() {
         Stage newWindow = new Stage();
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open Resource File");
@@ -162,10 +161,12 @@ public class SimulationWindowManager {
         }
         catch (IOException e) {
             showError("Wrong file format selected. Make sure config is alright");
+            return;
         }
 
         if(i != 14) {
             showError("Wrong file length. File should be 14 lines long!");
+            return;
         }
 
         try {
