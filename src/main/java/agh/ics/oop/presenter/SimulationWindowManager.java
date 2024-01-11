@@ -14,6 +14,7 @@ import javafx.scene.control.CheckBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -146,10 +147,14 @@ public class SimulationWindowManager {
         Stage newWindow = new Stage();
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open Resource File");
+        File file = fileChooser.showOpenDialog(newWindow);
+        if(file == null) {
+            return;
+        }
 
         String[] lines = new String[15];
         int i = 0;
-        try(Scanner scanner = new Scanner(fileChooser.showOpenDialog(newWindow))) {
+        try(Scanner scanner = new Scanner(file)) {
             while(scanner.hasNextLine()) {
                 if(i >= 15) {
                     break;
