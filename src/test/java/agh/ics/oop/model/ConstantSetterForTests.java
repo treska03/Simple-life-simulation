@@ -6,6 +6,7 @@ import agh.ics.oop.model.util.Boundary;
 import agh.ics.oop.model.util.Vector2d;
 
 public class ConstantSetterForTests {
+    private boolean PORTAL_TO_HELL = false;
     private boolean BACK_AND_FORTH = false;
     private int NUMBER_OF_GENS = 10;
     private int MIN_MUTATIONS = 0;
@@ -21,7 +22,7 @@ public class ConstantSetterForTests {
 
     public void setUpConstants(int simulationId) {
 
-        Constants mockConsts = new Constants(BACK_AND_FORTH, NUMBER_OF_GENS, MIN_MUTATIONS,
+        Constants mockConsts = new Constants(PORTAL_TO_HELL, BACK_AND_FORTH, NUMBER_OF_GENS, MIN_MUTATIONS,
                 MAX_MUTATIONS, MIN_ENERGY_FOR_REPRODUCTION, ENERGY_USED_FOR_REPRODUCTION,
                 STARTING_ANIMALS_NUMBER, NEW_ANIMAL_ENERGY, DAILY_NEW_GRASS_NUMBER, DAILY_ENERGY_LOSS,
                 ENERGY_FROM_PLANT, MAP_BOUNDARY);
@@ -31,7 +32,7 @@ public class ConstantSetterForTests {
 
     public Constants getConstants(int simulationId) {
 
-        Constants mockConsts = new Constants(BACK_AND_FORTH, NUMBER_OF_GENS, MIN_MUTATIONS,
+        Constants mockConsts = new Constants(PORTAL_TO_HELL, BACK_AND_FORTH, NUMBER_OF_GENS, MIN_MUTATIONS,
                 MAX_MUTATIONS, MIN_ENERGY_FOR_REPRODUCTION, ENERGY_USED_FOR_REPRODUCTION,
                 STARTING_ANIMALS_NUMBER, NEW_ANIMAL_ENERGY, DAILY_NEW_GRASS_NUMBER, DAILY_ENERGY_LOSS,
                 ENERGY_FROM_PLANT, MAP_BOUNDARY);
@@ -39,6 +40,9 @@ public class ConstantSetterForTests {
         return mockConsts;
     }
 
+    public void setPortalToHell(boolean PORTAL_TO_HELL) {
+        this.PORTAL_TO_HELL = PORTAL_TO_HELL;
+    }
     public void setBackAndForth(boolean BACK_AND_FORTH) {
         this.BACK_AND_FORTH = BACK_AND_FORTH;
     }
