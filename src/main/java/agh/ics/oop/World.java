@@ -13,7 +13,6 @@ public class World {
 
         System.out.println("System wystartował");
 
-        //Application.launch(SimulationApp.class, args);
 
         for (int i = 1; i<= 1; i++){ // end condition only temporarily
 
@@ -21,7 +20,10 @@ public class World {
             Stats stats = new Stats(i);
             StatsList.addToStatsList(i, stats);
             Simulation simulation = new Simulation(1);
-            simulation.run();
+
+            Application.launch(SimulationApp.class, String.valueOf(1));
+
+//            simulation.run();
         }
 
         System.out.println("System zakończył działanie");

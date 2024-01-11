@@ -50,4 +50,8 @@ public class Simulation implements Runnable{
         }
     }
 
+    public WorldMap getGameMap() {
+        return gameMap;
+    }
+
 }
