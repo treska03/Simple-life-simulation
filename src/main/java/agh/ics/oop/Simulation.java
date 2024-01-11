@@ -6,6 +6,7 @@ import agh.ics.oop.model.info.ConstantsList;
 import agh.ics.oop.model.info.Stats;
 import agh.ics.oop.model.info.StatsList;
 import agh.ics.oop.model.map.NormalMap;
+import agh.ics.oop.model.map.PortalMap;
 import agh.ics.oop.model.util.MapVisualizer;
 import agh.ics.oop.model.util.Vector2d;
 import agh.ics.oop.model.map.WorldMap;
@@ -23,7 +24,14 @@ public class Simulation implements Runnable{
         this.simulationId = simulationId;
         this.constants = ConstantsList.getConstants(simulationId);
         this.stats = StatsList.getStats(simulationId);
-        this.gameMap = new NormalMap(simulationId);
+
+        if(constants.isPortalToHell()) {
+            this.gameMap = new PortalMap(simulationId);
+        }
+        else {
+            this.gameMap = new NormalMap(simulationId);
+
+        }
         gameMap.addObserver(new ConsoleMapDisplay());
         this.mapVisualizer = new MapVisualizer(gameMap);
     }

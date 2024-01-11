@@ -4,6 +4,7 @@ import agh.ics.oop.model.util.Vector2d;
 import agh.ics.oop.model.util.Boundary;
 
 public class Constants {
+    private final boolean PORTAL_TO_HELL;
     private final boolean BACK_AND_FORTH;
     private final int NUMBER_OF_GENES;
     private final int MIN_MUTATIONS;
@@ -19,11 +20,12 @@ public class Constants {
     private final Boundary JUNGLE_BOUNDARY;
 
 
-    public Constants(boolean BACK_AND_FORTH, int NUMBER_OF_GENS, int MIN_MUTATIONS,
+    public Constants(boolean PORTAL_TO_HELL, boolean BACK_AND_FORTH, int NUMBER_OF_GENS, int MIN_MUTATIONS,
                      int MAX_MUTATIONS, int MIN_ENERGY_FOR_REPRODUCTION,
                      int ENERGY_USED_FOR_REPRODUCTION, int STARTING_ANIMALS_NUMBER,
                      int NEW_ANIMAL_ENERGY, int DAILY_NEW_GRASS_NUMBER, int DAILY_ENERGY_LOSS,
                      int ENERGY_FROM_PLANT, Boundary MAP_BOUNDARY) {
+        this.PORTAL_TO_HELL = PORTAL_TO_HELL;
         this.BACK_AND_FORTH = BACK_AND_FORTH;
         this.NUMBER_OF_GENES = NUMBER_OF_GENS;
         this.MIN_MUTATIONS = MIN_MUTATIONS;
@@ -47,6 +49,9 @@ public class Constants {
         return new Boundary(jungleLowerLeft, jungleUpperRight);
     }
 
+    public boolean isPortalToHell() {
+        return PORTAL_TO_HELL;
+    }
     public boolean isBackAndForth() {
         return BACK_AND_FORTH;
     }

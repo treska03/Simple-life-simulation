@@ -29,6 +29,7 @@ public class World {
     }
 
     public static void setUpConstants(int simulationId) {
+        boolean PORTAL_TO_HELL = false;
         boolean BACK_AND_FORTH = false;
         int NUMBER_OF_GENS = 10;
         int MIN_MUTATIONS = 0;
@@ -42,7 +43,7 @@ public class World {
         int ENERGY_FROM_PLANT = 20;
         Boundary MAP_BOUNDARY = new Boundary(new Vector2d(0, 0), new Vector2d(10, 10));
 
-        Constants mockConsts = new Constants(BACK_AND_FORTH, NUMBER_OF_GENS, MIN_MUTATIONS,
+        Constants mockConsts = new Constants(PORTAL_TO_HELL, BACK_AND_FORTH, NUMBER_OF_GENS, MIN_MUTATIONS,
                 MAX_MUTATIONS, MIN_ENERGY_FOR_REPRODUCTION, ENERGY_USED_FOR_REPRODUCTION,
                 STARTING_ANIMALS_NUMBER, NEW_ANIMAL_ENERGY, DAILY_NEW_GRASS_NUMBER,
                 DAILY_ENERGY_LOSS, ENERGY_FROM_PLANT, MAP_BOUNDARY);
