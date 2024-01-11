@@ -1,5 +1,6 @@
 package agh.ics.oop;
 
+import agh.ics.oop.model.ConsoleMapDisplay;
 import agh.ics.oop.model.info.Constants;
 import agh.ics.oop.model.info.ConstantsList;
 import agh.ics.oop.model.info.Stats;
@@ -23,6 +24,7 @@ public class Simulation implements Runnable{
         this.constants = ConstantsList.getConstants(simulationId);
         this.stats = StatsList.getStats(simulationId);
         this.gameMap = new NormalMap(simulationId);
+        gameMap.addObserver(new ConsoleMapDisplay());
         this.mapVisualizer = new MapVisualizer(gameMap);
     }
 
@@ -38,7 +40,7 @@ public class Simulation implements Runnable{
             gameMap.reproduceAnimals();
             gameMap.growPlants();
             stats.reportEndOfTheDay(gameMap);
-            mapVisualizer.draw(constants.getMapBoundary().lowerLeft(), constants.getMapBoundary().upperRight());
+            gameMap.atMapChanged("Day " + day + " passed!");
 
             try {
                 Thread.sleep(500);

@@ -29,6 +29,9 @@ public abstract class WorldMap {
     public WorldMap(int simulationId) {
         this.simulationId = simulationId;
         this.constants = ConstantsList.getConstants(simulationId);
+        if (constants == null) {
+            throw new IllegalArgumentException(simulationId + " is a wrong id.");
+        }
         this.stats = StatsList.getStats(simulationId);
         this.noPlantsFieldsForJungle = PositionsGenerator.generateAllPositions(constants.getJungleBoundary());
         this.noPlantsFieldsForSteps = PositionsGenerator.generateStepsPositionList(
