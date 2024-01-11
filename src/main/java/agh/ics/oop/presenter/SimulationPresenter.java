@@ -4,6 +4,8 @@ import agh.ics.oop.model.*;
 import agh.ics.oop.*;
 import agh.ics.oop.model.info.Constants;
 import agh.ics.oop.model.info.ConstantsList;
+import agh.ics.oop.model.info.Stats;
+import agh.ics.oop.model.info.StatsList;
 import agh.ics.oop.model.map.NormalMap;
 import agh.ics.oop.model.map.WorldMap;
 import agh.ics.oop.model.util.Boundary;
@@ -22,38 +24,38 @@ import java.util.List;
 public class SimulationPresenter implements MapChangeListener{
 
     @FXML
-    public TextField textField;
-    public Button startButton;
-
-    @FXML
     private GridPane mapGrid;
-    @FXML
-    private Label infoLabel;
-    private final WorldMap worldMap;
     static final int CELL_WIDTH = 30;
     static final int CELL_HEIGHT = 30;
-    private final Constants constants;
+    private int simulationId;
+    private WorldMap worldMap;
+    private Constants constants;
+    private Stats stats;
+    private SimulationEngine engine;
 
 
-    public void onSimulationStartClicked() throws InterruptedException {
-        SimulationEngine simulationEngine = getSimulationEngine(worldMap);
-        simulationEngine.runAsync();
+    public void run() throws InterruptedException {
+        engine.runAsync();
     }
 
-    public SimulationPresenter(int simulationId) {
-        this.worldMap = new NormalMap(simulationId);
+    public SimulationPresenter() {}
+
+    public void setUp(int simulationId) {
+        this.simulationId = simulationId;
         this.constants = ConstantsList.getConstants(simulationId);
-    }
+        this.stats = StatsList.getStats(simulationId);
 
-    public void setObserver(ConsoleMapDisplay observer) {
-        worldMap.addObserver(observer);
+        Simulation simulation = new Simulation(this.simulationId);
+        this.worldMap = simulation.getGameMap();
+
+        this.engine = getSimulationEngine(simulation);
     }
 
     @Override
     public void mapChanged(WorldMap worldMap, String message) {
+        if(simulationId == -1) throw new RuntimeException("Didn't set-up UI presenter before calling mapChanged");
         Platform.runLater(() -> {
             drawMap(worldMap);
-            infoLabel.setText(message);
         });
     }
 
@@ -103,12 +105,11 @@ public class SimulationPresenter implements MapChangeListener{
         mapGrid.getRowConstraints().clear();
     }
 
-    private SimulationEngine getSimulationEngine(WorldMap gameMap) {
-        gameMap.addObserver(this);
-        this.setObserver(new ConsoleMapDisplay());
-        String[] paramArray = textField.getText().split(" ");
-        List<Vector2d> positions = List.of(new Vector2d(2,2), new Vector2d(3,4));
-        return new SimulationEngine(List.of(new Simulation( 1)));
+    private SimulationEngine getSimulationEngine(Simulation simulation) {
+        worldMap.addObserver(this);
+        worldMap.addObserver(new ConsoleMapDisplay());
+
+        return new SimulationEngine(List.of(simulation));
 
 //        IN ABOVE LINE IN INITIALIZATION OF SIMULATION, 1 IS TEMPORARY.
 //        IT REPRESENTS ID OF SIMULATION
