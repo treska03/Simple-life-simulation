@@ -37,4 +37,14 @@ public class SimulationEngine {
             executorService.shutdownNow();
         };
     }
+
+    private void removeSimulation(Simulation simulation) {
+        simulations.remove(simulation);
+    }
+
+    public void endSimulation(Simulation simulation) {
+        if(simulations.contains(simulation)) {
+            simulation.forceEnd();
+        }
+    }
 }
