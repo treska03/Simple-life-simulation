@@ -15,13 +15,13 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class SimulationWindowManager {
 
-    // WE WILL NEED SHIT TONS OF @FXML PARAMETERS HERE
     @FXML
     private CheckBox backAndForth;
     @FXML
@@ -180,6 +180,37 @@ public class SimulationWindowManager {
             showError("Wrong file format. Some values are not integers");
         }
 
+    }
+
+    public void saveNewConfig() {
+        if(!isValidData()) {
+            showError("Make sure to provide valid data before saving");
+            return;
+        }
+        File newFile = new File("simulationConfig.txt");
+        saveConfigFileContent(newFile);
+    }
+
+    private void saveConfigFileContent(File emptyFile) {
+        try(FileWriter writer = new FileWriter(emptyFile)) {
+            writer.write(String.valueOf(backAndForth.isSelected() + "\n"));
+            writer.write(String.valueOf(portalToHell.isSelected()) + "\n");
+            writer.write(numberOfGenes.getValue() + "\n");
+            writer.write(minMutations.getValue() + "\n");
+            writer.write(maxMutations.getValue() + "\n");
+            writer.write(minEnergyForReproduction.getValue() + "\n");
+            writer.write(energyUsedForReproduction.getValue() + "\n");
+            writer.write(startingAnimalNumber.getValue() + "\n");
+            writer.write(newAnimalEnergy.getValue() + "\n");
+            writer.write(dailyNewGrassNumber.getValue() + "\n");
+            writer.write(dailyEnergyLoss.getValue() + "\n");
+            writer.write(energyGainFromPlant.getValue() + "\n");
+            writer.write(mapWidth.getValue() + "\n");
+            writer.write(String.valueOf(mapHeight.getValue()));
+        } catch (IOException e) {
+            showError("Something went wrong");
+            return;
+        }
     }
     public void handleNewWindow() throws IOException, InterruptedException {
         if(!isValidData()) return;
