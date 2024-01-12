@@ -220,8 +220,8 @@ public class SimulationWindowManager {
         StatsList.addToStatsList(id, stats);
 
         SimulationPresenter windowPresenter = new SimulationPresenter();
-        app.startNewWindow(windowPresenter);
-        windowPresenter.setUp(id);
+        Stage stage = app.startNewWindow(windowPresenter);
+        windowPresenter.setUp(id, stage);
 
         windowPresenter.run();
     }

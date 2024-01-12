@@ -35,7 +35,7 @@ public class SimulationApp extends Application {
         primaryStage.minHeightProperty().bind(viewRoot.minHeightProperty());
     }
 
-    public void startNewWindow(SimulationPresenter presenter) throws IOException {
+    public Stage startNewWindow(SimulationPresenter presenter) throws IOException {
 
         Stage newWindow = new Stage();
         newWindow.setTitle("Simulation running");
@@ -44,6 +44,8 @@ public class SimulationApp extends Application {
         loader.setLocation(getClass().getClassLoader().getResource("simulationWindow.fxml"));
         newWindow.setScene(new Scene(loader.load()));
         newWindow.show();
+
+        return newWindow;
     }
 
 }

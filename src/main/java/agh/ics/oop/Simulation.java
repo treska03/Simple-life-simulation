@@ -18,7 +18,8 @@ public class Simulation implements Runnable{
     private final Constants constants;
     private final Stats stats;
     private final WorldMap gameMap;
-    private final MapVisualizer mapVisualizer;
+    private boolean finished = false;
+    private boolean paused = true;
 
     public Simulation(int simulationId) {
         this.simulationId = simulationId;
@@ -33,29 +34,48 @@ public class Simulation implements Runnable{
 
         }
         gameMap.addObserver(new ConsoleMapDisplay());
-        this.mapVisualizer = new MapVisualizer(gameMap);
     }
 
     @Override
     public void run() {
-
-        for (int day = 1; day <= 10; day++) { // end condition only temporarily
-
-            gameMap.reduceAnimalEnergy();
-            gameMap.removeDeadAnimals();
-            gameMap.moveAnimals();
-            gameMap.feedAnimals();
-            gameMap.reproduceAnimals();
-            gameMap.growPlants();
-            stats.reportEndOfTheDay(gameMap);
-            gameMap.atMapChanged("Day " + day + " passed!");
-
+        while(!finished) {
             try {
                 Thread.sleep(500);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
+
+            if(!paused) {
+                singleDayLoop();
+            }
         }
+    }
+
+    private void singleDayLoop() {
+        gameMap.reduceAnimalEnergy();
+        gameMap.removeDeadAnimals();
+        gameMap.moveAnimals();
+        gameMap.feedAnimals();
+        gameMap.reproduceAnimals();
+        gameMap.growPlants();
+        stats.reportEndOfTheDay(gameMap);
+        gameMap.atMapChanged("Day " + stats.getDay() + " passed!");
+
+        if(stats.getNumberOfLiveAnimals() == 0) {
+            finished = true;
+        }
+    }
+
+    public void resumeGame() {
+        paused = false;
+    }
+
+    public void pauseGame() {
+        paused = true;
+    }
+
+    public void forceEnd() {
+        finished = true;
     }
 
     public WorldMap getGameMap() {

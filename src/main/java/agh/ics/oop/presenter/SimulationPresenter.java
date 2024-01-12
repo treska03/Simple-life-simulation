@@ -1,16 +1,18 @@
 package agh.ics.oop.presenter;
 
-import agh.ics.oop.model.*;
-import agh.ics.oop.*;
+import agh.ics.oop.SimulationEngine;
+import agh.ics.oop.Simulation;
+import agh.ics.oop.model.ConsoleMapDisplay;
+import agh.ics.oop.model.MapChangeListener;
 import agh.ics.oop.model.info.Constants;
 import agh.ics.oop.model.info.ConstantsList;
 import agh.ics.oop.model.info.Stats;
 import agh.ics.oop.model.info.StatsList;
-import agh.ics.oop.model.map.NormalMap;
 import agh.ics.oop.model.map.WorldMap;
 import agh.ics.oop.model.util.Boundary;
 import agh.ics.oop.model.util.Vector2d;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.HPos;
 import javafx.scene.control.Button;
@@ -19,15 +21,24 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
+import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
+
 import java.util.List;
 
-public class SimulationPresenter implements MapChangeListener{
+public class SimulationPresenter implements MapChangeListener {
 
     @FXML
     private GridPane mapGrid;
+    @FXML
+    private Button resumeButton;
+    @FXML
+    private Button pauseButton;
     static final int CELL_WIDTH = 30;
     static final int CELL_HEIGHT = 30;
+    private Simulation simulation;
     private int simulationId;
+    private Stage stage;
     private WorldMap worldMap;
     private Constants constants;
     private Stats stats;
@@ -40,15 +51,20 @@ public class SimulationPresenter implements MapChangeListener{
 
     public SimulationPresenter() {}
 
-    public void setUp(int simulationId) {
+    public void setUp(int simulationId, Stage stage) {
         this.simulationId = simulationId;
+        this.stage = stage;
         this.constants = ConstantsList.getConstants(simulationId);
         this.stats = StatsList.getStats(simulationId);
 
-        Simulation simulation = new Simulation(this.simulationId);
+        this.simulation = new Simulation(this.simulationId);
         this.worldMap = simulation.getGameMap();
 
         this.engine = getSimulationEngine(simulation);
+        resumeButton.setOnAction((e) -> simulation.resumeGame());
+        pauseButton.setOnAction((e) -> simulation.pauseGame());
+
+        stage.addEventFilter(WindowEvent.WINDOW_CLOSE_REQUEST, this::exitApplication);
     }
 
     @Override
@@ -111,8 +127,11 @@ public class SimulationPresenter implements MapChangeListener{
 
         return new SimulationEngine(List.of(simulation));
 
-//        IN ABOVE LINE IN INITIALIZATION OF SIMULATION, 1 IS TEMPORARY.
-//        IT REPRESENTS ID OF SIMULATION
+    }
+
+    public void exitApplication(WindowEvent event) {
+        Platform.exit();
+        engine.endSimulation(this.simulation);
     }
 
 }
