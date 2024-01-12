@@ -25,13 +25,14 @@ public class Simulation implements Runnable{
         this.stats = StatsList.getStats(simulationId);
         this.gameMap = new NormalMap(simulationId);
         gameMap.addObserver(new ConsoleMapDisplay());
+        stats.reportEndOfTheDay(gameMap); // end of day 0
         this.mapVisualizer = new MapVisualizer(gameMap);
     }
 
     @Override
     public void run() {
 
-        for (int day = 1; day <= 10; day++) { // end condition only temporarily
+        for (int day = 1; day <= 50; day++) { // end condition only temporarily
 
             gameMap.reduceAnimalEnergy();
             gameMap.removeDeadAnimals();

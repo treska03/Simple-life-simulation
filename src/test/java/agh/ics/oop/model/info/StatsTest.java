@@ -330,7 +330,7 @@ public class StatsTest {
         // create default map
         WorldMap map = new NormalMap(1);
 
-        // day 1;
+        // day 0;
         // adding animal1 and animal2;
         Animal animal1 = Animal.startingAnimal(1);
         stats.reportAddingStartingAnimal(animal1);
@@ -338,7 +338,7 @@ public class StatsTest {
         stats.reportAddingStartingAnimal(animal2);
         stats.reportEndOfTheDay(map);
 
-        // day 2;
+        // day 1;
         // adding animal3;
         Animal animal3 = Animal.fromParents(animal1, animal2);
         stats.reportAddingAnimalHavingParents(animal3, animal1, animal2);
@@ -347,68 +347,67 @@ public class StatsTest {
         // no one has died yet, so it should be a default value, which is -1
         Assertions.assertEquals(-1, stats.getAverageDaysOfLiving());
 
-        // day 3;
-        // mark animal 2;
-        // adding animal 4;
-        stats.addMark(animal2);
+        // day 2;
+        // adding animal4;
+        // mark animal2;
         Animal animal4 = Animal.fromParents(animal1, animal2);
         stats.reportAddingAnimalHavingParents(animal4, animal1, animal2);
+        stats.addMark(animal2);
         stats.reportEndOfTheDay(map);
 
-        // day 4;
+        // day 3;
         // remove animal1
         stats.reportDeathOfAnimal(animal1);
         stats.reportEndOfTheDay(map);
 
-        // day 5;
+        // day 4;
         // remove animal4
         stats.reportDeathOfAnimal(animal4);
+        stats.reportEndOfTheDay(map);
 
         /*
             animal  |  day of birth  |  day of death  |  days of living
           __________|________________|________________|_________________
-           animal1  |        1       |       4        |        3
-           animal2  |        1       |       -        |        4
-           animal3  |        2       |       -        |        3
-           animal4  |        3       |       5        |        2
+           animal1  |        0       |       3        |        3
+           animal2  |        0       |       -        |        4
+           animal3  |        1       |       -        |        3
+           animal4  |        2       |       4        |        2
         */
-
-        // checking days of living for marked animal (animal3)
-        Assertions.assertEquals(5, stats.getDaysOfLiving());
+        // checking days of living for marked animal (animal2)
+        Assertions.assertEquals(4, stats.getDaysOfLiving());
         // checking average days of living for dead animals
         Assertions.assertEquals(2.5, stats.getAverageDaysOfLiving());
 
-        stats.reportEndOfTheDay(map);
-
-        // day 6;
-        // adding animal 5;
+        // day 5;
+        // adding animal5;
         Animal animal5 = Animal.fromParents(animal1, animal2);
         stats.reportAddingAnimalHavingParents(animal5, animal2, animal3);
         stats.reportEndOfTheDay(map);
 
-        // day 7;
-        // mark animal 5;
-        stats.addMark(animal2);
+        // day 6;
+        // mark animal3;
+        stats.addMark(animal3);
         stats.reportEndOfTheDay(map);
 
-        // day 8;
+        // day 7;
         // remove animal2
         // remove animal3
         stats.reportDeathOfAnimal(animal2);
         stats.reportDeathOfAnimal(animal3);
+        stats.reportEndOfTheDay(map);
 
         /*
             animal  |  day of birth  |  day of death  |  days of living
           __________|________________|________________|_________________
-           animal1  |        1       |       4        |        3
-           animal2  |        1       |       8        |        7
-           animal3  |        2       |       8        |        6
-           animal4  |        3       |       5        |        2
-           animal5  |        6       |       -        |        2
+           animal1  |        0       |       3        |        3
+           animal2  |        0       |       7        |        7
+           animal3  |        1       |       7        |        6
+           animal4  |        2       |       4        |        2
+           animal5  |        5       |       -        |        2
         */
 
-        // checking the day of death for marked animal (animal2)
-        Assertions.assertEquals(8, stats.getDayOfDeath());
+        // checking the day of death for marked animal (animal3)
+        Assertions.assertEquals(7, stats.getDayOfDeath());
         // checking average days of living for dead animals
         Assertions.assertEquals(4.5, stats.getAverageDaysOfLiving());
     }
@@ -476,6 +475,9 @@ public class StatsTest {
          energy from plant - 21;
         */
 
+        // day 0;
+        // initialize map;
+
         // create map
         WorldMap map = new NormalMap(1);
 
@@ -533,7 +535,7 @@ public class StatsTest {
          day 1;
          subtract animals' energy, kill dead animals (if they exist) and feed them;
          other actions are skipped;
-         animal1 and animal2 will get energy from plants
+         animal1 and animal2 will get energy from plants;
         */
         map.reduceAnimalEnergy();
         map.removeDeadAnimals();

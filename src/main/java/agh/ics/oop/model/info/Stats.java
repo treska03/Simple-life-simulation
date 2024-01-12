@@ -12,7 +12,7 @@ import static java.lang.Math.min;
 
 public class Stats {
     private Constants constants;
-    private int day = 1;
+    private int day = 0;
     private final int[] numberOfEachGenotype = new int[8];
     private int numberOfLiveAnimals = 0;
     private int numberOfPlants;
@@ -120,8 +120,6 @@ public class Stats {
     }
 
     public void reportEndOfTheDay(WorldMap map){
-        day++;
-
         // subtract daily energy loss for all animals
         // that are alive and hasn't been born that day;
         sumOfEnergy -= (numberOfLiveAnimals - numberOfNewAnimals) * constants.getDailyEnergyLoss();
@@ -148,8 +146,10 @@ public class Stats {
 
         // statistics for marked animal
         if (!(markedAnimal == null) && !(markedAnimalDead)){
-            daysOfLiving++;
+            daysOfLiving = day - markedAnimal.getDateOfBirth();
         }
+
+        day++; // changing the date to a day that is about to start
     }
 
     public void addMark (Animal markedAnimal){
@@ -166,8 +166,6 @@ public class Stats {
         for (GraphVertex vertex : descendantsList){
             descendants.add(vertex.getId());
         }
-
-        daysOfLiving = day - markedAnimal.getDateOfBirth() + 1;
     }
 
     public void deleteMark(){
