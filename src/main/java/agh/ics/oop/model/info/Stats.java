@@ -1,5 +1,6 @@
 package agh.ics.oop.model.info;
 
+import agh.ics.oop.model.ChangeListener;
 import agh.ics.oop.model.creatures.Animal;
 import agh.ics.oop.model.algorithms.DFS;
 import agh.ics.oop.model.map.WorldMap;
@@ -43,6 +44,7 @@ public class Stats {
         familyTree.put(animal.getId(), animalVertex);
 
         numberOfLiveAnimals++;
+        numberOfNewAnimals++;
         sumOfEnergy += constants.getNewAnimalEnergy();
         addToGenomeStats(animal);
     }
@@ -241,22 +243,25 @@ public class Stats {
     }
 
     public double getAverageEnergy(){
+        // set precision to 3 digits
         if (numberOfLiveAnimals != 0){
-            return (double) sumOfEnergy / (double) numberOfLiveAnimals;
+            return (double) Math.round(1000 * (double) sumOfEnergy / (double) numberOfLiveAnimals) / 1000;
         }
         return -1; // default if there are no live animals
     }
 
     public double getAverageDaysOfLiving(){
+        // set precision to 3 digits
         if (numberOfDeadAnimals != 0){
-            return (double) sumOfDaysOfLiving / (double) numberOfDeadAnimals;
+            return (double) Math.round(1000 * (double) sumOfDaysOfLiving / (double) numberOfDeadAnimals) / 1000;
         }
         return -1; // default if there are no dead animals
     }
 
     public double getAverageChildrenNumber(){
+        // set precision to 3 digits
         if (numberOfLiveAnimals != 0){
-            return (double) sumOfChildrenNumber/ (double) numberOfLiveAnimals;
+            return (double) Math.round(1000 * (double) sumOfChildrenNumber/ (double) numberOfLiveAnimals) / 1000;
         }
         return -1; // default if there are no live animals
     }

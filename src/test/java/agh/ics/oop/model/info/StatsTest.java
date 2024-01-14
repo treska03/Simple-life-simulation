@@ -515,6 +515,8 @@ public class StatsTest {
 
         map.setAnimalPositionsForTests(animalPositions);
 
+        stats.reportEndOfTheDay(map); // end of day 0
+
         /*
             animal  |  current energy
           __________|_________________
@@ -618,9 +620,9 @@ public class StatsTest {
         Assertions.assertEquals(10, animal2.getCurrentEnergy());
         Assertions.assertEquals(12, animal4.getCurrentEnergy());
 
-        // check average energy for living animals to the precision of two digits
-        Assertions.assertTrue((stats.getAverageEnergy() - 10.66 > 0) &&
-                (stats.getAverageEnergy() - 10.67 < 0));
+        // check average energy for living animals to the precision of 3 digits
+        System.out.println(stats.getNumberOfLiveAnimals());
+        Assertions.assertEquals(10.667, stats.getAverageEnergy());
 
         /*
          day 5, 6 and 7;

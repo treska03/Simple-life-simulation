@@ -8,6 +8,7 @@ import agh.ics.oop.model.info.StatsList;
 import agh.ics.oop.model.map.NormalMap;
 import agh.ics.oop.model.map.PortalMap;
 import agh.ics.oop.model.map.WorldMap;
+import agh.ics.oop.presenter.SimulationPresenter;
 
 public class Simulation implements Runnable{
     //TODO Add List containing all animals that were ever present (dead too)
@@ -57,7 +58,9 @@ public class Simulation implements Runnable{
         gameMap.reproduceAnimals();
         gameMap.growPlants();
         stats.reportEndOfTheDay(gameMap);
-        gameMap.atMapChanged("Day " + stats.getDay() + " passed!");
+        int endingDay = stats.getDay() - 1; // the day was already changed to new day
+        gameMap.atMapChanged("Day " + endingDay + " passed!");
+
 
         if(stats.getNumberOfLiveAnimals() == 0) {
             finished = true;
