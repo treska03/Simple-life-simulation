@@ -1,5 +1,6 @@
 package agh.ics.oop.model.info;
 
+import agh.ics.oop.model.ChangeListener;
 import agh.ics.oop.model.creatures.Animal;
 import agh.ics.oop.model.algorithms.DFS;
 import agh.ics.oop.model.map.WorldMap;
@@ -12,7 +13,7 @@ import static java.lang.Math.min;
 
 public class Stats {
     private Constants constants;
-    private int day = 1;
+    private int day = 0;
     private final int[] numberOfEachGenotype = new int[8];
     private int numberOfLiveAnimals = 0;
     private int numberOfPlants;
@@ -43,6 +44,7 @@ public class Stats {
         familyTree.put(animal.getId(), animalVertex);
 
         numberOfLiveAnimals++;
+        numberOfNewAnimals++;
         sumOfEnergy += constants.getNewAnimalEnergy();
         addToGenomeStats(animal);
     }
@@ -90,7 +92,7 @@ public class Stats {
         numberOfDeadAnimals++;
         numberOfLiveAnimals--;
         sumOfChildrenNumber -= animal.getChildrenNumber();
-        sumOfDaysOfLiving += (day - animal.getDateOfBirth());
+        sumOfDaysOfLiving += (animal.getAge());
 
         // change statistics for marked animal if that was it who died
         if (animal == markedAnimal){
@@ -120,8 +122,6 @@ public class Stats {
     }
 
     public void reportEndOfTheDay(WorldMap map){
-        day++;
-
         // subtract daily energy loss for all animals
         // that are alive and hasn't been born that day;
         sumOfEnergy -= (numberOfLiveAnimals - numberOfNewAnimals) * constants.getDailyEnergyLoss();
@@ -148,8 +148,10 @@ public class Stats {
 
         // statistics for marked animal
         if (!(markedAnimal == null) && !(markedAnimalDead)){
-            daysOfLiving++;
+            daysOfLiving = markedAnimal.getAge();
         }
+
+        day++; // changing the date to a day that is about to start
     }
 
     public void addMark (Animal markedAnimal){
@@ -166,8 +168,6 @@ public class Stats {
         for (GraphVertex vertex : descendantsList){
             descendants.add(vertex.getId());
         }
-
-        daysOfLiving = day - markedAnimal.getDateOfBirth() + 1;
     }
 
     public void deleteMark(){
@@ -243,22 +243,25 @@ public class Stats {
     }
 
     public double getAverageEnergy(){
+        // set precision to 3 digits
         if (numberOfLiveAnimals != 0){
-            return (double) sumOfEnergy / (double) numberOfLiveAnimals;
+            return (double) Math.round(1000 * (double) sumOfEnergy / (double) numberOfLiveAnimals) / 1000;
         }
         return -1; // default if there are no live animals
     }
 
     public double getAverageDaysOfLiving(){
+        // set precision to 3 digits
         if (numberOfDeadAnimals != 0){
-            return (double) sumOfDaysOfLiving / (double) numberOfDeadAnimals;
+            return (double) Math.round(1000 * (double) sumOfDaysOfLiving / (double) numberOfDeadAnimals) / 1000;
         }
         return -1; // default if there are no dead animals
     }
 
     public double getAverageChildrenNumber(){
+        // set precision to 3 digits
         if (numberOfLiveAnimals != 0){
-            return (double) sumOfChildrenNumber/ (double) numberOfLiveAnimals;
+            return (double) Math.round(1000 * (double) sumOfChildrenNumber/ (double) numberOfLiveAnimals) / 1000;
         }
         return -1; // default if there are no live animals
     }

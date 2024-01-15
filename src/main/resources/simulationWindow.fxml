@@ -8,20 +8,78 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.control.Label?>
 
+
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.Region?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            minHeight="550.0" minWidth="850.0">
+            minHeight="550.0" minWidth="1000.0">
 
     <left>
-
-        <GridPane gridLinesVisible="true"
-                  alignment="CENTER"
-                  fx:id="mapGrid">
-        </GridPane>
+        <VBox>
+            <ScrollPane fitToWidth="true" fitToHeight="true" maxWidth="500.0">
+                <GridPane gridLinesVisible="true"
+                    alignment="CENTER"
+                    style="-fx-padding: 50;"
+                    fx:id="mapGrid">
+                </GridPane>
+            </ScrollPane>
+        </VBox>
     </left>
+    <center>
+        <Region prefWidth="50.0"/>
+    </center>
     <right>
-        <VBox alignment="CENTER">
-            <Label>TU BEDA STATYSTYKI</Label>
+        <VBox alignment="CENTER" style="-fx-spacing: 15; -fx-alignment: center; -fx-padding: 20;">
+            <VBox alignment="CENTER_RIGHT" style="-fx-padding: 10;">
+                <Label fx:id="numberOfAnimalsLabel" />
+            </VBox>
+            <VBox alignment="CENTER_RIGHT" style="-fx-padding: 10;">
+                <Label fx:id="numberOfPlantsLabel" />
+            </VBox>
+            <VBox alignment="CENTER_RIGHT" style="-fx-padding: 10;">
+                <Label fx:id="numberOfEmptyFieldsLabel" />
+            </VBox>
+            <VBox fx:id="averageEnergyVBox" alignment="CENTER_RIGHT" style="-fx-padding: 10;">
+                <Label fx:id="averageEnergyLabel" />
+            </VBox>
+            <VBox fx:id="averageDaysOfLivingVBox" alignment="CENTER_RIGHT" style="-fx-padding: 10;">
+                <Label fx:id="averageDaysOfLivingLabel" />
+            </VBox>
+            <VBox fx:id="averageChildrenNumberVBox" alignment="CENTER_RIGHT" style="-fx-padding: 10;">
+                <Label fx:id="averageChildrenNumberLabel" />
+            </VBox>
+            <VBox alignment="CENTER_RIGHT" style="-fx-padding: 10;">
+                <Label text="Liczba zyjacych zwierzat posiadajacy dany genotyp:"/>
+            </VBox>
+            <HBox spacing="10" alignment="CENTER_RIGHT" style="-fx-padding: 10;">
+                <HBox style="-fx-spacing: 15; -fx-alignment: center">
+                    <Label fx:id="genotype0" />
+                </HBox>
+                <HBox style="-fx-spacing: 15; -fx-alignment: center">
+                    <Label fx:id="genotype1" />
+                </HBox>
+                <HBox style="-fx-spacing: 15; -fx-alignment: center">
+                    <Label fx:id="genotype2" />
+                </HBox>
+                <HBox style="-fx-spacing: 15; -fx-alignment: center">
+                    <Label fx:id="genotype3" />
+                </HBox>
+            </HBox>
+            <HBox spacing="10" alignment="CENTER_RIGHT" style="-fx-padding: 10;">
+                <HBox style="-fx-spacing: 15; -fx-alignment: center">
+                    <Label fx:id="genotype4" />
+                </HBox>
+                <HBox style="-fx-spacing: 15; -fx-alignment: center">
+                    <Label fx:id="genotype5" />
+                </HBox>
+                <HBox style="-fx-spacing: 15; -fx-alignment: center">
+                    <Label fx:id="genotype6" />
+                </HBox>
+                <HBox style="-fx-spacing: 15; -fx-alignment: center">
+                    <Label fx:id="genotype7" />
+                </HBox>
+            </HBox>
         </VBox>
     </right>
     <bottom>

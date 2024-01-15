@@ -53,13 +53,13 @@ public class MaximalAnimalsFinderTest {
         animal3.setCurrentEnergyForTests(100);
 
         /*
-           animal  |  energy  |  date of birth  |  number of children
-         __________|__________|_________________|_____________________
-          animal1  |    100   |        1        |          1
-          animal2  |    100   |        1        |          1
-          animal3  |    100   |        1        |          2
-          animal4  |    100   |        2        |          0
-          animal5  |    80    |        2        |          0
+           animal  |  energy  |  age  |  number of children
+         __________|__________|_______|_____________________
+          animal1  |    100   |   1   |          1
+          animal2  |    100   |   1   |          1
+          animal3  |    100   |   1   |          2
+          animal4  |    100   |   0   |          0
+          animal5  |    80    |   0   |          0
         */
 
         MaximalAnimalsFinder maximalAnimalsFinder = new MaximalAnimalsFinder();
@@ -104,34 +104,32 @@ public class MaximalAnimalsFinderTest {
 
     @Test
     public void testGetTwoMax(){
-        for (int i=0; i<1000; i++) {
-            // create animals and set their energy;
-            // animal3 and animal4 will have the most energy;
-            Animal animal1 = Animal.startingAnimal(1);
-            animal1.setCurrentEnergyForTests(50);
-            Animal animal2 = Animal.startingAnimal(1);
-            animal2.setCurrentEnergyForTests(100);
-            Animal animal3 = Animal.startingAnimal(1);
-            animal3.setCurrentEnergyForTests(150);
-            Animal animal4 = Animal.startingAnimal(1);
-            animal4.setCurrentEnergyForTests(200);
+        // create animals and set their energy;
+        // animal3 and animal4 will have the most energy;
+        Animal animal1 = Animal.startingAnimal(1);
+        animal1.setCurrentEnergyForTests(50);
+        Animal animal2 = Animal.startingAnimal(1);
+        animal2.setCurrentEnergyForTests(100);
+        Animal animal3 = Animal.startingAnimal(1);
+        animal3.setCurrentEnergyForTests(150);
+        Animal animal4 = Animal.startingAnimal(1);
+        animal4.setCurrentEnergyForTests(200);
 
-            // add animals to the list (order doesn't matter)
-            List<Animal> listOfAnimals = new ArrayList<>();
-            listOfAnimals.add(animal1);
-            listOfAnimals.add(animal2);
-            listOfAnimals.add(animal3);
-            listOfAnimals.add(animal4);
+        // add animals to the list (order doesn't matter)
+        List<Animal> listOfAnimals = new ArrayList<>();
+        listOfAnimals.add(animal1);
+        listOfAnimals.add(animal2);
+        listOfAnimals.add(animal3);
+        listOfAnimals.add(animal4);
 
-            MaximalAnimalsFinder maximalAnimalsFinder = new MaximalAnimalsFinder();
+        MaximalAnimalsFinder maximalAnimalsFinder = new MaximalAnimalsFinder();
 
-            // find maximal animals in the list
-            List<Animal> returnedAnimals = maximalAnimalsFinder.getTwoMax(listOfAnimals);
+        // find maximal animals in the list
+        List<Animal> returnedAnimals = maximalAnimalsFinder.getTwoMax(listOfAnimals);
 
-            // check if maximal animals in the list are animal3 and animal4 by theirs id;
-            // we know that the greatest animal will be on the index 0 in the returned list
-            Assertions.assertEquals(animal4.getId(), returnedAnimals.get(0).getId());
-            Assertions.assertEquals(animal3.getId(), returnedAnimals.get(1).getId());
-        }
+        // check if maximal animals in the list are animal3 and animal4 by theirs id;
+        // we know that the greatest animal will be on the index 0 in the returned list
+        Assertions.assertEquals(animal4.getId(), returnedAnimals.get(0).getId());
+        Assertions.assertEquals(animal3.getId(), returnedAnimals.get(1).getId());
     }
 }

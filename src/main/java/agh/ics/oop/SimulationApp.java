@@ -1,5 +1,6 @@
 package agh.ics.oop;
 
+import agh.ics.oop.presenter.AnimalsList;
 import agh.ics.oop.presenter.SimulationPresenter;
 import agh.ics.oop.presenter.SimulationWindowManager;
 import javafx.application.Application;
@@ -47,5 +48,18 @@ public class SimulationApp extends Application {
 
         return newWindow;
     }
+
+    public Stage startAnimalsList(AnimalsList presenter) throws IOException {
+        Stage newWindow = new Stage();
+        newWindow.setTitle("Choose animal");
+        FXMLLoader loader1 = new FXMLLoader();
+        loader1.setController(presenter);
+        loader1.setLocation(getClass().getClassLoader().getResource("animalsWindow.fxml"));
+        newWindow.setScene(new Scene(loader1.load()));
+        newWindow.show();
+
+        return newWindow;
+    }
+
 
 }

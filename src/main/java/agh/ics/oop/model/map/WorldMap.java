@@ -19,7 +19,7 @@ public abstract class WorldMap {
     protected int simulationId;
     protected final Constants constants;
     protected final Stats stats;
-    protected final List<MapChangeListener> observers = new ArrayList<>();
+    protected final List<ChangeListener> observers = new ArrayList<>();
     protected Map<Vector2d, List<Animal>> animalPositions = new HashMap<>();
     private final HashSet<Vector2d> plantPositions = new HashSet<>();
     private final List<Vector2d> noPlantsFieldsForJungle;
@@ -188,12 +188,17 @@ public abstract class WorldMap {
         }
     }
 
-    public WorldElement objectAt(Vector2d position) {
+    public String objectAt(Vector2d position) {
         if(!(animalPositions.get(position) == null)) {
-            return animalPositions.get(position).get(0);
+            if (animalPositions.get(position).size() == 1){
+                return animalPositions.get(position).get(0).toString();
+            }
+            else {
+                return "#";
+            }
         }
         if(plantPositions.contains(position)){
-            return new Plant(position);
+            return new Plant(position).toString();
         }
         return null;
     }
@@ -202,17 +207,17 @@ public abstract class WorldMap {
         return constants.getJungleBoundary().insideBoundary(position);
     }
 
-    public void addObserver(MapChangeListener observer) {
+    public void addObserver(ChangeListener observer) {
         observers.add(observer);
     }
 
-    public void removeObserver(MapChangeListener observer) {
+    public void removeObserver(ChangeListener observer) {
         observers.remove(observer);
     }
 
     public void atMapChanged(String str) {
-        for(MapChangeListener observer : observers) {
-            observer.mapChanged(this, str);
+        for(ChangeListener observer : observers) {
+            observer.mapChanged(this, str, stats);
         }
     }
 

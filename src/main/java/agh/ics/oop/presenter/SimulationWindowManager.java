@@ -65,7 +65,7 @@ public class SimulationWindowManager {
 
     private void setUpConstants(int id) {
         Vector2d lowerLeft = new Vector2d(0, 0);
-        Vector2d upperRight = new Vector2d(mapWidth.getValue(), mapHeight.getValue());
+        Vector2d upperRight = new Vector2d(mapWidth.getValue() - 1, mapHeight.getValue() - 1);
         Constants constants = new Constants(
                 backAndForth.isSelected(),
                 portalToHell.isSelected(),
@@ -221,7 +221,7 @@ public class SimulationWindowManager {
 
         SimulationPresenter windowPresenter = new SimulationPresenter();
         Stage stage = app.startNewWindow(windowPresenter);
-        windowPresenter.setUp(id, stage);
+        windowPresenter.setUp(id, app, stage);
 
         windowPresenter.run();
     }

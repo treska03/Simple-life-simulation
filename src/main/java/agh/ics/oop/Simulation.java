@@ -7,10 +7,8 @@ import agh.ics.oop.model.info.Stats;
 import agh.ics.oop.model.info.StatsList;
 import agh.ics.oop.model.map.NormalMap;
 import agh.ics.oop.model.map.PortalMap;
-import agh.ics.oop.model.util.MapVisualizer;
-import agh.ics.oop.model.util.Vector2d;
 import agh.ics.oop.model.map.WorldMap;
-import java.util.List;
+import agh.ics.oop.presenter.SimulationPresenter;
 
 public class Simulation implements Runnable{
     //TODO Add List containing all animals that were ever present (dead too)
@@ -34,6 +32,7 @@ public class Simulation implements Runnable{
 
         }
         gameMap.addObserver(new ConsoleMapDisplay());
+        stats.reportEndOfTheDay(gameMap); // end of day 0
     }
 
     @Override
@@ -59,7 +58,9 @@ public class Simulation implements Runnable{
         gameMap.reproduceAnimals();
         gameMap.growPlants();
         stats.reportEndOfTheDay(gameMap);
-        gameMap.atMapChanged("Day " + stats.getDay() + " passed!");
+        int endingDay = stats.getDay() - 1; // the day was already changed to new day
+        gameMap.atMapChanged("Day " + endingDay + " passed!");
+
 
         if(stats.getNumberOfLiveAnimals() == 0) {
             finished = true;
@@ -82,4 +83,7 @@ public class Simulation implements Runnable{
         return gameMap;
     }
 
+    public boolean isPaused() {
+        return paused;
+    }
 }
