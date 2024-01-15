@@ -50,6 +50,20 @@ public class Animal implements WorldElement {
         return new Animal(startPos, simulationId, genome, energy);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Animal otherAnimal = (Animal) o;
+        return id.equals(otherAnimal.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
+    }
+
     public String toString() {
         return String.format("%s", orientation);
     }
@@ -129,8 +143,8 @@ public class Animal implements WorldElement {
         return numberOfEatenPlants;
     }
 
-    public int getDateOfBirth() {
-        return dateOfBirth;
+    public int getAge(){
+        return stats.getDay() - dateOfBirth;
     }
 
     public void setPosition(Vector2d position) {

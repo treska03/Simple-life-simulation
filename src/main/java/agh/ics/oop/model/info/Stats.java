@@ -92,7 +92,7 @@ public class Stats {
         numberOfDeadAnimals++;
         numberOfLiveAnimals--;
         sumOfChildrenNumber -= animal.getChildrenNumber();
-        sumOfDaysOfLiving += (day - animal.getDateOfBirth());
+        sumOfDaysOfLiving += (animal.getAge());
 
         // change statistics for marked animal if that was it who died
         if (animal == markedAnimal){
@@ -148,7 +148,7 @@ public class Stats {
 
         // statistics for marked animal
         if (!(markedAnimal == null) && !(markedAnimalDead)){
-            daysOfLiving = day - markedAnimal.getDateOfBirth();
+            daysOfLiving = markedAnimal.getAge();
         }
 
         day++; // changing the date to a day that is about to start

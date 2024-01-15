@@ -88,9 +88,9 @@ public class MaximalAnimalsFinder {
             return true;
         } else if (animal1.getCurrentEnergy() == animal2.getCurrentEnergy()) {
             // check the age (by the date of birth)
-            if (animal1.getDateOfBirth() < animal2.getDateOfBirth()) {
+            if (animal1.getAge() > animal2.getAge()) {
                 return true;
-            } else if (animal1.getDateOfBirth() == animal2.getDateOfBirth()) {
+            } else if (animal1.getAge() == animal2.getAge()) {
                 // check the number of children
                 return animal1.getChildrenNumber() > animal2.getChildrenNumber();
             }

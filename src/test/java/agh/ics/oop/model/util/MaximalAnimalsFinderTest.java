@@ -53,13 +53,13 @@ public class MaximalAnimalsFinderTest {
         animal3.setCurrentEnergyForTests(100);
 
         /*
-           animal  |  energy  |  date of birth  |  number of children
-         __________|__________|_________________|_____________________
-          animal1  |    100   |        1        |          1
-          animal2  |    100   |        1        |          1
-          animal3  |    100   |        1        |          2
-          animal4  |    100   |        2        |          0
-          animal5  |    80    |        2        |          0
+           animal  |  energy  |  age  |  number of children
+         __________|__________|_______|_____________________
+          animal1  |    100   |   1   |          1
+          animal2  |    100   |   1   |          1
+          animal3  |    100   |   1   |          2
+          animal4  |    100   |   0   |          0
+          animal5  |    80    |   0   |          0
         */
 
         MaximalAnimalsFinder maximalAnimalsFinder = new MaximalAnimalsFinder();

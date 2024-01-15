@@ -188,12 +188,17 @@ public abstract class WorldMap {
         }
     }
 
-    public WorldElement objectAt(Vector2d position) {
+    public String objectAt(Vector2d position) {
         if(!(animalPositions.get(position) == null)) {
-            return animalPositions.get(position).get(0);
+            if (animalPositions.get(position).size() == 1){
+                return animalPositions.get(position).get(0).toString();
+            }
+            else {
+                return "#";
+            }
         }
         if(plantPositions.contains(position)){
-            return new Plant(position);
+            return new Plant(position).toString();
         }
         return null;
     }

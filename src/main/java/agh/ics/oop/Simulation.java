@@ -83,4 +83,7 @@ public class Simulation implements Runnable{
         return gameMap;
     }
 
+    public boolean isPaused() {
+        return paused;
+    }
 }

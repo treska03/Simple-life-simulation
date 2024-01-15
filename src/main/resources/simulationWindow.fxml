@@ -9,20 +9,28 @@
 <?import javafx.scene.control.Label?>
 
 
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.Region?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            minHeight="550.0" minWidth="850.0">
+            minHeight="550.0" minWidth="1000.0">
 
     <left>
-
-        <GridPane gridLinesVisible="true"
-                  alignment="CENTER"
-                  style="-fx-padding: 50;"
-                  fx:id="mapGrid">
-        </GridPane>
+        <VBox>
+            <ScrollPane fitToWidth="true" fitToHeight="true" maxWidth="500.0">
+                <GridPane gridLinesVisible="true"
+                    alignment="CENTER"
+                    style="-fx-padding: 50;"
+                    fx:id="mapGrid">
+                </GridPane>
+            </ScrollPane>
+        </VBox>
     </left>
+    <center>
+        <Region prefWidth="50.0"/>
+    </center>
     <right>
-        <VBox alignment="CENTER" style="-fx-spacing: 5; -fx-alignment: center">
+        <VBox alignment="CENTER" style="-fx-spacing: 15; -fx-alignment: center; -fx-padding: 20;">
             <VBox alignment="CENTER_RIGHT" style="-fx-padding: 10;">
                 <Label fx:id="numberOfAnimalsLabel" />
             </VBox>
@@ -42,7 +50,7 @@
                 <Label fx:id="averageChildrenNumberLabel" />
             </VBox>
             <VBox alignment="CENTER_RIGHT" style="-fx-padding: 10;">
-                <Label fx:id="genotypesText" text="Liczba zyjacych zwierzat posiadajacy dany genotyp:"/>
+                <Label text="Liczba zyjacych zwierzat posiadajacy dany genotyp:"/>
             </VBox>
             <HBox spacing="10" alignment="CENTER_RIGHT" style="-fx-padding: 10;">
                 <HBox style="-fx-spacing: 15; -fx-alignment: center">
