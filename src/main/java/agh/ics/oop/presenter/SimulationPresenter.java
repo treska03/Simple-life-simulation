@@ -159,17 +159,17 @@ public class SimulationPresenter implements ChangeListener {
             item.setStyle("-fx-background-color: green; -fx-text-fill: black;");
         }
         else if (position != null){
-            item.setStyle("-fx-text-fill: black;");
+            item.setStyle("-fx-text-fill: black; -fx-border-color: grey;");
         }
         else {
-            item.setStyle("-fx-background-color: darkgrey;");
+            item.setStyle("-fx-background-color: darkgrey; -fx-border-color: grey;");
         }
         return item;
     }
 
     private Label createJungleField(){
         Label item = new Label();
-        item.setStyle("-fx-background-color: green;");
+        item.setStyle("-fx-background-color: green; -fx-border-color: grey;");
         item.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
         GridPane.setHalignment(item, HPos.CENTER);
         GridPane.setFillHeight(item, true);
@@ -194,22 +194,22 @@ public class SimulationPresenter implements ChangeListener {
             }
         }
         if (foundYellow && foundBlue){
-            button.setStyle("-fx-background-color: yellow; -fx-text-fill: blue;");
+            button.setStyle("-fx-background-color: yellow; -fx-text-fill: blue; -fx-border-color: grey;");
         }
         else if (foundYellow) {
-            button.setStyle("-fx-background-color: yellow; -fx-text-fill: black;");
+            button.setStyle("-fx-background-color: yellow; -fx-text-fill: black; -fx-border-color: grey;");
         }
         else if (foundBlue && constants.getJungleBoundary().insideBoundary(position)) {
-            button.setStyle("-fx-background-color: forestgreen; -fx-text-fill: blue;");
+            button.setStyle("-fx-background-color: forestgreen; -fx-text-fill: blue; -fx-border-color: grey;");
         }
         else if (foundBlue) {
-            button.setStyle("-fx-background-color: lightgrey; -fx-text-fill: blue;");
+            button.setStyle("-fx-background-color: lightgrey; -fx-text-fill: blue; -fx-border-color: grey;");
         }
         else if (constants.getJungleBoundary().insideBoundary(position)) {
-            button.setStyle("-fx-background-color: forestgreen; -fx-text-fill: black;");
+            button.setStyle("-fx-background-color: forestgreen; -fx-text-fill: black; -fx-border-color: grey;");
         }
         else {
-            button.setStyle("-fx-background-color: lightgrey; -fx-text-fill: black;");
+            button.setStyle("-fx-background-color: lightgrey; -fx-text-fill: black; -fx-border-color: grey;");
         }
         button.setOnAction(event -> {
             Platform.runLater(() -> {
@@ -296,7 +296,6 @@ public class SimulationPresenter implements ChangeListener {
     }
 
     public void exitApplication(WindowEvent event) {
-        Platform.exit();
         engine.endSimulation(this.simulation);
     }
 
@@ -311,26 +310,26 @@ public class SimulationPresenter implements ChangeListener {
             Button oldButton = buttonMap.get(this.markedAnimal.getPosition());
             boolean inside = constants.getJungleBoundary().insideBoundary(this.markedAnimal.getPosition());
             if (animalsOnBlue.contains(this.markedAnimal) && inside){
-                oldButton.setStyle("-fx-background-color: forestgreen; -fx-text-fill: blue;");
+                oldButton.setStyle("-fx-background-color: forestgreen; -fx-text-fill: blue; -fx-border-color: grey;");
             }
             else if (animalsOnBlue.contains(this.markedAnimal)){
-                oldButton.setStyle("-fx-background-color: lightgrey; -fx-text-fill: blue;");
+                oldButton.setStyle("-fx-background-color: lightgrey; -fx-text-fill: blue; -fx-border-color: grey;");
             }
             else if (inside){
-                oldButton.setStyle("-fx-background-color: forestgreen; -fx-text-fill: black;");
+                oldButton.setStyle("-fx-background-color: forestgreen; -fx-text-fill: black; -fx-border-color: grey;");
             }
             else {
-                oldButton.setStyle("-fx-background-color: lightgrey; -fx-text-fill: black;");
+                oldButton.setStyle("-fx-background-color: lightgrey; -fx-text-fill: black; -fx-border-color: grey;");
             }
         }
         this.markedAnimal = markedAnimal;
         if (this.markedAnimal != null) {
             Button newButton = buttonMap.get(this.markedAnimal.getPosition());
             if (animalsOnBlue.contains(this.markedAnimal)){
-                newButton.setStyle("-fx-background-color: yellow; -fx-text-fill: blue;");
+                newButton.setStyle("-fx-background-color: yellow; -fx-text-fill: blue; -fx-border-color: grey;");
             }
             else {
-                newButton.setStyle("-fx-background-color: yellow; -fx-text-fill: black;");
+                newButton.setStyle("-fx-background-color: yellow; -fx-text-fill: black; -fx-border-color: grey;");
             }
         }
         if (this.markedAnimal == null){
