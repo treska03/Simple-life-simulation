@@ -19,6 +19,7 @@ import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
@@ -26,6 +27,8 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -39,6 +42,12 @@ public class SimulationPresenter implements ChangeListener {
     private Button resumeButton;
     @FXML
     private Button pauseButton;
+    @FXML
+    private Button saveButton;
+    @FXML
+    private TextField saveFilePath;
+    @FXML
+    private TextField sepCSV;
     @FXML
     private Label numberOfPlantsLabel = new Label();
     @FXML
@@ -112,7 +121,11 @@ public class SimulationPresenter implements ChangeListener {
         });
         resumeButton.setOnAction((e) -> simulation.resumeGame());
         pauseButton.setOnAction((e) -> simulation.pauseGame());
-
+        saveButton.setOnAction((e) -> {
+            stats.setFilepath(saveFilePath.getText());
+            stats.setSeparator(sepCSV.getText());
+            stats.generateCSVBeggining();
+        });
         stage.addEventFilter(WindowEvent.WINDOW_CLOSE_REQUEST, this::exitApplication);
     }
 
@@ -146,6 +159,7 @@ public class SimulationPresenter implements ChangeListener {
         genotype5.setText("Genotyp 5: " + stats.getNumberOfEachGenotype()[5]);
         genotype6.setText("Genotyp 6: " + stats.getNumberOfEachGenotype()[6]);
         genotype7.setText("Genotyp 7: " + stats.getNumberOfEachGenotype()[7]);
+
     }
 
     private Label createGridItem(String content, Vector2d position){
@@ -339,4 +353,6 @@ public class SimulationPresenter implements ChangeListener {
             stats.addMark(this.markedAnimal);
         }
     }
+
+
 }

@@ -1,12 +1,15 @@
 package agh.ics.oop.model.info;
 
-import agh.ics.oop.model.ChangeListener;
 import agh.ics.oop.model.creatures.Animal;
 import agh.ics.oop.model.algorithms.DFS;
 import agh.ics.oop.model.map.WorldMap;
 import agh.ics.oop.model.util.GraphVertex;
 import agh.ics.oop.model.util.Vector2d;
 
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.*;
 
 import static java.lang.Math.min;
@@ -30,6 +33,8 @@ public class Stats {
     private int dayOfDeath;
     private final HashSet<UUID> descendants = new HashSet<>();
     private final Map<UUID, GraphVertex> familyTree = new HashMap<>();
+    private String filepath;
+    private String separator;
 
     public Stats(int simulationID) {
         this.constants = ConstantsList.getConstants(simulationID);
@@ -151,7 +156,37 @@ public class Stats {
             daysOfLiving = markedAnimal.getAge();
         }
 
+        if(filepath != null || separator != null) {
+            exportToCsv();
+        }
+
         day++; // changing the date to a day that is about to start
+    }
+
+    public void exportToCsv()  {
+        try(FileWriter writer = new FileWriter(filepath, true)) {
+            writer.write(getStatsForCSV());
+
+        }
+        catch(IOException ignored) {}
+    }
+
+    public void generateCSVBeggining()  {
+        if(filepath == null || separator == null) return;
+        try {
+            PrintWriter writer = new PrintWriter(filepath);
+            String data = "";
+            data += "numberOfLiveAnimals" + separator;
+            data += "numberOfPlants" + separator;
+            data += "numberOfEmptyFields" + separator;
+            data += "AverageEnergy" + separator;
+            data += "AverageDaysOfLiving" + separator;
+            data += "AverageChildrenNumber" + "\n";
+            writer.print(data);
+            writer.close();
+
+        }
+        catch(FileNotFoundException ignored) {}
     }
 
     public void addMark (Animal markedAnimal){
@@ -193,6 +228,17 @@ public class Stats {
         for (HashSet<Animal> hashSet : commonGenotypeAnimals) {
             hashSet.clear();
         }
+    }
+
+    private String getStatsForCSV() {
+        String data = "";
+        data += String.valueOf(numberOfLiveAnimals) + separator;
+        data += String.valueOf(numberOfPlants) + separator;
+        data += String.valueOf(numberOfEmptyFields) + separator;
+        data += String.valueOf(getAverageEnergy()) + separator;
+        data += String.valueOf(getAverageDaysOfLiving()) + separator;
+        data += String.valueOf(getAverageChildrenNumber() )+ "\n";
+        return data;
     }
 
     public int getDay() {
@@ -314,5 +360,15 @@ public class Stats {
     // only for tests
     public HashSet<UUID> getDescendantsForTests() {
         return descendants;
+    }
+
+    public void setFilepath(String filepath) {
+        this.filepath = filepath;
+    }
+
+    public void setSeparator(String separator) {
+        if(Objects.equals(separator, ",") || Objects.equals(separator, ";")) {
+            this.separator = separator;
+        }
     }
 }
