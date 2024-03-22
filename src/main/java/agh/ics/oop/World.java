@@ -26,6 +26,7 @@ public class World {
 
         System.out.println("System zakończył działanie");
 
+        System.exit(0);
     }
 
     public static void setUpConstants(int simulationId) {

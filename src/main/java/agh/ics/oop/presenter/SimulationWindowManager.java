@@ -11,6 +11,7 @@ import com.sun.javafx.scene.control.IntegerField;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -50,6 +51,8 @@ public class SimulationWindowManager {
     private IntegerField mapWidth;
     @FXML
     private IntegerField mapHeight;
+    @FXML
+    private TextField configPath;
 
     private static AtomicInteger simulationId = new AtomicInteger(1);
     private SimulationApp app;
@@ -183,11 +186,11 @@ public class SimulationWindowManager {
     }
 
     public void saveNewConfig() {
-        if(!isValidData()) {
+        if(!isValidData() || configPath.getText() == null) {
             showError("Make sure to provide valid data before saving");
             return;
         }
-        File newFile = new File("simulationConfig.txt");
+        File newFile = new File(configPath.getText());
         saveConfigFileContent(newFile);
     }
 

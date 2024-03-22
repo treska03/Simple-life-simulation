@@ -1,12 +1,16 @@
 package agh.ics.oop.model.info;
 
-import agh.ics.oop.model.ChangeListener;
 import agh.ics.oop.model.creatures.Animal;
 import agh.ics.oop.model.algorithms.DFS;
 import agh.ics.oop.model.map.WorldMap;
+import agh.ics.oop.model.util.CSVWriter;
 import agh.ics.oop.model.util.GraphVertex;
 import agh.ics.oop.model.util.Vector2d;
 
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.*;
 
 import static java.lang.Math.min;
@@ -30,6 +34,7 @@ public class Stats {
     private int dayOfDeath;
     private final HashSet<UUID> descendants = new HashSet<>();
     private final Map<UUID, GraphVertex> familyTree = new HashMap<>();
+    private CSVWriter csvWriter;
 
     public Stats(int simulationID) {
         this.constants = ConstantsList.getConstants(simulationID);
@@ -151,6 +156,10 @@ public class Stats {
             daysOfLiving = markedAnimal.getAge();
         }
 
+        if(csvWriter != null) {
+            csvWriter.write(getStatsForCSV());
+        }
+
         day++; // changing the date to a day that is about to start
     }
 
@@ -193,6 +202,17 @@ public class Stats {
         for (HashSet<Animal> hashSet : commonGenotypeAnimals) {
             hashSet.clear();
         }
+    }
+
+    private String[] getStatsForCSV() {
+        String[] data = new String[6];
+        data[0] = String.valueOf(numberOfLiveAnimals);
+        data[1] = String.valueOf(numberOfPlants);
+        data[2] = String.valueOf(numberOfEmptyFields);
+        data[3] = String.valueOf(getAverageEnergy());
+        data[4] = String.valueOf(getAverageDaysOfLiving());
+        data[5] = String.valueOf(getAverageChildrenNumber() );
+        return data;
     }
 
     public int getDay() {
@@ -314,5 +334,9 @@ public class Stats {
     // only for tests
     public HashSet<UUID> getDescendantsForTests() {
         return descendants;
+    }
+
+    public void setCsvWriter(CSVWriter csvWriter) {
+        this.csvWriter = csvWriter;
     }
 }

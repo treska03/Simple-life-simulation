@@ -12,13 +12,16 @@ import agh.ics.oop.model.info.Stats;
 import agh.ics.oop.model.info.StatsList;
 import agh.ics.oop.model.map.WorldMap;
 import agh.ics.oop.model.util.Boundary;
+import agh.ics.oop.model.util.CSVWriter;
 import agh.ics.oop.model.util.Vector2d;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
@@ -26,6 +29,8 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -39,6 +44,12 @@ public class SimulationPresenter implements ChangeListener {
     private Button resumeButton;
     @FXML
     private Button pauseButton;
+    @FXML
+    private Button saveButton;
+    @FXML
+    private TextField saveFilePath;
+    @FXML
+    private TextField sepCSV;
     @FXML
     private Label numberOfPlantsLabel = new Label();
     @FXML
@@ -112,6 +123,7 @@ public class SimulationPresenter implements ChangeListener {
         });
         resumeButton.setOnAction((e) -> simulation.resumeGame());
         pauseButton.setOnAction((e) -> simulation.pauseGame());
+        saveButton.setOnAction((e) -> this.setUpWriter());
 
         stage.addEventFilter(WindowEvent.WINDOW_CLOSE_REQUEST, this::exitApplication);
     }
@@ -146,6 +158,7 @@ public class SimulationPresenter implements ChangeListener {
         genotype5.setText("Genotyp 5: " + stats.getNumberOfEachGenotype()[5]);
         genotype6.setText("Genotyp 6: " + stats.getNumberOfEachGenotype()[6]);
         genotype7.setText("Genotyp 7: " + stats.getNumberOfEachGenotype()[7]);
+
     }
 
     private Label createGridItem(String content, Vector2d position){
@@ -305,6 +318,20 @@ public class SimulationPresenter implements ChangeListener {
         animalsList.setUp(worldMap.getAnimalPositions().get(position), this, markedAnimal);
     }
 
+    private void setUpWriter() {
+        String path = (saveFilePath.getText());
+        String separator = (sepCSV.getText());
+        if(!path.endsWith(".csv")) {
+            new Alert(Alert.AlertType.ERROR, "Prosze podac nazwe pliku z rozszerzeniem .csv").show();
+            return;
+        }
+        if(!(separator.equals(",") || separator.equals(";"))) {
+            new Alert(Alert.AlertType.ERROR, "Prosze podac separator ';' lub ','").show();
+            return;
+        }
+        stats.setCsvWriter(new CSVWriter(path, separator));
+    }
+
     public void setMarkedAnimal(Animal markedAnimal) {
         if (this.markedAnimal != null){
             Button oldButton = buttonMap.get(this.markedAnimal.getPosition());
@@ -339,4 +366,6 @@ public class SimulationPresenter implements ChangeListener {
             stats.addMark(this.markedAnimal);
         }
     }
+
+
 }

@@ -11,6 +11,7 @@
 
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.Region?>
+<?import javafx.scene.control.TextField?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             minHeight="550.0" minWidth="1000.0">
@@ -86,6 +87,13 @@
         <HBox alignment="CENTER" spacing="10">
             <Button fx:id="resumeButton" text="START" textAlignment="RIGHT"/>
             <Button fx:id="pauseButton" text="STOP"/>
+            <VBox alignment="CENTER">
+                <Button fx:id="saveButton" text="SAVE"/>
+                <Label text="Path for csv file"/>
+                <TextField fx:id="saveFilePath"/>
+                <Label text="Separator for file"/>
+                <TextField fx:id="sepCSV"/>
+            </VBox>
         </HBox>
     </bottom>
 </BorderPane>
